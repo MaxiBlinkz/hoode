@@ -2,7 +2,7 @@ name: hoode
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+# publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -53,7 +53,7 @@ dependencies:
   supabase_flutter:
   drift:
   flex_color_scheme:
-  dio:
+  dio: 5.5.0+1
   retrofit:
   responsive_builder:
   wordpress_api:
@@ -62,12 +62,15 @@ dependencies:
   blobs: 
   json_annotation: ^4.8.1
   pocketbase: 
-  google_maps_flutter:
-
+  google_maps_flutter: 2.7.1
+  skeletonizer: ^1.4.2
+  flutter_remix: ^0.0.1
+  hugeicons: 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
+  mix: ^1.4.6
 
 dev_dependencies:
   flutter_test:
@@ -84,7 +87,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -98,8 +101,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/fonts/Poppins/
+    - assets/images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
