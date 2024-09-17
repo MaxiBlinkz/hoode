@@ -66,6 +66,8 @@ dependencies:
   skeletonizer: ^1.4.2
   flutter_remix: ^0.0.1
   hugeicons: 
+  contained_tab_bar_view: 
+  golden_ratio:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

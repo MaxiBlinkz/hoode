@@ -19,8 +19,23 @@ class $AssetsFontsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/Home (Client) – 1.png
+  AssetGenImage get homeClient1 =>
+      const AssetGenImage('assets/images/Home (Client) – 1.png');
+
+  /// File path: assets/images/avatar.jpg
+  AssetGenImage get avatar => const AssetGenImage('assets/images/avatar.jpg');
+
   /// File path: assets/images/house1.jpg
   AssetGenImage get house1 => const AssetGenImage('assets/images/house1.jpg');
+
+  /// File path: assets/images/house10.jpeg
+  AssetGenImage get house10 =>
+      const AssetGenImage('assets/images/house10.jpeg');
+
+  /// File path: assets/images/house11.jpeg
+  AssetGenImage get house11 =>
+      const AssetGenImage('assets/images/house11.jpeg');
 
   /// File path: assets/images/house2.jpg
   AssetGenImage get house2 => const AssetGenImage('assets/images/house2.jpg');
@@ -28,8 +43,40 @@ class $AssetsImagesGen {
   /// File path: assets/images/house3.jpg
   AssetGenImage get house3 => const AssetGenImage('assets/images/house3.jpg');
 
+  /// File path: assets/images/house4.jpg
+  AssetGenImage get house4 => const AssetGenImage('assets/images/house4.jpg');
+
+  /// File path: assets/images/house5.jpeg
+  AssetGenImage get house5 => const AssetGenImage('assets/images/house5.jpeg');
+
+  /// File path: assets/images/house6.jpeg
+  AssetGenImage get house6 => const AssetGenImage('assets/images/house6.jpeg');
+
+  /// File path: assets/images/house7.jpeg
+  AssetGenImage get house7 => const AssetGenImage('assets/images/house7.jpeg');
+
+  /// File path: assets/images/house8.jpeg
+  AssetGenImage get house8 => const AssetGenImage('assets/images/house8.jpeg');
+
+  /// File path: assets/images/house9.jpeg
+  AssetGenImage get house9 => const AssetGenImage('assets/images/house9.jpeg');
+
   /// List of all assets
-  List<AssetGenImage> get values => [house1, house2, house3];
+  List<AssetGenImage> get values => [
+        homeClient1,
+        avatar,
+        house1,
+        house10,
+        house11,
+        house2,
+        house3,
+        house4,
+        house5,
+        house6,
+        house7,
+        house8,
+        house9
+      ];
 }
 
 class $AssetsFontsPoppinsGen {
