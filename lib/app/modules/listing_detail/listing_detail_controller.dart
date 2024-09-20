@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+// import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ListingDetailController extends GetxController {
   //int _id = 2;

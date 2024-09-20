@@ -6,3 +6,6 @@ const String SUPABASE_URL = "http://127.0.0.1:54321";
 const String SUPABASE_URL_ANDROID = "http://10.0.2.2:54321";
 
 const String API_URL = "http://localhost:3001/";
+
+const String POCKETBASE_URL = "http://127.0.0.1:8090";
+const String POCKETBASE_URL_ANDROID = "http://10.0.2.2:8090";

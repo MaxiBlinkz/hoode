@@ -68,11 +68,14 @@ dependencies:
   hugeicons: 
   contained_tab_bar_view: 
   golden_ratio:
+  image_picker: 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   mix: ^1.4.6
+  currency_textfield: ^4.12.0
+  location: ^6.0.2
 
 dev_dependencies:
   flutter_test:

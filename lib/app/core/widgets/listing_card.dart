@@ -1,42 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hoode/app/core/config/constants.dart';
 import 'package:hoode/app/modules/listing_detail/listing_detail_page.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class ListingCard extends StatelessWidget {
-  final int id;
-  final String? title;
-  final int? price;
-  final String? location;
-  final String? status;
-  final String? image_url;
-  final String description;
-  //final bool featured;
+  final RecordModel property;
 
   ListingCard({
     super.key,
-    required this.id,
-    required this.title,
-    required this.price,
-    required this.location,
-    required this.status,
-    required this.image_url,
-    required this.description,
-    //required this.featured,
+    required this.property,
   });
-
 
   @override
   Widget build(BuildContext context) {
-    final property = <String, dynamic>{
-      'id': id,
-      'title': title,
-      'price' : price,
-      'location' : location,
-      'status': status,
-      'image_url' : image_url,
-      'description': description
-    };
-
+    final id = property.id;
+    final listing = property.data;
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -65,8 +44,8 @@ class ListingCard extends StatelessWidget {
                     ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(12)),
                       // Listing Image
-                      child: Image.asset(
-                        "assets/images/$image_url",
+                      child: Image.network(
+                        "$POCKETBASE_URL_ANDROID/api/files/properties/$id/${listing['image']}",
                         fit: BoxFit.cover,
                         height: 115,
                         width: 180,
@@ -99,7 +78,7 @@ class ListingCard extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    title!,
+                    listing['title'] ?? "",
                     overflow: TextOverflow.clip,
                     maxLines: 2,
                     style: TextStyle(
@@ -115,7 +94,7 @@ class ListingCard extends StatelessWidget {
                     color: Colors.grey,
                   ),
                   Text(
-                    location!,
+                    listing['location']!,
                     overflow: TextOverflow.clip,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
@@ -128,7 +107,7 @@ class ListingCard extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "\$$price",
+                    "\$${listing['price']}",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,

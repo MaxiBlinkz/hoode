@@ -126,15 +126,9 @@ class HomePage extends GetView<HomeController> {
                             itemCount: controller.properties.length,
                             itemBuilder: (context, index) {
                               final property = controller.properties[index];
-                              return ListingCard(
-                                title: property['title'],
-                                id: property['id'],
-                                price: property['price'],
-                                location: property['location'],
-                                status: property['status'],
-                                image_url: property['image_url'],
-                                description: property['description']
-                              );
+                        return ListingCard(
+                          property: property,
+                        );
                             })),
                 Skeletonizer(
                   enabled: controller.isLoading.value,
@@ -149,13 +143,7 @@ class HomePage extends GetView<HomeController> {
                       itemBuilder: (context, index) {
                         final property = controller.properties[index];
                         return ListingCard(
-                          title: property['title'],
-                          id: property['id'],
-                          price: property['price'],
-                          location: property['location'],
-                          status: property['status'],
-                          image_url: property['image_url'],
-                          description: property['description']
+                          property: property,
                         );
                       }),
                 )
