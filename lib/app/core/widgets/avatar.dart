@@ -4,7 +4,7 @@ class Avatar extends StatelessWidget {
   final String image_url;
   final String initials;
 
-  Avatar({
+  const Avatar({
     super.key,
     required this.image_url,
     required this.initials,
@@ -17,7 +17,7 @@ class Avatar extends StatelessWidget {
       backgroundColor: Colors.blue,
       backgroundImage: image_url.isNotEmpty ? AssetImage(image_url) : null,
       child: image_url.isEmpty
-          ? Text(initials, style: TextStyle(fontSize: 40, color: Colors.white))
+          ? Text(initials, style: const TextStyle(fontSize: 40, color: Colors.white))
           : null,
     );
   }

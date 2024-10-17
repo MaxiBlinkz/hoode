@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:hugeicons/hugeicons.dart';
-// import 'package:supabase_flutter/supabase_flutter.dart';
-// import 'package:hoode/app/data/models/property.dart';
+import 'package:hoode/app/core/widgets/category_item.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:flutter_remix/flutter_remix.dart';
@@ -12,46 +10,11 @@ import 'package:flutter_remix/flutter_remix.dart';
 import '../../core/theme/colors.dart';
 import '../../core/widgets/avatar.dart';
 import '../../core/widgets/listing_card.dart';
-//import '../../core/widgets/header.dart';
-//import '../../core/widgets/featured_card.dart';
 import 'home_controller.dart';
 
 class HomePage extends GetView<HomeController> {
-  HomePage({super.key});
+  const HomePage({super.key});
 
-  Widget _buildCategoryItem(String title, IconData icon) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Column(
-        children: [
-          Container(
-            height: 46,
-            width: 46,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(23),
-              color: Colors.grey[200],
-            ),
-            child: Center(
-              child: Icon(
-                icon,
-                size: 24,
-                color: AppColors.primary,
-              ),
-            ),
-          ),
-          Text(
-            title,
-            style: GoogleFonts.poppins(
-              color: Colors.black,
-              fontSize: 12.0,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  // final _future = Supabase.instance.client.from('properties').select();
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +24,7 @@ class HomePage extends GetView<HomeController> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Avatar(
+        title: const Avatar(
           initials: "MK",
           image_url: "assets/images/avatar.jpg",
         ),
@@ -83,7 +46,7 @@ class HomePage extends GetView<HomeController> {
         actions: [
           IconButton(
             icon: const Icon(
-              FlutterRemix.notification_2_fill,
+              IconlyLight.notification,
               color: AppColors.primary,
             ),
             iconSize: 20.0,
@@ -103,17 +66,17 @@ class HomePage extends GetView<HomeController> {
                 const SizedBox(height: 8.0),
                 SizedBox(
                   height: 80,
-                  child: ListView(scrollDirection: Axis.horizontal, children: [
-                    _buildCategoryItem("House", FlutterRemix.home_3_fill),
-                    _buildCategoryItem(
-                        "Apartment", FlutterRemix.building_4_fill),
-                    _buildCategoryItem("Villa", FlutterRemix.building_2_fill),
-                    _buildCategoryItem("House", FlutterRemix.building_fill),
-                    _buildCategoryItem("Apartment", EvaIcons.home_outline),
-                    _buildCategoryItem("Villa", EvaIcons.award),
-                    _buildCategoryItem("House", EvaIcons.home),
-                    _buildCategoryItem("Apartment", EvaIcons.home_outline),
-                    _buildCategoryItem("Villa", EvaIcons.award),
+                  child: ListView(scrollDirection: Axis.horizontal, children: const [
+                    CategoryItem(title: "House", icon: FlutterRemix.home_3_fill),
+                    CategoryItem(
+                        title: "Apartment", icon: FlutterRemix.building_4_fill),
+                    CategoryItem(title: "Villa", icon: FlutterRemix.building_2_fill),
+                    CategoryItem(title: "House", icon: FlutterRemix.building_fill),
+                    CategoryItem(title: "Apartment", icon: EvaIcons.home_outline),
+                    CategoryItem(title: "Villa", icon: EvaIcons.award),
+                    CategoryItem(title: "House", icon: EvaIcons.home),
+                    CategoryItem(title: "Apartment", icon: EvaIcons.home_outline),
+                    CategoryItem(title: "Villa", icon: EvaIcons.award),
                   ]),
                 ),
                 const SizedBox(height: 4.0),
@@ -136,6 +99,7 @@ class HomePage extends GetView<HomeController> {
                   child: GridView.builder(
                       primary: false,
                       shrinkWrap: true,
+                      controller: controller.listController,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2, childAspectRatio: 0.82),
@@ -152,28 +116,7 @@ class HomePage extends GetView<HomeController> {
           })))
         ]),
       ),
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: AppColors.primary,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          child: const Icon(FlutterRemix.map_2_line),
-          onPressed: () {}),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.explore), label: "Explore"),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: "Settings"),
-          ],
-          selectedItemColor: AppColors.primary,
-          unselectedItemColor: Colors.black,
-          currentIndex: _selectedIndex,
-          onTap: (int index) {
-            _selectedIndex = index;
-          }),
+      
     );
   }
 }

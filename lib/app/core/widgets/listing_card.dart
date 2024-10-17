@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/core/config/constants.dart';
 import 'package:hoode/app/modules/listing_detail/listing_detail_page.dart';
@@ -12,10 +13,14 @@ class ListingCard extends StatelessWidget {
     required this.property,
   });
 
+  PocketBase pb = PocketBase(POCKETBASE_URL_ANDROID);
+
   @override
   Widget build(BuildContext context) {
     final id = property.id;
     final listing = property.data;
+
+    bool isFav = listing['is_favourite'];
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -45,7 +50,7 @@ class ListingCard extends StatelessWidget {
                       borderRadius: const BorderRadius.all(Radius.circular(12)),
                       // Listing Image
                       child: Image.network(
-                        "$POCKETBASE_URL_ANDROID/api/files/properties/$id/${listing['image']}",
+                        "$POCKETBASE_URL_ANDROID/api/files/properties/$id/${listing['image'][0]}",
                         fit: BoxFit.cover,
                         height: 115,
                         width: 180,
@@ -64,10 +69,19 @@ class ListingCard extends StatelessWidget {
                         child: IconButton(
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(0),
-                          icon: const Icon(Icons.favorite_border),
+                          icon: isFav
+                              ? Icon(IconlyBold.heart)
+                              : Icon(IconlyLight.heart),
                           color: Colors.red,
                           iconSize: 20.0,
-                          onPressed: () {},
+                          onPressed: () async {
+                            isFav = !isFav;
+                            final body = <String, bool>{"is_favourite": isFav};
+                            try{
+                              await pb.collection('users').update(id, body: body);
+                            } catch(e){}
+                            
+                          },
                         ),
                       ),
                     )

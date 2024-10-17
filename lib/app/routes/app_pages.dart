@@ -4,6 +4,11 @@ import 'listing_search_routes.dart';
 import 'dashboard_routes.dart';
 import 'login_routes.dart';
 import 'register_routes.dart';
+import 'profile_setup_routes.dart';
+import 'nav_bar_routes.dart';
+import 'settings_routes.dart';
+import 'map_routes.dart';
+import 'profile_routes.dart';
 
 class AppPages {
   AppPages._();
@@ -17,5 +22,10 @@ class AppPages {
 		...DashboardRoutes.routes,
 		...LoginRoutes.routes,
 		...RegisterRoutes.routes,
+		...ProfileSetupRoutes.routes,
+		...NavBarRoutes.routes,
+		...SettingsRoutes.routes,
+		...MapRoutes.routes,
+		...ProfileRoutes.routes,
   ];
 }

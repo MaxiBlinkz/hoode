@@ -8,7 +8,7 @@ import 'package:hoode/app/core/widgets/avatar.dart';
 import 'listing_detail_controller.dart';
 
 class ListingDetailPage extends GetView<ListingDetailController> {
-  ListingDetailPage({super.key});
+  const ListingDetailPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,21 +32,21 @@ class ListingDetailPage extends GetView<ListingDetailController> {
             width: double.infinity,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 8,
         ),
         Text(
           listing['title'],
-          style: TextStyle(fontSize: 20),
+          style: const TextStyle(fontSize: 20),
         ),
         Text(listing['location']),
         SizedBox(
           height: 400,
           child: ContainedTabBarView(
-              tabBarProperties: TabBarProperties(
+              tabBarProperties: const TabBarProperties(
                   indicatorColor: AppColors.primary,
                   labelColor: AppColors.primary),
-              tabs: [
+              tabs: const [
                 Text('About'),
                 Text('Gallery'),
                 Text('Reviews')
@@ -54,19 +54,19 @@ class ListingDetailPage extends GetView<ListingDetailController> {
               views: [
                 Column(
                   children: [
-                    Text('Description'),
+                    const Text('Description'),
                     Text(listing['description']),
-                    Text('Listing Agent'),
+                    const Text('Listing Agent'),
                     Row(
                       children: [
-                        Avatar(
+                        const Avatar(
                           initials: "MK",
                           image_url: "assets/images/avatar.jpg",
                         ),
-                        Spacer(),
+                        const Spacer(),
                         IconButton(
-                            onPressed: () {}, icon: Icon(Icons.email_outlined)),
-                        IconButton(onPressed: () {}, icon: Icon(Icons.call)),
+                            onPressed: () {}, icon: const Icon(Icons.email_outlined)),
+                        IconButton(onPressed: () {}, icon: const Icon(Icons.call)),
                       ],
                     )
                   ],

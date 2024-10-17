@@ -16,6 +16,23 @@ class $AssetsFontsGen {
   $AssetsFontsPoppinsGen get poppins => const $AssetsFontsPoppinsGen();
 }
 
+class $AssetsIconsGen {
+  const $AssetsIconsGen();
+
+  /// File path: assets/icons/apple.png
+  AssetGenImage get apple => const AssetGenImage('assets/icons/apple.png');
+
+  /// File path: assets/icons/facebook.png
+  AssetGenImage get facebook =>
+      const AssetGenImage('assets/icons/facebook.png');
+
+  /// File path: assets/icons/google.png
+  AssetGenImage get google => const AssetGenImage('assets/icons/google.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [apple, facebook, google];
+}
+
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
@@ -173,6 +190,7 @@ class Assets {
   Assets._();
 
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
+  static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 

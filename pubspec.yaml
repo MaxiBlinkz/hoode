@@ -28,76 +28,88 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  blobs:
+  contained_tab_bar_view:
+  cool_alert:
+  country_code_picker:
+  country_state_city_pro:
+  cropperx:
+  csc_picker:
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.6
+  currency_textfield: ^4.12.0
+  dio: 5.5.0+1
+  drift:
+  flex_color_scheme:
   flutter:
     sdk: flutter
+  flutter_form_builder: ^9.5.0
+  flutter_iconly:
+  flutter_remix: ^0.0.1
 
   flutter_svg:
+  form_builder_validators: ^11.0.0
+  geolocator:
   get:
   get_it:
   get_storage:
+  glassmorphism:
   google_fonts:
-  hexcolor:
+  google_maps_flutter: 2.7.1
+  http:
+  hugeicons:
+  iconly:
   icons_launcher:
+  icons_plus:
   iconsax:
+  image_picker: ^1.1.2
+  internet_connection_checker_plus:
+  json_annotation: ^4.8.1
+  location: ^6.0.2
+  logger:
   lottie:
+  mix: ^1.4.6
   objectbox:
   path:
   path_provider:
   paystack: any
   pixel_perfect:
+  pocketbase:
   quickalert:
   redacted:
+  responsive_builder:
+  retrofit:
   showcaseview:
+  skeletonizer: ^1.4.2
   sqlite3_flutter_libs:
   stack_appodeal_flutter:
-  supabase_flutter:
-  drift:
-  flex_color_scheme:
-  dio: 5.5.0+1
-  retrofit:
-  responsive_builder:
+  stylish_bottom_bar: 
   wordpress_api:
-  icons_plus: 
-  flutter_settings_ui:
-  blobs: 
-  json_annotation: ^4.8.1
-  pocketbase: 
-  google_maps_flutter: 2.7.1
-  skeletonizer: ^1.4.2
-  flutter_remix: ^0.0.1
-  hugeicons: 
-  contained_tab_bar_view: 
-  golden_ratio:
-  image_picker: 
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.6
-  mix: ^1.4.6
-  currency_textfield: ^4.12.0
-  location: ^6.0.2
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
+  analyzer: any
   build_runner:
   drift_dev:
-  mockito:
-  retrofit_generator:
-  flutter_gen_runner:
-  json_serializable: ^6.7.1
-  analyzer: any
-  # The "flutter_lints" package below contains a set of recommended lints to
+  flutter_gen_runner: # The "flutter_lints" package below contains a set of recommended lints to
+
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+  flutter_test:
+    sdk: flutter
+  json_serializable: ^6.7.1
+  mockito:
+  retrofit_generator:
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
+    # For information on the generic Dart part of this file, see the
+    # following page: https://dart.dev/tools/pub/pubspec
 
-# The following section is specific to Flutter packages.
+    # The following section is specific to Flutter packages.
 flutter:
 
   # The following line ensures that the Material Icons font is
@@ -109,6 +121,7 @@ flutter:
   assets:
     - assets/fonts/Poppins/
     - assets/images/
+    - assets/icons/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

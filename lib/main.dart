@@ -12,16 +12,10 @@ import 'app/routes/app_pages.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // if (Platform.isAndroid) {
-  //   await Supabase.initialize(url: SUPABASE_URL_ANDROID, anonKey: SUPABASE_ANNON_KEY);
-  // } else {
-  //   await Supabase.initialize(url: SUPABASE_URL, anonKey: SUPABASE_ANNON_KEY);
-  // }
-  LicenseRegistry.addLicense(() async* {
-    final license = await rootBundle.loadString('assets/fonts/OFL.txt');
-    yield LicenseEntryWithLineBreaks(['assets/fonts/'], license);
-  });
+  // LicenseRegistry.addLicense(() async* {
+  //   final license = await rootBundle.loadString('assets/fonts/OFL.txt');
+  //   yield LicenseEntryWithLineBreaks(['assets/fonts/'], license);
+  // });
 
   runApp(
     GetMaterialApp(
