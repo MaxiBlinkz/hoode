@@ -8,7 +8,6 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/core/widgets/social_button.dart';
 import 'package:hoode/app/data/enums/enums.dart';
-import 'package:hoode/app/modules/home/home_page.dart';
 import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import '../../core/theme/colors.dart';
@@ -80,7 +79,7 @@ class LoginPage extends StatelessWidget {
                           FormBuilderTextField(
                             name: "Email",
                             controller: emailController,
-                            obscureText: true,
+                            obscureText: false,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             decoration: InputDecoration(
@@ -105,13 +104,24 @@ class LoginPage extends StatelessWidget {
                           FormBuilderTextField(
                             name: "Password",
                             controller: passwordController,
-                            obscureText: true,
+                            obscureText: controller.isPasswordVisible.value,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             decoration: InputDecoration(
                               hintText: "Password",
                               prefixIcon: const Icon(IconlyLight.lock,
                                   color: AppColors.primary),
+                                suffixIcon: IconButton(
+                                icon: Icon(
+                                  controller.isPasswordVisible.value
+                                      ? IconlyLight.hide
+                                      : IconlyLight.show,
+                                  color: AppColors.primary,
+                                ),
+                                onPressed: () {
+                                  controller.togglePasswordVisibility;
+                                },
+                              ),
                               filled: true,
                               fillColor: Colors.grey[200],
                               border: OutlineInputBorder(

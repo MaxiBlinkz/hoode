@@ -15,6 +15,7 @@ class LoginController extends GetxController {
   final isLoggedIn = false.obs;
   var status = Status.pending.obs;
   Rx<Object> err = "".obs;
+  var isPasswordVisible = false.obs;
 
   // final pb = POCKETBASE;
   final pb = PocketBase(POCKETBASE_URL);
@@ -33,10 +34,10 @@ class LoginController extends GetxController {
         status(Status.pending);
       }
     } catch (e) {
-      err.value = e;
+      err.value = e.toString();
       status(Status.error);
       logger.i('${status.value}');
-      logger.e('${e.toString()}');
+      logger.e('${err.value}');
     }
     update();
   }
@@ -81,6 +82,11 @@ class LoginController extends GetxController {
       isLoggedIn(true);
       Get.offAll(() => const HomePage());
     }
+  }
+
+  void togglePasswordVisibility() {
+    isPasswordVisible.value = !isPasswordVisible.value;
+    update();
   }
 
   void initControllers() {

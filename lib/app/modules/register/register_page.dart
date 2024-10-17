@@ -84,7 +84,7 @@ class RegisterPage extends GetView<RegisterController> {
                         FormBuilderTextField(
                             name: "Email",
                             controller: emailController,
-                            obscureText: true,
+                            obscureText: false,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             decoration: InputDecoration(
@@ -108,13 +108,24 @@ class RegisterPage extends GetView<RegisterController> {
                         FormBuilderTextField(
                             name: "Password",
                             controller: passwordController,
-                            obscureText: true,
+                            obscureText: controller.isPasswordVisible.value,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             decoration: InputDecoration(
                               hintText: "Password",
                               prefixIcon: const Icon(IconlyLight.lock,
                                   color: AppColors.primary),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  controller.isPasswordVisible.value
+                                      ? IconlyLight.hide
+                                      : IconlyLight.show,
+                                  color: AppColors.primary,
+                                ),
+                                onPressed: () {
+                                  controller.togglePasswordVisibility();
+                                },
+                              ),
                               filled: true,
                               fillColor: Colors.grey[200],
                               border: OutlineInputBorder(
@@ -132,13 +143,24 @@ class RegisterPage extends GetView<RegisterController> {
                         FormBuilderTextField(
                             name: "Confirm Password",
                             controller: confirmPasswordController,
-                            obscureText: true,
+                            obscureText: controller.isPasswordVisible.value,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             decoration: InputDecoration(
                               hintText: "Confirm Password",
                               prefixIcon: const Icon(IconlyLight.lock,
                                   color: AppColors.primary),
+                                  suffixIcon: IconButton(
+                                icon: Icon(
+                                  controller.isPasswordVisible.value
+                                      ? IconlyLight.hide
+                                      : IconlyLight.show,
+                                  color: AppColors.primary,
+                                ),
+                                onPressed: () {
+                                  controller.togglePasswordVisibility;
+                                },
+                              ),
                               filled: true,
                               fillColor: Colors.grey[200],
                               border: OutlineInputBorder(
@@ -155,24 +177,24 @@ class RegisterPage extends GetView<RegisterController> {
                         const SizedBox(height: 30),
                         ElevatedButton(
                           onPressed: () async {
-                            if (await InternetConnection().hasInternetAccess) {
+                            //if (await InternetConnection().hasInternetAccess) {
                               controller.register();
-                              if (controller.status.value == Status.loading) {
-                                CoolAlert.show(
-                                    context: context,
-                                    type: CoolAlertType.loading,
-                                    title: "Sign Up",
-                                    text: "Creating Account");
-                              }
+                              // if (controller.status.value == Status.loading) {
+                              //   CoolAlert.show(
+                              //       context: context,
+                              //       type: CoolAlertType.loading,
+                              //       title: "Sign Up",
+                              //       text: "Creating Account");
+                              // }
                               await Future.delayed(Duration(
                                   seconds:
                                       2)); // Give time for the registration process
                               if (controller.status.value == Status.success) {
-                                CoolAlert.show(
-                                    context: context,
-                                    type: CoolAlertType.success,
-                                    title: "Sign Up",
-                                    text: "Account Created");
+                                // CoolAlert.show(
+                                //     context: context,
+                                //     type: CoolAlertType.success,
+                                //     title: "Sign Up",
+                                //     text: "Account Created");
                                 Get.offAll(() => ProfileSetupPage());
                               } else if (controller.status.value ==
                                   Status.error) {
@@ -182,13 +204,14 @@ class RegisterPage extends GetView<RegisterController> {
                                     title: "Sign Up",
                                     text: "Error Creating Account");
                               }
-                            } else {
-                              CoolAlert.show(
-                                  context: context,
-                                  type: CoolAlertType.error,
-                                  title: "Ooops!!!",
-                                  text: "No Internet Connection!");
-                            }
+                            // } 
+                            // else {
+                            //   CoolAlert.show(
+                            //       context: context,
+                            //       type: CoolAlertType.error,
+                            //       title: "Ooops!!!",
+                            //       text: "No Internet Connection!");
+                            // }
                           },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: AppColors.primary,

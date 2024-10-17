@@ -86,6 +86,7 @@ dependencies:
   sqlite3_flutter_libs:
   stack_appodeal_flutter:
   stylish_bottom_bar: 
+  image_cropper: ^8.0.2
   wordpress_api:
 
 
