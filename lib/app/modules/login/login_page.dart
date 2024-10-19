@@ -77,98 +77,97 @@ class LoginPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 20),
                           FormBuilderTextField(
-                            name: "Email",
-                            controller: emailController,
-                            obscureText: false,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            decoration: InputDecoration(
-                              hintText: "Email",
-                              prefixIcon: const Icon(IconlyLight.message,
-                                  color: AppColors.primary),
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 15),
-                            ),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                              FormBuilderValidators.email()
-                            ])
-                          ),
-                          const SizedBox(height: 20),
-                          FormBuilderTextField(
-                            name: "Password",
-                            controller: passwordController,
-                            obscureText: controller.isPasswordVisible.value,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            decoration: InputDecoration(
-                              hintText: "Password",
-                              prefixIcon: const Icon(IconlyLight.lock,
-                                  color: AppColors.primary),
-                                suffixIcon: IconButton(
-                                icon: Icon(
-                                  controller.isPasswordVisible.value
-                                      ? IconlyLight.hide
-                                      : IconlyLight.show,
-                                  color: AppColors.primary,
+                              name: "Email",
+                              controller: emailController,
+                              obscureText: false,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              decoration: InputDecoration(
+                                hintText: "Email",
+                                prefixIcon: const Icon(IconlyLight.message,
+                                    color: AppColors.primary),
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  borderSide: BorderSide.none,
                                 ),
-                                onPressed: () {
-                                  controller.togglePasswordVisibility;
-                                },
+                                contentPadding:
+                                    const EdgeInsets.symmetric(vertical: 15),
                               ),
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 15),
-                            ),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                              FormBuilderValidators.password()
-                            ])
-                          ),
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(),
+                                FormBuilderValidators.email()
+                              ])),
+                          const SizedBox(height: 20),
+                          Obx(() {
+                            return FormBuilderTextField(
+                                name: "Password",
+                                controller: passwordController,
+                                obscureText:
+                                    !controller.isPasswordVisible.value,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                decoration: InputDecoration(
+                                  hintText: "Password",
+                                  prefixIcon: const Icon(IconlyLight.lock,
+                                      color: AppColors.primary),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      controller.isPasswordVisible.value
+                                          ? IconlyLight.hide
+                                          : IconlyLight.show,
+                                      color: AppColors.primary,
+                                    ),
+                                    onPressed: () {
+                                      controller.togglePasswordVisibility;
+                                    },
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.grey[200],
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  contentPadding:
+                                      const EdgeInsets.symmetric(vertical: 15),
+                                ),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                  FormBuilderValidators.password(),
+                                ]));
+                          }),
                           const SizedBox(height: 30),
                           ElevatedButton(
                             onPressed: () async {
-                              if (await InternetConnection().hasInternetAccess) {
-                              CoolAlert.show(
-                                  context: context,
-                                  type: CoolAlertType.loading,
-                                  title: "Please Wait",
-                                  text: "Authenticating...");
-                              controller.login();
-                              await Future.delayed(Duration(seconds: 2)); // Give time for the registration process
-                              if (controller.status.value == Status.success) {
+                              if (await InternetConnection()
+                                  .hasInternetAccess) {
+                                controller.login();
+                                await Future.delayed(Duration(
+                                    seconds:
+                                        2)); // Give time for the registration process
+                                if (controller.status.value == Status.success) {
+                                  //[[[[[[[[[[[[[[[[[[[[[[[[[[Loading Bar Complete]]]]]]]]]]]]]]]]]]]]]]]]]]
+                                  Get.snackbar(
+                                    "Sign Up",
+                                    "Account Created Succesfully",
+                                  );
+                                  Get.offAll(() => const NavBarPage());
+                                } else if (controller.status.value ==
+                                    Status.error) {
+                                  CoolAlert.show(
+                                      context: context,
+                                      type: CoolAlertType.error,
+                                      title: "Login",
+                                      text: "Error Logging In...");
+                                }
+                              } else {
                                 CoolAlert.show(
-                                    context: context,
-                                    type: CoolAlertType.success,
-                                    title: "Login",
-                                    text: "LoggedIn Successfully!!");
-                                Get.offAll(() => const NavBarPage());
-                              } else if (controller.status.value ==
-                                  Status.error) {
-                                CoolAlert.show(
-                                    context: context,
-                                    type: CoolAlertType.error,
-                                    title: "Login",
-                                    text: "Error Logging In...");
-                              }
-                            } else{
-                              CoolAlert.show(
                                     context: context,
                                     type: CoolAlertType.error,
                                     title: "Ooops!!!",
                                     text: "No Internet Connection!");
-                            }
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               foregroundColor: AppColors.primary,

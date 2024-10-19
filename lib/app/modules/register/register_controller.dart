@@ -21,11 +21,11 @@ class RegisterController extends GetxController {
   var isRegistered = false.obs;
   var isPasswordVisible = false.obs;
 
-  var id = "";
+  var id = "".obs;
   var status = Status.pending.obs;
   var err = "".obs;
 
-  final pb = PocketBase(POCKETBASE_LOCAL_URL);
+  final pb = PocketBase(POCKETBASE_URL);
   //final pb = POCKETBASE;
 
   Future<void> register() async {
@@ -40,19 +40,13 @@ class RegisterController extends GetxController {
     };
     try {
       final record = await pb.collection('users').create(body: body);
-      id = record.id;
-      // if(pb.authStore.isValid){
-      //   status(Status.success);
-      //   Get.offAll(() => ProfileSetupPage());
-      // } else {
-      //   status(Status.pending);
-      // }
+      id(record.id);
       status(Status.success);
     } catch (e) {
       status(Status.error);
       err.value = e.toString();
-      logger.i('\n\n${status.value}\n\n');
-      logger.e('${e}');
+      logger.i('${status.value}');
+      logger.e('$e');
     }
     update();
   }

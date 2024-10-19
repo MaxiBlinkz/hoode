@@ -77,10 +77,11 @@ class ListingCard extends StatelessWidget {
                           onPressed: () async {
                             isFav = !isFav;
                             final body = <String, bool>{"is_favourite": isFav};
-                            try{
-                              await pb.collection('users').update(id, body: body);
-                            } catch(e){}
-                            
+                            try {
+                              await pb
+                                  .collection('users')
+                                  .update(id, body: body);
+                            } catch (e) {}
                           },
                         ),
                       ),

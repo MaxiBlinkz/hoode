@@ -15,7 +15,6 @@ import 'home_controller.dart';
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     int _selectedIndex = 0;
@@ -66,18 +65,26 @@ class HomePage extends GetView<HomeController> {
                 const SizedBox(height: 8.0),
                 SizedBox(
                   height: 80,
-                  child: ListView(scrollDirection: Axis.horizontal, children: const [
-                    CategoryItem(title: "House", icon: FlutterRemix.home_3_fill),
-                    CategoryItem(
-                        title: "Apartment", icon: FlutterRemix.building_4_fill),
-                    CategoryItem(title: "Villa", icon: FlutterRemix.building_2_fill),
-                    CategoryItem(title: "House", icon: FlutterRemix.building_fill),
-                    CategoryItem(title: "Apartment", icon: EvaIcons.home_outline),
-                    CategoryItem(title: "Villa", icon: EvaIcons.award),
-                    CategoryItem(title: "House", icon: EvaIcons.home),
-                    CategoryItem(title: "Apartment", icon: EvaIcons.home_outline),
-                    CategoryItem(title: "Villa", icon: EvaIcons.award),
-                  ]),
+                  child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: const [
+                        CategoryItem(
+                            title: "House", icon: FlutterRemix.home_3_fill),
+                        CategoryItem(
+                            title: "Apartment",
+                            icon: FlutterRemix.building_4_fill),
+                        CategoryItem(
+                            title: "Villa", icon: FlutterRemix.building_2_fill),
+                        CategoryItem(
+                            title: "House", icon: FlutterRemix.building_fill),
+                        CategoryItem(
+                            title: "Apartment", icon: EvaIcons.home_outline),
+                        CategoryItem(title: "Villa", icon: EvaIcons.award),
+                        CategoryItem(title: "House", icon: EvaIcons.home),
+                        CategoryItem(
+                            title: "Apartment", icon: EvaIcons.home_outline),
+                        CategoryItem(title: "Villa", icon: EvaIcons.award),
+                      ]),
                 ),
                 const SizedBox(height: 4.0),
                 SizedBox(
@@ -89,9 +96,9 @@ class HomePage extends GetView<HomeController> {
                             itemCount: controller.properties.length,
                             itemBuilder: (context, index) {
                               final property = controller.properties[index];
-                        return ListingCard(
-                          property: property,
-                        );
+                              return ListingCard(
+                                property: property,
+                              );
                             })),
                 Skeletonizer(
                   enabled: controller.isLoading.value,
@@ -116,7 +123,6 @@ class HomePage extends GetView<HomeController> {
           })))
         ]),
       ),
-      
     );
   }
 }

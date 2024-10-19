@@ -11,8 +11,10 @@ import 'profile_setup_controller.dart';
 class ProfileSetupPage extends GetView<ProfileSetupController> {
   ProfileSetupPage({super.key});
 
+
   @override
   Widget build(BuildContext context) {
+    //final id = Get.arguments.id;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -40,7 +42,6 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
                   const SizedBox(height: 30),
                   Container(
                     width: 350,
-                    height: 600,
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -53,14 +54,35 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
                         ),
                       ],
                     ),
-                    child: ListView(
+                    child: Column(
                       children: [
-                        CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.grey[200],
-                          child: IconButton(icon: Icon(Icons.camera_alt),
-                              iconSize: 40, color: AppColors.primary,
-                              onPressed: ()=>controller.getImage(),),
+                        Obx(() {
+                          return CircleAvatar(
+                            radius: 50,
+                            backgroundColor: Colors.grey[200],
+                            backgroundImage:
+                                controller.selectedImage.value != null
+                                    ? FileImage(controller.selectedImage.value!)
+                                    : null,
+                            child: controller.selectedImage.value == null
+                                ? IconButton(
+                                    icon: Icon(Icons.camera_alt),
+                                    iconSize: 40,
+                                    color: AppColors.primary,
+                                    onPressed: () => controller.getImage(),
+                                  )
+                                : null,
+                          );
+                        }),
+                        const SizedBox(height: 10),
+                        TextButton(
+                          onPressed: () => controller.getImage(),
+                          child: Text(
+                            controller.selectedImage.value == null
+                                ? "Select Image"
+                                : "Change Image",
+                            style: TextStyle(color: AppColors.primary),
+                          ),
                         ),
                         const SizedBox(height: 20),
                         _buildTextField(
@@ -85,10 +107,10 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
                           showCities: true,
                           showStates: true,
                           onCountryChanged: (value) =>
-                              controller.setCountry = value,
+                              controller.setCountry(value),
                           onStateChanged: (value) =>
-                              controller.setState = value!,
-                          onCityChanged: (value) => controller.setTown = value!,
+                              controller.setState(value!),
+                          onCityChanged: (value) => controller.setTown(value!),
                         ),
                         const SizedBox(height: 20),
                         _buildTextField(
@@ -98,13 +120,8 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
                         ),
                         const SizedBox(height: 30),
                         ElevatedButton(
-                          onPressed: () async{
+                          onPressed: () async {
                             if (await InternetConnection().hasInternetAccess) {
-                              CoolAlert.show(
-                                  context: context,
-                                  type: CoolAlertType.loading,
-                                  title: "Please Wait",
-                                  text: "We are making things ready...");
                               controller.saveProfile();
 
                               if (controller.status.value == Status.success) {
@@ -122,12 +139,12 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
                                     title: "Oops!!",
                                     text: "Error Updating profile...");
                               }
-                            } else{
+                            } else {
                               CoolAlert.show(
-                                    context: context,
-                                    type: CoolAlertType.error,
-                                    title: "Ooops!!!",
-                                    text: "No Internet Connection!");
+                                  context: context,
+                                  type: CoolAlertType.error,
+                                  title: "Ooops!!!",
+                                  text: "No Internet Connection!");
                             }
                           },
                           style: ElevatedButton.styleFrom(

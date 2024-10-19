@@ -11,13 +11,12 @@ class ThemeClass {
   Color darkSecondaryColor = Color(0xFF00000);
 
   static ThemeData lightTheme = ThemeData(
-    useMaterial3: true,
-    colorScheme: const ColorScheme.light().copyWith(),
+      useMaterial3: true,
+      colorScheme: const ColorScheme.light().copyWith(),
 
-    //-.-.-.-.-.-.-.-.- Button Themes -.-.-.-.-.-.-.-.- 
-    elevatedButtonTheme: const ElevatedButtonThemeData(),
-    textTheme: TextTheme()
-  );
+      //-.-.-.-.-.-.-.-.- Button Themes -.-.-.-.-.-.-.-.-
+      elevatedButtonTheme: const ElevatedButtonThemeData(),
+      textTheme: TextTheme());
 }
 
 ThemeClass _themeClass = ThemeClass();

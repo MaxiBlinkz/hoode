@@ -24,6 +24,7 @@ class RegisterPage extends GetView<RegisterController> {
     final confirmPasswordController = controller.confirmPasswordController;
 
     final Logger logger = Logger(printer: PrettyPrinter());
+    final id = controller.id.value;
 
     return Scaffold(
       body: Container(
@@ -64,168 +65,163 @@ class RegisterPage extends GetView<RegisterController> {
                         ),
                       ],
                     ),
-                    child: Column(
-                      children: [
-                        const Text(
-                          "Register",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primary,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        _buildTextField(
-                          controller: nameController,
-                          hintText: "Username",
-                          prefixIcon: IconlyLight.profile,
-                        ),
-                        const SizedBox(height: 20),
-                        FormBuilderTextField(
-                            name: "Email",
-                            controller: emailController,
-                            obscureText: false,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            decoration: InputDecoration(
-                              hintText: "Email",
-                              prefixIcon: const Icon(IconlyLight.message,
-                                  color: AppColors.primary),
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 15),
-                            ),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                              FormBuilderValidators.email()
-                            ])),
-                        const SizedBox(height: 20),
-                        FormBuilderTextField(
-                            name: "Password",
-                            controller: passwordController,
-                            obscureText: controller.isPasswordVisible.value,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            decoration: InputDecoration(
-                              hintText: "Password",
-                              prefixIcon: const Icon(IconlyLight.lock,
-                                  color: AppColors.primary),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  controller.isPasswordVisible.value
-                                      ? IconlyLight.hide
-                                      : IconlyLight.show,
-                                  color: AppColors.primary,
-                                ),
-                                onPressed: () {
-                                  controller.togglePasswordVisibility();
-                                },
-                              ),
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 15),
-                            ),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                              FormBuilderValidators.password()
-                            ])),
-                        const SizedBox(height: 20),
-                        FormBuilderTextField(
-                            name: "Confirm Password",
-                            controller: confirmPasswordController,
-                            obscureText: controller.isPasswordVisible.value,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            decoration: InputDecoration(
-                              hintText: "Confirm Password",
-                              prefixIcon: const Icon(IconlyLight.lock,
-                                  color: AppColors.primary),
-                                  suffixIcon: IconButton(
-                                icon: Icon(
-                                  controller.isPasswordVisible.value
-                                      ? IconlyLight.hide
-                                      : IconlyLight.show,
-                                  color: AppColors.primary,
-                                ),
-                                onPressed: () {
-                                  controller.togglePasswordVisibility;
-                                },
-                              ),
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 15),
-                            ),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                              FormBuilderValidators.password()
-                            ])),
-                        const SizedBox(height: 30),
-                        ElevatedButton(
-                          onPressed: () async {
-                            //if (await InternetConnection().hasInternetAccess) {
-                              controller.register();
-                              // if (controller.status.value == Status.loading) {
-                              //   CoolAlert.show(
-                              //       context: context,
-                              //       type: CoolAlertType.loading,
-                              //       title: "Sign Up",
-                              //       text: "Creating Account");
-                              // }
-                              await Future.delayed(Duration(
-                                  seconds:
-                                      2)); // Give time for the registration process
-                              if (controller.status.value == Status.success) {
-                                // CoolAlert.show(
-                                //     context: context,
-                                //     type: CoolAlertType.success,
-                                //     title: "Sign Up",
-                                //     text: "Account Created");
-                                Get.offAll(() => ProfileSetupPage());
-                              } else if (controller.status.value ==
-                                  Status.error) {
-                                CoolAlert.show(
-                                    context: context,
-                                    type: CoolAlertType.error,
-                                    title: "Sign Up",
-                                    text: "Error Creating Account");
-                              }
-                            // } 
-                            // else {
-                            //   CoolAlert.show(
-                            //       context: context,
-                            //       type: CoolAlertType.error,
-                            //       title: "Ooops!!!",
-                            //       text: "No Internet Connection!");
-                            // }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: AppColors.primary,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 50, vertical: 15),
-                            textStyle: const TextStyle(fontSize: 18),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                    child: Obx(() {
+                      return Column(
+                        children: [
+                          const Text(
+                            "Register",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primary,
                             ),
                           ),
-                          child: const Text("Register"),
-                        ),
-                      ],
-                    ),
+                          const SizedBox(height: 20),
+                          _buildTextField(
+                            controller: nameController,
+                            hintText: "Username",
+                            prefixIcon: IconlyLight.profile,
+                          ),
+                          const SizedBox(height: 20),
+                          FormBuilderTextField(
+                              name: "Email",
+                              controller: emailController,
+                              obscureText: false,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              decoration: InputDecoration(
+                                hintText: "Email",
+                                prefixIcon: const Icon(IconlyLight.message,
+                                    color: AppColors.primary),
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  borderSide: BorderSide.none,
+                                ),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(vertical: 15),
+                              ),
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(),
+                                FormBuilderValidators.email()
+                              ])),
+                          const SizedBox(height: 20),
+                          FormBuilderTextField(
+                              name: "Password",
+                              controller: passwordController,
+                              obscureText: !controller.isPasswordVisible.value,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              decoration: InputDecoration(
+                                hintText: "Password",
+                                prefixIcon: const Icon(IconlyLight.lock,
+                                    color: AppColors.primary),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    controller.isPasswordVisible.value
+                                        ? IconlyLight.hide
+                                        : IconlyLight.show,
+                                    color: AppColors.primary,
+                                  ),
+                                  onPressed: () {
+                                    controller.togglePasswordVisibility();
+                                  },
+                                ),
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  borderSide: BorderSide.none,
+                                ),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(vertical: 15),
+                              ),
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(),
+                                FormBuilderValidators.password()
+                              ])),
+                          const SizedBox(height: 20),
+                          FormBuilderTextField(
+                              name: "Confirm Password",
+                              controller: confirmPasswordController,
+                              obscureText: !controller.isPasswordVisible.value,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              decoration: InputDecoration(
+                                hintText: "Confirm Password",
+                                prefixIcon: const Icon(IconlyLight.lock,
+                                    color: AppColors.primary),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    controller.isPasswordVisible.value
+                                        ? IconlyLight.hide
+                                        : IconlyLight.show,
+                                    color: AppColors.primary,
+                                  ),
+                                  onPressed: () {
+                                    controller.togglePasswordVisibility();
+                                  },
+                                ),
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  borderSide: BorderSide.none,
+                                ),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(vertical: 15),
+                              ),
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(),
+                                FormBuilderValidators.password()
+                              ])),
+                          const SizedBox(height: 30),
+                          ElevatedButton(
+                            onPressed: controller.status.value == Status.success
+                                ? () => Get.offAll(() => ProfileSetupPage(),
+                                    arguments: {'id': controller.id.value})
+                                : () async {
+                                    //[[[[[[[[[[[[[[[[[[[[[[Show A Loading Bar]]]]]]]]]]]]]]]]]]]]]]
+                                    await controller.register();
+                                    await Future.delayed(const Duration(
+                                        seconds:
+                                            2)); // Give time for the registration process
+
+                                    if (controller.status.value ==
+                                        Status.success) {
+                                      //[[[[[[[[[[[[[[[[[[[[[[[[[[Loading Bar Complete]]]]]]]]]]]]]]]]]]]]]]]]]]
+                                      Get.snackbar(
+                                        "Sign Up",
+                                        "Account Created Succesfully",
+                                      );
+                                      //Get.offAll(() => ProfileSetupPage());
+                                    } else if (controller.status.value ==
+                                        Status.error) {
+                                      CoolAlert.show(
+                                          context: context,
+                                          type: CoolAlertType.error,
+                                          title: "Sign Up",
+                                          text: "Error Creating Account");
+                                    }
+                                  },
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: AppColors.primary,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 15),
+                              textStyle: const TextStyle(fontSize: 18),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                            child: Text(
+                                controller.status.value == Status.success
+                                    ? "Setup Profile"
+                                    : "Sign Up"),
+                          ),
+                        ],
+                      );
+                    }),
                   ),
                   const SizedBox(height: 20),
                   TextButton(
@@ -278,6 +274,28 @@ class RegisterPage extends GetView<RegisterController> {
           ),
         ),
       ),
+    );
+  }
+
+  void showNavigationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Account Created"),
+          content: const Text(
+              "Your account has been successfully created. Would you like to set up your profile now?"),
+          actions: [
+            TextButton(
+              child: const Text("Set Up Profile"),
+              onPressed: () {
+                Get.offAll(() => ProfileSetupPage());
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 

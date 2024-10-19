@@ -65,8 +65,10 @@ class ListingDetailPage extends GetView<ListingDetailController> {
                         ),
                         const Spacer(),
                         IconButton(
-                            onPressed: () {}, icon: const Icon(Icons.email_outlined)),
-                        IconButton(onPressed: () {}, icon: const Icon(Icons.call)),
+                            onPressed: () {},
+                            icon: const Icon(Icons.email_outlined)),
+                        IconButton(
+                            onPressed: () {}, icon: const Icon(Icons.call)),
                       ],
                     )
                   ],

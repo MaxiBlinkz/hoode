@@ -1,7 +1,6 @@
 import 'home_routes.dart';
 import 'listing_detail_routes.dart';
 import 'listing_search_routes.dart';
-import 'dashboard_routes.dart';
 import 'login_routes.dart';
 import 'register_routes.dart';
 import 'profile_setup_routes.dart';
@@ -17,15 +16,14 @@ class AppPages {
 
   static final routes = [
     ...HomeRoutes.routes,
-		...ListingDetailRoutes.routes,
-		...ListingSearchRoutes.routes,
-		...DashboardRoutes.routes,
-		...LoginRoutes.routes,
-		...RegisterRoutes.routes,
-		...ProfileSetupRoutes.routes,
-		...NavBarRoutes.routes,
-		...SettingsRoutes.routes,
-		...MapRoutes.routes,
-		...ProfileRoutes.routes,
+    ...ListingDetailRoutes.routes,
+    ...ListingSearchRoutes.routes,
+    ...LoginRoutes.routes,
+    ...RegisterRoutes.routes,
+    ...ProfileSetupRoutes.routes,
+    ...NavBarRoutes.routes,
+    ...SettingsRoutes.routes,
+    ...MapRoutes.routes,
+    ...ProfileRoutes.routes,
   ];
 }

@@ -12,6 +12,7 @@ import 'app/routes/app_pages.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  
   // LicenseRegistry.addLicense(() async* {
   //   final license = await rootBundle.loadString('assets/fonts/OFL.txt');
   //   yield LicenseEntryWithLineBreaks(['assets/fonts/'], license);
@@ -19,7 +20,7 @@ void main() {
 
   runApp(
     GetMaterialApp(
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: true,
       title: 'Your App Title',
       initialBinding: ApplicationBindings(),
       initialRoute: AppPages.INITIAL,

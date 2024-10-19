@@ -4,7 +4,6 @@ import 'package:flutter_remix/flutter_remix.dart';
 
 import '../../core/theme/colors.dart';
 
-
 class Header extends StatelessWidget {
   const Header({
     super.key,
@@ -58,11 +57,9 @@ class Header extends StatelessWidget {
           height: 40,
           width: 280,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(6)),
+              color: Colors.white, borderRadius: BorderRadius.circular(6)),
         )
       ]),
     );
   }
 }
-

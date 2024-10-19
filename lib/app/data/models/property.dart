@@ -18,8 +18,9 @@ class Property {
       required this.image,
       required this.status,
       required this.type});
-      
-  factory Property.fromRecord(RecordModel record) => Property.fromJson(record.toJson());
+
+  factory Property.fromRecord(RecordModel record) =>
+      Property.fromJson(record.toJson());
 
   factory Property.fromJson(Map<String, dynamic> json) =>
       _$PropertyFromJson(json);

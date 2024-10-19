@@ -35,6 +35,7 @@ dependencies:
   country_state_city_pro:
   cropperx:
   csc_picker:
+  enefty_icons:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -88,6 +89,7 @@ dependencies:
   stylish_bottom_bar: 
   image_cropper: ^8.0.2
   wordpress_api:
+  image: ^3.0.2
 
 
 dev_dependencies:
