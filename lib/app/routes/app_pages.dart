@@ -8,6 +8,9 @@ import 'nav_bar_routes.dart';
 import 'settings_routes.dart';
 import 'map_routes.dart';
 import 'profile_routes.dart';
+import 'sign_in_routes.dart';
+import 'splash_screen_routes.dart';
+import 'onboarding_routes.dart';
 
 class AppPages {
   AppPages._();
@@ -25,5 +28,8 @@ class AppPages {
     ...SettingsRoutes.routes,
     ...MapRoutes.routes,
     ...ProfileRoutes.routes,
+		...SignInRoutes.routes,
+		...SplashScreenRoutes.routes,
+		...OnboardingRoutes.routes,
   ];
 }

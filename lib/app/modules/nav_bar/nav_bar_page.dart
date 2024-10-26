@@ -10,40 +10,56 @@ import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import '../home/home_page.dart';
 import 'nav_bar_controller.dart';
 
-class NavBarPage extends GetView<NavBarController> {
+class NavBarPage extends StatelessWidget {
   const NavBarPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(index: controller.tabIndex.value, children: const [
-        HomePage(),
-        ProfilePage(),
-        MapPage(),
-        SettingsPage(),
-      ]),
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: AppColors.primary,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          child: const Icon(IconlyBold.discovery),
-          onPressed: () {}),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: StylishBottomBar(
-        option: DotBarOptions(
-          dotStyle: DotStyle.tile,
-        ),
-        items: [
-          BottomBarItem(icon: const Icon(IconlyBold.home), title: const Text("Home")),
-            BottomBarItem(
-                icon: const Icon(IconlyBold.discovery), title: const Text("Explore")),
-            BottomBarItem(
-                icon: const Icon(IconlyBold.profile), title: const Text("Profile")),
-            BottomBarItem(
-                icon: const Icon(IconlyBold.setting), title: const Text("Settings")),
-        ],
-        onTap: (value) => controller.changeTabIndex(value),
-      ),
+    return GetBuilder<NavBarController>(
+      init: NavBarController(),
+      builder: (controller) {
+        return Scaffold(
+          body: IndexedStack(
+            index: controller.tabIndex,
+            children: const [
+              HomePage(),
+              ProfilePage(),
+              MapPage(),
+              SettingsPage(),
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: AppColors.primary,
+            foregroundColor: Colors.white,
+            elevation: 0,
+            child: const Icon(IconlyBold.discovery),
+            onPressed: () {},
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          bottomNavigationBar: StylishBottomBar(
+            currentIndex: controller.tabIndex,
+            option: DotBarOptions(
+              dotStyle: DotStyle.tile,
+            ),
+            items: [
+              BottomBarItem(
+                  icon: const Icon(IconlyLight.home),
+                  title: const Text("Home")),
+              BottomBarItem(
+                  icon: const Icon(IconlyLight.discovery),
+                  title: const Text("Explore")),
+              BottomBarItem(
+                  icon: const Icon(IconlyLight.profile),
+                  title: const Text("Profile")),
+              BottomBarItem(
+                  icon: const Icon(IconlyLight.setting),
+                  title: const Text("Settings")),
+            ],
+            onTap: (value) => controller.changeTabIndex(value),
+          ),
+        );
+      },
     );
   }
 }

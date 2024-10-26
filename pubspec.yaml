@@ -36,6 +36,7 @@ dependencies:
   cropperx:
   csc_picker:
   enefty_icons:
+  toastification:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -85,19 +86,26 @@ dependencies:
   showcaseview:
   skeletonizer: ^1.4.2
   sqlite3_flutter_libs:
-  stack_appodeal_flutter:
   stylish_bottom_bar: 
   image_cropper: ^8.0.2
   wordpress_api:
   image: ^3.0.2
+  url_launcher:
+  bugsnag_flutter:
+  app_links:
+  uni_links3:
+  whatsapp_unilink:
+  share_plus:
+  go_router:
 
 
 dev_dependencies:
   analyzer: any
   build_runner:
   drift_dev:
-  flutter_gen_runner: # The "flutter_lints" package below contains a set of recommended lints to
-
+  flutter_gen_runner: 
+  flutter_launcher_icons: 
+  # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint

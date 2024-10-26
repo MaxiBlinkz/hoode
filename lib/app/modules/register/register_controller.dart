@@ -5,6 +5,8 @@ import 'package:hoode/app/modules/profile_setup/profile_setup_page.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:flutter/widgets.dart';
+import 'package:toastification/toastification.dart';
+import 'package:bugsnag_flutter/bugsnag_flutter.dart' as bugnag;
 
 class RegisterController extends GetxController {
   final nameController = TextEditingController();
@@ -12,7 +14,9 @@ class RegisterController extends GetxController {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  final Logger logger = Logger(printer: PrettyPrinter());
+  final logger = Logger(printer: PrettyPrinter());
+  final notify = Toastification();
+  //final bugsnag = Bugsnag();
 
   var name = "".obs;
   var email = "".obs;
@@ -42,11 +46,17 @@ class RegisterController extends GetxController {
       final record = await pb.collection('users').create(body: body);
       id(record.id);
       status(Status.success);
-    } catch (e) {
+    } catch (e, stack) {
       status(Status.error);
       err.value = e.toString();
+      notify.show(
+          type: ToastificationType.error,
+          description: Text(e.toString()),
+          title: const Text('error'),
+          autoCloseDuration: const Duration(microseconds: 500));
       logger.i('${status.value}');
       logger.e('$e');
+      await bugnag.bugsnag.notify(e, stack);
     }
     update();
   }

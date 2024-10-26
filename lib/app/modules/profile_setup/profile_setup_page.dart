@@ -121,9 +121,7 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
                         const SizedBox(height: 30),
                         ElevatedButton(
                           onPressed: () async {
-                            if (await InternetConnection().hasInternetAccess) {
-                              controller.saveProfile();
-
+                            controller.saveProfile();
                               if (controller.status.value == Status.success) {
                                 CoolAlert.show(
                                     context: context,
@@ -139,13 +137,6 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
                                     title: "Oops!!",
                                     text: "Error Updating profile...");
                               }
-                            } else {
-                              CoolAlert.show(
-                                  context: context,
-                                  type: CoolAlertType.error,
-                                  title: "Ooops!!!",
-                                  text: "No Internet Connection!");
-                            }
                           },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: AppColors.primary,

@@ -3,8 +3,11 @@ import 'package:get/get.dart';
 import 'package:hoode/app/core/config/constants.dart';
 import 'package:hoode/app/data/enums/enums.dart';
 import 'package:hoode/app/modules/home/home_page.dart';
+import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:bugsnag_flutter/bugsnag_flutter.dart' as bugnag;
 
 class LoginController extends GetxController {
   final emailController = TextEditingController();
@@ -33,11 +36,12 @@ class LoginController extends GetxController {
       } else {
         status(Status.pending);
       }
-    } catch (e) {
+    } catch (e, stack) {
       err.value = e.toString();
       status(Status.error);
       logger.i('${status.value}');
       logger.e('${err.value}');
+      await bugnag.bugsnag.notify(e, stack);
     }
     update();
   }
@@ -46,13 +50,17 @@ class LoginController extends GetxController {
     isLoggedIn(false);
     try {
       await pb.collection('users').authWithOAuth2('google', (url) async {
-        //await launchUrl(url);
+        await launchUrl(url);
+        logger.i(url);
       });
-    } catch (e) {
+    } catch (e, stack) {
+      status(Status.error);
       logger.e(e);
+      await bugnag.bugsnag.notify(e, stack);
     } finally {
       isLoggedIn(true);
-      Get.offAll(() => const HomePage());
+      status(Status.success);
+      Get.offAll(() => const NavBarPage());
     }
   }
 
@@ -60,13 +68,15 @@ class LoginController extends GetxController {
     isLoggedIn(false);
     try {
       await pb.collection('users').authWithOAuth2('apple', (url) async {
-        //await launchUrl(url);
+        await launchUrl(url);
       });
-    } catch (e) {
-      print(e);
+    } catch (e, stack) {
+      status(Status.error);
+      logger.e(e);
+      await bugnag.bugsnag.notify(e, stack);
     } finally {
       isLoggedIn(true);
-      Get.offAll(() => const HomePage());
+      Get.offAll(() => const NavBarPage());
     }
   }
 
@@ -83,6 +93,7 @@ class LoginController extends GetxController {
       Get.offAll(() => const HomePage());
     }
   }
+
 
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;

@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:bugsnag_flutter/bugsnag_flutter.dart' as bugnag;
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:hoode/app/core/theme/colors.dart';
@@ -114,9 +114,11 @@ class ProfileSetupController extends GetxController {
       if (selectedImage.value != null) {
         final avatarFile = http.MultipartFile.fromString(
           'avatar',
-          selectedImage.value!.path,
+          selectedImage.value!.readAsBytesSync().toString(),
           filename: 'avatar.jpg',
         );
+
+        logger.i('Avatar Filename: ${avatarFile.filename}, \nAvatar File:${selectedImage.value!.readAsBytes().toString()}'); // Debug logging
 
         await pb.collection('users').update(
           id.value,
@@ -127,19 +129,17 @@ class ProfileSetupController extends GetxController {
         await pb.collection('users').update(id.value, body: body);
       }
 
-      logger.i(selectedImage.value!.path);
-
       if (pb.authStore.isValid) {
         status(Status.success);
       } else {
         status(Status.pending);
       }
-    } catch (e) {
+    } catch (e, stack) {
       status(Status.error);
-      logger.i('${status.value}');
-      logger.e('$e');
+      logger.e('Error saving profile: $e'); // Log the error
       Get.snackbar("Error Saving Profile", "$e",
           snackPosition: SnackPosition.BOTTOM, snackStyle: SnackStyle.FLOATING);
+          await bugnag.bugsnag.notify(e, stack);
     }
     update();
   }

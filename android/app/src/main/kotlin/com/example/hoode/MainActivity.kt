@@ -1,4 +1,4 @@
-package com.example.hoode
+package com.codax.hoode
 
 import io.flutter.embedding.android.FlutterActivity
 

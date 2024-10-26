@@ -8,7 +8,7 @@ import 'package:hoode/app/core/widgets/social_button.dart';
 import 'package:hoode/app/data/enums/enums.dart';
 import 'package:hoode/app/modules/profile_setup/profile_setup_page.dart';
 import 'package:iconly/iconly.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+// import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:logger/logger.dart';
 import '../../core/theme/colors.dart';
 import 'register_controller.dart';
@@ -24,7 +24,7 @@ class RegisterPage extends GetView<RegisterController> {
     final confirmPasswordController = controller.confirmPasswordController;
 
     final Logger logger = Logger(printer: PrettyPrinter());
-    final id = controller.id.value;
+    //final id = controller.id.value;
 
     return Scaffold(
       body: Container(
@@ -206,12 +206,13 @@ class RegisterPage extends GetView<RegisterController> {
                                     }
                                   },
                             style: ElevatedButton.styleFrom(
-                              foregroundColor: AppColors.primary,
+                              foregroundColor: Colors.white,
+                              backgroundColor: AppColors.primary,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 50, vertical: 15),
                               textStyle: const TextStyle(fontSize: 18),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
+                                borderRadius: BorderRadius.circular(36),
                               ),
                             ),
                             child: Text(

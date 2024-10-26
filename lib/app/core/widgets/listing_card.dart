@@ -13,14 +13,14 @@ class ListingCard extends StatelessWidget {
     required this.property,
   });
 
-  PocketBase pb = PocketBase(POCKETBASE_URL_ANDROID);
+  PocketBase pb = PocketBase(POCKETBASE_URL);
 
   @override
   Widget build(BuildContext context) {
     final id = property.id;
     final listing = property.data;
 
-    bool isFav = listing['is_favourite'];
+    bool isFav = listing['is_favourite'].obs;
 
     return Padding(
       padding: const EdgeInsets.all(8.0),

@@ -8,4 +8,6 @@ const String API_URL = "http://localhost:3001/";
 
 const String POCKETBASE_LOCAL_URL = "http://127.0.0.1:8090";
 const String POCKETBASE_URL_ANDROID = "http://10.0.2.2:8090";
-const String POCKETBASE_URL = "https://hoode.pockethost.io/";
+const String POCKETBASE_URL = "http://10.0.2.2:8090";
+const String BUGSNAG_API_KEY = "c764302ad4d247dda5fb6e2a2b3fccf9";
+const String GOOGLE_MAPS_API = "AIzaSyAlN8hNBPqA4Y9wgH1qDHVQwQWBIDMhp-s";

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class LoginPage extends StatelessWidget {
                       letterSpacing: 2,
                     ),
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 30),
                   // Login Form
                   Container(
                     width: 350,
@@ -68,14 +69,15 @@ class LoginPage extends StatelessWidget {
                       child: Column(
                         children: [
                           const Text(
-                            "Login",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                          const SizedBox(height: 20),
+                        "Login",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                          // Email Field
                           FormBuilderTextField(
                               name: "Email",
                               controller: emailController,
@@ -92,14 +94,15 @@ class LoginPage extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(30),
                                   borderSide: BorderSide.none,
                                 ),
-                                contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 15),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 15),
                               ),
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.required(),
                                 FormBuilderValidators.email()
                               ])),
                           const SizedBox(height: 20),
+                          // Password Field
                           Obx(() {
                             return FormBuilderTextField(
                                 name: "Password",
@@ -120,7 +123,7 @@ class LoginPage extends StatelessWidget {
                                       color: AppColors.primary,
                                     ),
                                     onPressed: () {
-                                      controller.togglePasswordVisibility;
+                                      controller.togglePasswordVisibility();
                                     },
                                   ),
                                   filled: true,
@@ -130,24 +133,25 @@ class LoginPage extends StatelessWidget {
                                     borderSide: BorderSide.none,
                                   ),
                                   contentPadding:
-                                      const EdgeInsets.symmetric(vertical: 15),
+                                      const EdgeInsets.symmetric(
+                                          vertical: 15),
                                 ),
                                 validator: FormBuilderValidators.compose([
                                   FormBuilderValidators.required(),
                                   FormBuilderValidators.password(),
                                 ]));
                           }),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
+                          // Login Button
                           ElevatedButton(
                             onPressed: () async {
-                              if (await InternetConnection()
-                                  .hasInternetAccess) {
-                                controller.login();
+                             controller.login();
                                 await Future.delayed(Duration(
                                     seconds:
                                         2)); // Give time for the registration process
-                                if (controller.status.value == Status.success) {
-                                  //[[[[[[[[[[[[[[[[[[[[[[[[[[Loading Bar Complete]]]]]]]]]]]]]]]]]]]]]]]]]]
+                                if (controller.status.value ==
+                                    Status.success) {
+                                  //[[[[[[[[[[[[[[[[[[[[[[[[[[Loading Bar Complete]]]]]]]]]]]]]]]]]]]]]]]]]]]]
                                   Get.snackbar(
                                     "Sign Up",
                                     "Account Created Succesfully",
@@ -161,26 +165,21 @@ class LoginPage extends StatelessWidget {
                                       title: "Login",
                                       text: "Error Logging In...");
                                 }
-                              } else {
-                                CoolAlert.show(
-                                    context: context,
-                                    type: CoolAlertType.error,
-                                    title: "Ooops!!!",
-                                    text: "No Internet Connection!");
-                              }
                             },
                             style: ElevatedButton.styleFrom(
-                              foregroundColor: AppColors.primary,
+                              foregroundColor: Colors.white,
+                              backgroundColor: AppColors.primary,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 50, vertical: 15),
                               textStyle: const TextStyle(fontSize: 18),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
+                                borderRadius: BorderRadius.circular(36),
                               ),
                             ),
                             child: const Text("Login"),
                           ),
                           const SizedBox(height: 20),
+                          // Forgot Password Button
                           TextButton(
                             onPressed: () {
                               // Implement forgot password logic
@@ -192,6 +191,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
+                  // Sign Up Button
                   TextButton(
                     onPressed: () {
                       // Navigate to sign up page
@@ -202,14 +202,14 @@ class LoginPage extends StatelessWidget {
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-
-                  // Auth2
                   const SizedBox(height: 20),
+                  // Social Login Text
                   const Text(
                     "Or login with",
                     style: TextStyle(color: Colors.grey),
                   ),
                   const SizedBox(height: 20),
+                  // Social Login Buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -238,8 +238,6 @@ class LoginPage extends StatelessWidget {
                       ),
                     ],
                   ),
-
-                  // Auth2 End
                 ],
               ),
             ),
@@ -247,28 +245,5 @@ class LoginPage extends StatelessWidget {
         ),
       ));
     });
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String hintText,
-    required IconData prefixIcon,
-    bool isPassword = false,
-  }) {
-    return TextField(
-      controller: controller,
-      obscureText: isPassword,
-      decoration: InputDecoration(
-        hintText: hintText,
-        prefixIcon: Icon(prefixIcon, color: AppColors.primary),
-        filled: true,
-        fillColor: Colors.grey[200],
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide.none,
-        ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 15),
-      ),
-    );
   }
 }
