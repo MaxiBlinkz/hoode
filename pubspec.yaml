@@ -38,6 +38,7 @@ dependencies:
   enefty_icons:
   toastification:
   sentry_flutter: ^8.9.0
+universe: ^2.0.1
 location_picker_flutter_map: ^3.1.0
 
   # The following adds the Cupertino Icons font to your application.
