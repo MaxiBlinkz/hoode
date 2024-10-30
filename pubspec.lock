@@ -1402,6 +1402,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  r_nav_n_sheet:
+    dependency: "direct main"
+    description:
+      name: r_nav_n_sheet
+      sha256: dff262ec319379d50dcff864340bafdd2989a417afd9492e82c872e605e0c06e
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   recase:
     dependency: transitive
     description:

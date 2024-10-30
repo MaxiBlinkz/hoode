@@ -3,6 +3,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/core/widgets/category_item.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:hoode/app/data/enums/enums.dart';
@@ -64,8 +65,8 @@ class HomePage extends GetView<HomeController> {
           Expanded(
               child: RefreshIndicator(onRefresh: () {
             return controller.loadProperties();
-          }, child: Obx(() {
-            return StreamBuilder(
+            },
+            child: StreamBuilder(
                 stream: controller.properties.stream,
                 builder: (context, snapshot) {
                   return ListView(
@@ -104,22 +105,22 @@ class HomePage extends GetView<HomeController> {
                       const SizedBox(height: 4.0),
                       SizedBox(
                           height: controller.isLoading.value ? null : 250,
-                          child: snapshot.hasData
-                              ? null
-                              : ListView.builder(
+                          child: snapshot.hasData 
+                              ? ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   itemCount: snapshot.data!.length,
                                   itemBuilder: (context, index) {
-                                    final property =
-                                        snapshot.data![index];
+                                    final property = snapshot.data![index];
                                     return FeaturedCard(
                                       property: property,
                                     );
-                                  })),
+                                  })
+                              : null),
                       Skeletonizer(
                         enabled: controller.status.value == Status.loading,
                         ignoreContainers: true,
-                        child: ListView.builder(
+                          child: snapshot.hasData
+                              ? ListView.builder(
                             primary: false,
                             shrinkWrap: true,
                             controller: controller.listController,
@@ -129,12 +130,13 @@ class HomePage extends GetView<HomeController> {
                               return ListingCard(
                                 property: property,
                               );
-                            }),
+                                  })
+                              : Lottie.asset("assets/lottie/home2.json")
                       )
                     ],
                   );
-                });
-          })))
+                }),
+          ))
         ]),
       ),
     );

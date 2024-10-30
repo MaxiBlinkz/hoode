@@ -20,7 +20,7 @@ class ListingCard extends StatelessWidget {
     final id = property.id;
     final listing = property.data;
 
-    bool isFav = listing['is_favourite'].obs;
+    bool isFav = listing['is_favourite'];
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -50,7 +50,7 @@ class ListingCard extends StatelessWidget {
                       borderRadius: const BorderRadius.all(Radius.circular(12)),
                       // Listing Image
                       child: Image.network(
-                        "$POCKETBASE_URL_ANDROID/api/files/properties/$id/${listing['image'][0]}",
+                        "$POCKETBASE_URL/api/files/properties/$id/${listing['image'][0].toString()}",
                         fit: BoxFit.cover,
                         height: 115,
                         width: 180,

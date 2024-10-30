@@ -11,7 +11,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:taskAffinity=""
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -30,23 +30,28 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
-            <!-- Add Deep Link support -->
+            <!-- App Links (verified links) -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="https" />
-                <data android:host="hoode.com" />
-                <!-- exact path value must be "/login/" -->
-                <!-- <data android:path="/login-page/" />   -->
-
-                <!-- path must start with "/product/" and then it can contain any number of characters; in this case, it would probably be a product ID. -->
-                <!-- <data android:pathPattern="/listing-detail/.*" /> -->
-
-                <!-- path must start with /account/, so it may be /account/confirm, /account/verify etc. -->
-                <!-- <data android:pathPrefix="/account/" /> -->
+                <data android:scheme="https" android:host="hoode-2024.web.app" />
+                <data android:scheme="http" android:host="hoode-2024.web.app" />
+                <!-- Add specific paths you want to handle -->
+                <data android:pathPattern="/listing-detail/.*" />
+                <data android:pathPattern="/login" />
+                <data android:pathPattern="/register" />
             </intent-filter>
+
+            <!-- Custom scheme for direct deep linking -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="hoode" android:host="app" />
+            </intent-filter>
+
+
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

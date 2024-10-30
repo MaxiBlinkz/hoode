@@ -10,20 +10,19 @@ import 'package:get/get.dart';
 import 'package:hoode/app/core/widgets/social_button.dart';
 import 'package:hoode/app/data/enums/enums.dart';
 import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+// import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import '../../core/theme/colors.dart';
 import 'login_controller.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends GetView<LoginController> {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<LoginController>(builder: (controller) {
-      final emailController = controller.emailController;
+    final emailController = controller.emailController;
       final passwordController = controller.passwordController;
       final _formKey = GlobalKey<FormState>();
-      return Scaffold(
+    return Scaffold(
           body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -205,7 +204,7 @@ class LoginPage extends StatelessWidget {
                   const SizedBox(height: 20),
                   // Social Login Text
                   const Text(
-                    "Or login with",
+                  "Or continue with",
                     style: TextStyle(color: Colors.grey),
                   ),
                   const SizedBox(height: 20),
@@ -244,6 +243,6 @@ class LoginPage extends StatelessWidget {
           ),
         ),
       ));
-    });
+
   }
 }

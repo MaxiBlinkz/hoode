@@ -238,7 +238,7 @@ class RegisterPage extends GetView<RegisterController> {
                   // Auth2
                   const SizedBox(height: 20),
                   const Text(
-                    "Or login with",
+                    "Or continue with",
                     style: TextStyle(color: Colors.grey),
                   ),
                   const SizedBox(height: 20),

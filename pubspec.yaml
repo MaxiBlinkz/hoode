@@ -97,6 +97,7 @@ dependencies:
   whatsapp_unilink:
   share_plus:
   go_router:
+  r_nav_n_sheet:
 
 
 dev_dependencies:
@@ -133,6 +134,7 @@ flutter:
     - assets/fonts/Poppins/
     - assets/images/
     - assets/icons/
+    - assets/lottie/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -11,11 +11,12 @@ import 'profile_routes.dart';
 import 'sign_in_routes.dart';
 import 'splash_screen_routes.dart';
 import 'onboarding_routes.dart';
+import 'auth_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = '/login';
+  static const INITIAL = '/nav-bar';
 
   static final routes = [
     ...HomeRoutes.routes,
@@ -31,5 +32,6 @@ class AppPages {
 		...SignInRoutes.routes,
 		...SplashScreenRoutes.routes,
 		...OnboardingRoutes.routes,
+		...AuthRoutes.routes,
   ];
 }
