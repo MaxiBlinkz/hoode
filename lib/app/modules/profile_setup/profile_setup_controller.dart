@@ -111,12 +111,20 @@ class ProfileSetupController extends GetxController {
     };
 
     try {
+      // if (selectedImage.value != null) {
+        // final avatarFile = http.MultipartFile.fromString(
+         // 'avatar',
+        //  selectedImage.value!.readAsBytesSync().toString(),
+         // filename: 'avatar.jpg',
+      //  );
+
       if (selectedImage.value != null) {
-        final avatarFile = http.MultipartFile.fromString(
-          'avatar',
-          selectedImage.value!.readAsBytesSync().toString(),
-          filename: 'avatar.jpg',
-        );
+    final avatarBytes = await selectedImage.value!.readAsBytes();
+    final avatarFile = http.MultipartFile.fromBytes(
+        'avatar', 
+        avatarBytes,
+        filename: 'avatar.jpg',
+    );
 
         logger.i('Avatar Filename: ${avatarFile.filename}, \nAvatar File:${selectedImage.value!.readAsBytes().toString()}'); // Debug logging
 
