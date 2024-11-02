@@ -3,7 +3,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/core/widgets/category_item.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:lottie/lottie.dart';
+// import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:hoode/app/data/enums/enums.dart';
@@ -20,8 +20,6 @@ class HomePage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    int _selectedIndex = 0;
-    // bool isPropertyEmpty = true;
 
     return Scaffold(
       appBar: AppBar(
@@ -117,21 +115,19 @@ class HomePage extends GetView<HomeController> {
                                   })
                               : null),
                       Skeletonizer(
-                        enabled: controller.status.value == Status.loading,
+                        enabled: !snapshot.hasData || snapshot.hasError || controller.status.value == Status.loading,
                         ignoreContainers: true,
-                          child: snapshot.hasData
-                              ? ListView.builder(
+                          child: ListView.builder(
                             primary: false,
                             shrinkWrap: true,
                             controller: controller.listController,
-                            itemCount: snapshot.data!.length,
+                            itemCount: snapshot.hasData ? snapshot.data!.length : 5,
                             itemBuilder: (context, index) {
-                              final property = snapshot.data![index];
+                              final property = snapshot.hasData ? snapshot.data![index] : null;
                               return ListingCard(
                                 property: property,
                               );
                                   })
-                              : Lottie.asset("assets/lottie/home2.json")
                       )
                     ],
                   );

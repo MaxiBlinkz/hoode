@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hoode/app/core/config/constants.dart';
 import 'package:hoode/app/data/enums/enums.dart';
 import 'package:hoode/app/modules/home/home_page.dart';
@@ -7,7 +8,7 @@ import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:bugsnag_flutter/bugsnag_flutter.dart' as bugnag;
+// import 'package:bugsnag_flutter/bugsnag_flutter.dart' as bugnag;
 
 class LoginController extends GetxController {
   final emailController = TextEditingController();
@@ -20,6 +21,8 @@ class LoginController extends GetxController {
   Rx<Object> err = "".obs;
   var isPasswordVisible = false.obs;
 
+  final storage = GetStorage();
+
   // final pb = POCKETBASE;
   final pb = PocketBase(POCKETBASE_URL);
 
@@ -27,21 +30,22 @@ class LoginController extends GetxController {
     status(Status.loading);
     isLoggedIn(false);
     try {
-      await pb.collection('users').authWithPassword(
+      final authData = await pb.collection('users').authWithPassword(
             email.value,
             password.value,
           );
       if (pb.authStore.isValid) {
         status(Status.success);
+        storage.write('token', authData.token);
       } else {
         status(Status.pending);
       }
-    } catch (e, stack) {
+    } catch (e) {
       err.value = e.toString();
       status(Status.error);
       logger.i('${status.value}');
       logger.e('${err.value}');
-      await bugnag.bugsnag.notify(e, stack);
+      // await bugnag.bugsnag.notify(e, stack);
     }
     update();
   }
@@ -53,10 +57,10 @@ class LoginController extends GetxController {
         await launchUrl(url);
         logger.i(url);
       });
-    } catch (e, stack) {
+    } catch (e) {
       status(Status.error);
       logger.e(e);
-      await bugnag.bugsnag.notify(e, stack);
+      // await bugnag.bugsnag.notify(e, stack);
     } finally {
       isLoggedIn(true);
       status(Status.success);
@@ -70,10 +74,10 @@ class LoginController extends GetxController {
       await pb.collection('users').authWithOAuth2('apple', (url) async {
         await launchUrl(url);
       });
-    } catch (e, stack) {
+    } catch (e) {
       status(Status.error);
       logger.e(e);
-      await bugnag.bugsnag.notify(e, stack);
+      // await bugnag.bugsnag.notify(e, stack);
     } finally {
       isLoggedIn(true);
       Get.offAll(() => const NavBarPage());
@@ -93,7 +97,6 @@ class LoginController extends GetxController {
       Get.offAll(() => const HomePage());
     }
   }
-
 
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;

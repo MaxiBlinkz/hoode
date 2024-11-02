@@ -1,10 +1,13 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/data/enums/enums.dart';
 import 'package:hoode/app/modules/home/home_page.dart';
+import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:latlong2/latlong.dart';
 import '../../core/theme/colors.dart';
 import 'profile_setup_controller.dart';
 
@@ -109,26 +112,84 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
                           onCountryChanged: (value) =>
                               controller.setCountry(value),
                           onStateChanged: (value) =>
-                              controller.setState(value!),
-                          onCityChanged: (value) => controller.setTown(value!),
+                              controller.setState(value),
+                          onCityChanged: (value) => controller.setTown(value),
                         ),
                         const SizedBox(height: 20),
-                        _buildTextField(
-                          controller: controller.locationController,
-                          hintText: "Location",
-                          prefixIcon: Icons.location_on,
-                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _buildTextField(
+                                controller: controller.locationController,
+                                hintText: "Location",
+                                prefixIcon: Icons.location_on,
+                                readOnly: true,
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.my_location),
+                              onPressed: () => controller.getCurrentLocation(),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.map),
+                              onPressed: () => Get.dialog(
+                                Dialog(
+                                  child: SizedBox(
+                                    height: 400,
+                                    child: FlutterMap(
+                                      options: MapOptions(
+                                        initialCenter:
+                                            controller.selectedLocation.value ??
+                                                LatLng(0, 0),
+                                        initialZoom: 13,
+                                        onTap: (tapPosition, point) {
+                                          controller.selectedLocation.value =
+                                              point;
+                                          controller.locationController.text =
+                                              "${point.latitude}, ${point.longitude}";
+                                          Get.back();
+                                        },
+                                      ),
+                                      children: [
+                                        TileLayer(
+                                          urlTemplate:
+                                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                        ),
+                                        MarkerLayer(
+                                          markers: [
+                                            if (controller
+                                                    .selectedLocation.value !=
+                                                null)
+                                              Marker(
+                                                key: UniqueKey(),
+                                                point: controller
+                                                    .selectedLocation.value!,
+                                                width: 30,
+                                                height: 30,
+                                                alignment: Alignment.center,
+                                                rotate: true,
+                                                child: Icon(
+                                                  Icons.location_pin,
+                                                  color: AppColors.primary,
+                                                  size: 30,
+                                                ),
+                                              ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+),
                         const SizedBox(height: 30),
                         ElevatedButton(
                           onPressed: () async {
-                            controller.saveProfile();
+                            await controller.saveProfile();
                               if (controller.status.value == Status.success) {
-                                CoolAlert.show(
-                                    context: context,
-                                    type: CoolAlertType.success,
-                                    title: "Final Touches",
-                                    text: "Profile Setup Completed");
-                                Get.offAll(() => const HomePage());
+                              Get.offAll(() => const NavBarPage());
                               } else if (controller.status.value ==
                                   Status.error) {
                                 CoolAlert.show(
@@ -164,10 +225,11 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
   Widget _buildTextField({
     required TextEditingController controller,
     required String hintText,
-    required IconData prefixIcon,
+    required IconData prefixIcon, bool readOnly = false,
   }) {
     return TextField(
       controller: controller,
+      readOnly: readOnly,
       decoration: InputDecoration(
         hintText: hintText,
         prefixIcon: Icon(prefixIcon, color: AppColors.primary),

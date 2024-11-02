@@ -13,7 +13,7 @@ class FeaturedCard extends StatelessWidget {
     required this.property,
   });
 
-  PocketBase pb = PocketBase(POCKETBASE_URL_ANDROID);
+  PocketBase pb = PocketBase(POCKETBASE_URL);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class FeaturedCard extends StatelessWidget {
                       borderRadius: const BorderRadius.all(Radius.circular(12)),
                       // Listing Image
                       child: Image.network(
-                        "$POCKETBASE_URL_ANDROID/api/files/properties/$id/${listing['image'][0]}",
+                        "$POCKETBASE_URL/api/files/properties/$id/${listing['image'][0].toString()}",
                         fit: BoxFit.cover,
                         height: 115,
                         width: 180,
@@ -70,8 +70,8 @@ class FeaturedCard extends StatelessWidget {
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(0),
                           icon: isFav
-                              ? Icon(IconlyBold.heart)
-                              : Icon(IconlyLight.heart),
+                              ? const Icon(IconlyBold.heart)
+                              : const Icon(IconlyLight.heart),
                           color: Colors.red,
                           iconSize: 20.0,
                           onPressed: () async {
@@ -96,14 +96,14 @@ class FeaturedCard extends StatelessWidget {
                     listing['title'] ?? "",
                     overflow: TextOverflow.clip,
                     maxLines: 2,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
                   ),
                 ),
                 Row(children: [
-                  Icon(
+                  const Icon(
                     Icons.location_city_rounded,
                     size: 16.0,
                     color: Colors.grey,
@@ -111,7 +111,7 @@ class FeaturedCard extends StatelessWidget {
                   Text(
                     listing['location']!,
                     overflow: TextOverflow.clip,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 12,
                       color: Colors.grey,
@@ -123,7 +123,7 @@ class FeaturedCard extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     "\$${listing['price']}",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                       color: Color(0xFF0744BC),
@@ -136,7 +136,7 @@ class FeaturedCard extends StatelessWidget {
         ),
         onTap: () {
           //listingDetailController.id = id;
-          Get.to(() => ListingDetailPage(), arguments: property);
+          Get.to(() => const ListingDetailPage(), arguments: property);
         },
       ),
     );

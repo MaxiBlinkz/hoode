@@ -6,17 +6,17 @@ import 'register_routes.dart';
 import 'profile_setup_routes.dart';
 import 'nav_bar_routes.dart';
 import 'settings_routes.dart';
-import 'map_routes.dart';
 import 'profile_routes.dart';
 import 'sign_in_routes.dart';
 import 'splash_screen_routes.dart';
 import 'onboarding_routes.dart';
 import 'auth_routes.dart';
+import 'map_view_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = '/nav-bar';
+  static const INITIAL = '/login';
 
   static final routes = [
     ...HomeRoutes.routes,
@@ -27,11 +27,11 @@ class AppPages {
     ...ProfileSetupRoutes.routes,
     ...NavBarRoutes.routes,
     ...SettingsRoutes.routes,
-    ...MapRoutes.routes,
     ...ProfileRoutes.routes,
 		...SignInRoutes.routes,
 		...SplashScreenRoutes.routes,
 		...OnboardingRoutes.routes,
 		...AuthRoutes.routes,
+		...MapViewRoutes.routes,
   ];
 }

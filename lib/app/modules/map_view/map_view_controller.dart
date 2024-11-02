@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class MapController extends GetxController {
-  //TODO: Implement MapController.
+class MapViewController extends GetxController {
+  //TODO: Implement MapViewController.
 
   @override
   void onInit() {

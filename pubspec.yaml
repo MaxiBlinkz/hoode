@@ -38,9 +38,7 @@ dependencies:
   enefty_icons:
   toastification:
   sentry_flutter: ^8.9.0
-universe: ^2.0.1
-location_picker_flutter_map: ^3.1.0
-
+  password_strength_checker: ^1.2.4
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
@@ -72,7 +70,7 @@ location_picker_flutter_map: ^3.1.0
   image_picker: ^1.1.2
   internet_connection_checker_plus:
   json_annotation: ^4.8.1
-  location: ^6.0.2
+  location: 
   logger:
   lottie:
   mix: ^1.4.6
@@ -101,6 +99,8 @@ location_picker_flutter_map: ^3.1.0
   share_plus:
   go_router:
   r_nav_n_sheet:
+  latlong2: 
+  flutter_map:
 
 
 dev_dependencies:

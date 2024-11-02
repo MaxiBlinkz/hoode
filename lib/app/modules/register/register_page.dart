@@ -5,11 +5,13 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/core/widgets/social_button.dart';
+import 'package:hoode/app/data/enums/custom_pass_strength.dart';
 import 'package:hoode/app/data/enums/enums.dart';
 import 'package:hoode/app/modules/profile_setup/profile_setup_page.dart';
 import 'package:iconly/iconly.dart';
 // import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:logger/logger.dart';
+import 'package:password_strength_checker/password_strength_checker.dart';
 import '../../core/theme/colors.dart';
 import 'register_controller.dart';
 
@@ -22,7 +24,17 @@ class RegisterPage extends GetView<RegisterController> {
     final emailController = controller.emailController;
     final passwordController = controller.passwordController;
     final confirmPasswordController = controller.confirmPasswordController;
+    const config = PasswordGeneratorConfiguration(
+      length: 32,
+      minUppercase: 8,
+      minSpecial: 8,
+    );
 
+final passwordGenerator = PasswordGenerator.fromConfig(
+      configuration: config,
+    );
+
+    final passNotifier = ValueNotifier<PasswordStrength?>(null);
     final Logger logger = Logger(printer: PrettyPrinter());
     //final id = controller.id.value;
 
@@ -107,49 +119,107 @@ class RegisterPage extends GetView<RegisterController> {
                                 FormBuilderValidators.email()
                               ])),
                           const SizedBox(height: 20),
-                          FormBuilderTextField(
-                              name: "Password",
-                              controller: passwordController,
-                              obscureText: !controller.isPasswordVisible.value,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              decoration: InputDecoration(
-                                hintText: "Password",
-                                prefixIcon: const Icon(IconlyLight.lock,
-                                    color: AppColors.primary),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    controller.isPasswordVisible.value
-                                        ? IconlyLight.hide
-                                        : IconlyLight.show,
+                          Row(
+                            children: [
+                              PasswordStrengthFormChecker(
+                                minimumStrengthRequired:
+                                    CustomPassStrength.medium,
+                                onChanged: (password, notifier) {
+                                  // Don't forget to update the notifier!
+                                  notifier.value = CustomPassStrength.calculate(
+                                      text: password);
+                                },
+                                textFormFieldConfiguration:
+                                    TextFormFieldConfiguration(
+                                  controller: controller.passwordController,
+                                  obscureText:
+                                      controller.isPasswordVisible.value,
+                                  validator: FormBuilderValidators.compose([
+                                    FormBuilderValidators.required(),
+                                    FormBuilderValidators.minLength(8),
+                                    FormBuilderValidators.maxLength(20),
+                                  ]),
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.grey[200],
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 15),
+                                    hintText: 'Password',
+                                    prefixIcon: const Icon(IconlyLight.lock,
+                                        color: AppColors.primary),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        controller.isPasswordVisible.value
+                                            ? IconlyLight.hide
+                                            : IconlyLight.show,
+                                        color: AppColors.primary,
+                                      ),
+                                      onPressed: () {
+                                        controller.togglePasswordVisibility();
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                showGenerator: false,
+                                onPasswordGenerated: (password, notifier) {
+                                  controller.passwordController.text = password;
+                                  controller.confirmPasswordController.text =
+                                      password;
+                                  logger.i(
+                                      '$password - length: ${password.length}');
+                                  // Don't forget to update the notifier!
+                                  notifier.value = CustomPassStrength.calculate(
+                                      text: password);
+                                },
+                              ),
+                              IconButton(
+                                  icon: const Icon(
+                                    IconlyLight.star,
                                     color: AppColors.primary,
                                   ),
+                                  iconSize: 20,
                                   onPressed: () {
-                                    controller.togglePasswordVisibility();
-                                  },
-                                ),
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                  borderSide: BorderSide.none,
-                                ),
-                                contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                              ),
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(),
-                                FormBuilderValidators.password()
-                              ])),
+                                    final password =
+                                        passwordGenerator.generate();
+                                    confirmPasswordController.text = password;
+                                    passwordController.text = password;
+                                  })
+                            ],
+                          ),
                           const SizedBox(height: 20),
-                          FormBuilderTextField(
-                              name: "Confirm Password",
-                              controller: confirmPasswordController,
-                              obscureText: !controller.isPasswordVisible.value,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                          PasswordStrengthFormChecker(
+                            minimumStrengthRequired: CustomPassStrength.medium,
+                            onChanged: (password, notifier) {
+                              // Don't forget to update the notifier!
+                              notifier.value =
+                                  CustomPassStrength.calculate(text: password);
+                            },
+                            confirmationTextFormFieldConfiguration:
+                                TextFormFieldConfiguration(
+                              controller: controller.confirmPasswordController,
+                              obscureText: controller.isPasswordVisible.value,
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(),
+                                FormBuilderValidators.equal(
+                                    controller.passwordController.text),
+                                FormBuilderValidators.minLength(8),
+                                FormBuilderValidators.maxLength(20),
+                              ]),
                               decoration: InputDecoration(
-                                hintText: "Confirm Password",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  borderSide: BorderSide.none,
+                                ),
+                          
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                contentPadding:
+                                    const EdgeInsets.symmetric(vertical: 15),
+                                hintText: 'Confirm Password',
                                 prefixIcon: const Icon(IconlyLight.lock,
                                     color: AppColors.primary),
                                 suffixIcon: IconButton(
@@ -163,19 +233,10 @@ class RegisterPage extends GetView<RegisterController> {
                                     controller.togglePasswordVisibility();
                                   },
                                 ),
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                  borderSide: BorderSide.none,
-                                ),
-                                contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 15),
                               ),
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(),
-                                FormBuilderValidators.password()
-                              ])),
+                            ),
+                            showGenerator: false,
+                          ),
                           const SizedBox(height: 30),
                           ElevatedButton(
                             onPressed: controller.status.value == Status.success

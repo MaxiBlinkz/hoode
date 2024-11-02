@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/core/theme/colors.dart';
-import 'package:hoode/app/modules/map/map_page.dart';
+import 'package:hoode/app/modules/map_view/map_view_page.dart';
 import 'package:hoode/app/modules/profile/profile_page.dart';
 import 'package:hoode/app/modules/settings/settings_page.dart';
 import 'package:iconly/iconly.dart';
@@ -24,7 +24,7 @@ class NavBarPage extends StatelessWidget {
             children: const [
               HomePage(),
               ProfilePage(),
-              MapPage(),
+              MapViewPage(),
               SettingsPage(),
             ],
           ),
@@ -33,7 +33,9 @@ class NavBarPage extends StatelessWidget {
             foregroundColor: Colors.white,
             elevation: 0,
             child: const Icon(IconlyBold.discovery),
-            onPressed: () {},
+            onPressed: () {
+              Get.to(const MapViewPage());
+            },
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,

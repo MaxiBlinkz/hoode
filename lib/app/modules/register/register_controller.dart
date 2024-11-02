@@ -1,12 +1,13 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hoode/app/core/config/constants.dart';
 import 'package:hoode/app/data/enums/enums.dart';
-import 'package:hoode/app/modules/profile_setup/profile_setup_page.dart';
+// import 'package:hoode/app/modules/profile_setup/profile_setup_page.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:flutter/widgets.dart';
 import 'package:toastification/toastification.dart';
-import 'package:bugsnag_flutter/bugsnag_flutter.dart' as bugnag;
+// import 'package:bugsnag_flutter/bugsnag_flutter.dart' as bugnag;
 import 'package:uni_links3/uni_links.dart';
 
 class RegisterController extends GetxController {
@@ -30,6 +31,8 @@ class RegisterController extends GetxController {
   var status = Status.pending.obs;
   var err = "".obs;
 
+  final storage = GetStorage();
+
   final pb = PocketBase(POCKETBASE_URL);
   //final pb = POCKETBASE;
 
@@ -47,7 +50,7 @@ class RegisterController extends GetxController {
       final record = await pb.collection('users').create(body: body);
       id(record.id);
       status(Status.success);
-    } catch (e, stack) {
+    } catch (e) {
       status(Status.error);
       err.value = e.toString();
       notify.show(
@@ -57,7 +60,15 @@ class RegisterController extends GetxController {
           autoCloseDuration: const Duration(microseconds: 500));
       logger.i('${status.value}');
       logger.e('$e');
-      await bugnag.bugsnag.notify(e, stack);
+      // await bugnag.bugsnag.notify(e, stack);
+    } finally{
+      if(status == Status.success){
+        final authData = await pb.collection('users').authWithPassword(
+            email.value,
+            password.value,
+          );
+      storage.write('token', authData.token);
+      }
     }
     update();
   }
@@ -77,20 +88,19 @@ class RegisterController extends GetxController {
   }
 
   void initDeepLinks() {
-  uriLinkStream.listen((Uri? uri) {
-    if (uri != null) {
-      if (uri.path.contains('login')) {
-        Get.toNamed('/login');
-      } else if (uri.path.contains('listing-detail')) {
-        String? id = uri.pathSegments.last;
-        Get.toNamed('/listing-detail/$id');
+    uriLinkStream.listen((Uri? uri) {
+      if (uri != null) {
+        if (uri.path.contains('login')) {
+          Get.toNamed('/login');
+        } else if (uri.path.contains('listing-detail')) {
+          String? id = uri.pathSegments.last;
+          Get.toNamed('/listing-detail/$id');
+        }
       }
-    }
-  }, onError: (err) {
-    print('Deep link error: $err');
-  });
-}
-
+    }, onError: (err) {
+      print('Deep link error: $err');
+    });
+  }
 
   @override
   void onInit() {
