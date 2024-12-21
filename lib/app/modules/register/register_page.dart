@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:cool_alert/cool_alert.dart';
+import 'package:easy_loading_button/easy_loading_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_builder_ui_kit/flutter_builder_ui_kit.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
@@ -238,49 +240,33 @@ final passwordGenerator = PasswordGenerator.fromConfig(
                             showGenerator: false,
                           ),
                           const SizedBox(height: 30),
-                          ElevatedButton(
-                            onPressed: controller.status.value == Status.success
-                                ? () => Get.offAll(() => ProfileSetupPage(),
-                                    arguments: {'id': controller.id.value})
-                                : () async {
-                                    //[[[[[[[[[[[[[[[[[[[[[[Show A Loading Bar]]]]]]]]]]]]]]]]]]]]]]
-                                    await controller.register();
-                                    await Future.delayed(const Duration(
-                                        seconds:
-                                            2)); // Give time for the registration process
-
-                                    if (controller.status.value ==
-                                        Status.success) {
-                                      //[[[[[[[[[[[[[[[[[[[[[[[[[[Loading Bar Complete]]]]]]]]]]]]]]]]]]]]]]]]]]
-                                      Get.snackbar(
-                                        "Sign Up",
-                                        "Account Created Succesfully",
-                                      );
-                                      //Get.offAll(() => ProfileSetupPage());
-                                    } else if (controller.status.value ==
-                                        Status.error) {
-                                      CoolAlert.show(
-                                          context: context,
-                                          type: CoolAlertType.error,
-                                          title: "Sign Up",
-                                          text: "Error Creating Account");
-                                    }
-                                  },
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              backgroundColor: AppColors.primary,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 50, vertical: 15),
-                              textStyle: const TextStyle(fontSize: 18),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(36),
+                          EasyButton(
+                              buttonColor: AppColors.primary,
+                              borderRadius: 36,
+                              onPressed: () async {
+                                controller.register();
+                                await Future.delayed(
+                                    const Duration(seconds: 2));
+                                if (controller.status.value == Status.success) {
+                                  await Future.delayed(
+                                      const Duration(seconds: 2));
+                                  Get.offAll(() => ProfileSetupPage());
+                                } else if (controller.status.value ==
+                                    Status.error) {
+                                  ToastOverlay.show(
+                                  context: context,
+                                  message: "Something went wrong",
+                                  backgroundColor: Colors.red,
+                                );
+                                }
+                              },
+                              idleStateWidget: const Text(
+                                "Register",
+                                style: TextStyle(color: Colors.white),
                               ),
-                            ),
-                            child: Text(
-                                controller.status.value == Status.success
-                                    ? "Setup Profile"
-                                    : "Sign Up"),
-                          ),
+                              loadingStateWidget: CircularProgressIndicator(
+                                color: Colors.white,
+                              )),
                         ],
                       );
                     }),

@@ -10,23 +10,33 @@ class MapViewPage extends GetView<MapViewController> {
 
   @override
   Widget build(BuildContext context) {
+    MapController _mapController = MapController();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Map View'),
-        centerTitle: true,
-      ),
-      body: FlutterMap(
-        options: const MapOptions(
-          initialCenter: LatLng(51.509364, -0.128928),
-          initialZoom: 9.2,
+        appBar: AppBar(
+          title: const Text('Map View'),
+          centerTitle: true,
         ),
-        children: [
-          TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            userAgentPackageName: 'com.hoode.app',
-          ),
-        ],
-      ),
-    );
+        body: StreamBuilder<List<Marker>>(
+            stream: controller.getPropertyMarkers(1),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return FlutterMap(
+                  mapController: _mapController,
+                  options: MapOptions(
+                    initialCenter: LatLng(0.55, 0.55),
+                    initialZoom: 16,
+                  ),
+                  children: [
+                    TileLayer(
+                        // Tile layer options
+                        ),
+                    MarkerLayer(
+                      markers: snapshot.data!,
+                    ),
+                  ],
+                );
+              }
+              return CircularProgressIndicator();
+            }));
   }
 }

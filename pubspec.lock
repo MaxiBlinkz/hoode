@@ -14,6 +14,14 @@ packages:
     description: dart
     source: sdk
     version: "0.3.2"
+  admob_easy:
+    dependency: "direct main"
+    description:
+      name: admob_easy
+      sha256: "75a5dd35a51b1bd779c842dc94c172a5511defdb7faa2c110d1c68c704a7d02b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.4"
   analyzer:
     dependency: "direct dev"
     description:
@@ -30,6 +38,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.11.3"
+  animated_stack_widget:
+    dependency: transitive
+    description:
+      name: animated_stack_widget
+      sha256: ce4788dd158768c9d4388354b6fb72600b78e041a37afc4c279c63ecafcb9408
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
   app_links:
     dependency: "direct main"
     description:
@@ -86,6 +102,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  async_preferences:
+    dependency: transitive
+    description:
+      name: async_preferences
+      sha256: "34fe9880736abd05ace65ac04bd4e17b356f689e8aa6b0753aace918064ae56a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   blobs:
     dependency: "direct main"
     description:
@@ -102,22 +126,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
-  bugsnag_bridge:
-    dependency: transitive
-    description:
-      name: bugsnag_bridge
-      sha256: "385d280e12abc9169fc20f43c8c28ad5bf970be81d4c077738e12c1f97676b48"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
-  bugsnag_flutter:
-    dependency: "direct main"
-    description:
-      name: bugsnag_flutter
-      sha256: a315ffe4bb2c5866120e07886aad9d0f3da53bf5a0a216d6dfc0056043121d69
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.0"
   build:
     dependency: transitive
     description:
@@ -430,6 +438,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.21.0"
+  easy_loading_button:
+    dependency: "direct main"
+    description:
+      name: easy_loading_button
+      sha256: "8620b2b03ade420644ba27640678b6fda4a9be6e54cccd4cb1f6c258cd7de0ea"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.2"
   enefty_icons:
     dependency: "direct main"
     description:
@@ -438,6 +454,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.7"
+  envied:
+    dependency: "direct main"
+    description:
+      name: envied
+      sha256: "129a0dbf32b90344fa2e9d6943569fdec8f17904e66161e0a1f09ee3416508ae"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   equatable:
     dependency: transitive
     description:
@@ -547,6 +571,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_builder_ui_kit:
+    dependency: "direct main"
+    description:
+      name: flutter_builder_ui_kit
+      sha256: "2e0b189b36f56af1dd203365258fbb4a93ff85015a79efa222fa75864a0f0261"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
   flutter_form_builder:
     dependency: "direct main"
     description:
@@ -608,6 +640,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.2"
+  flutter_map_marker_cluster:
+    dependency: "direct main"
+    description:
+      name: flutter_map_marker_cluster
+      sha256: "2c1fb4d7a2105c4bbeb89be215320507f4b71b2036df4341fab9d2aa677d3ae9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.0"
+  flutter_map_marker_popup:
+    dependency: "direct main"
+    description:
+      name: flutter_map_marker_popup
+      sha256: a7540538114b5d1627ab67b498273d66bc36090385412ae49ef215af4a2861c5
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -642,6 +690,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  font_awesome_flutter:
+    dependency: transitive
+    description:
+      name: font_awesome_flutter
+      sha256: d3a89184101baec7f4600d58840a764d2ef760fe1c5a20ef9e6b0e9b24a07a3a
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.8.0"
   form_builder_validators:
     dependency: "direct main"
     description:
@@ -810,6 +866,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.10"
+  google_mobile_ads:
+    dependency: transitive
+    description:
+      name: google_mobile_ads
+      sha256: "4775006383a27a5d86d46f8fb452bfcb17794fc0a46c732979e49a8eb1c8963f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.0"
   graphs:
     dependency: transitive
     description:
@@ -1018,14 +1082,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
-  internet_connection_checker_plus:
-    dependency: "direct main"
-    description:
-      name: internet_connection_checker_plus
-      sha256: "95da3194bdb98cb606b921f0e0007cbe55c32d6a7fa92d5debe59ef4183ce2a6"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.5.2"
   intl:
     dependency: transitive
     description:
@@ -1114,6 +1170,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+  loading_transition_button:
+    dependency: "direct main"
+    description:
+      name: loading_transition_button
+      sha256: d02c77945a86bcf61d9dd1cd65785f33e77a96f20536f360223aac49e35a871c
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   location:
     dependency: "direct main"
     description:
@@ -1170,6 +1234,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.2-main.4"
+  maps_toolkit:
+    dependency: "direct main"
+    description:
+      name: maps_toolkit
+      sha256: "277877f9505208acacd2a0794ef190e836a5ffee58ebc8efc5b9ca8de50e3e2f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   matcher:
     dependency: transitive
     description:
@@ -1530,6 +1602,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.1.3"
+  rounded_loading_button:
+    dependency: "direct main"
+    description:
+      name: rounded_loading_button
+      sha256: ec4af194330ba688527749059b7c1a3d1ddda6c18794ec4b0696f0cb3b9784ff
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
+  rounded_loading_button_plus:
+    dependency: "direct main"
+    description:
+      name: rounded_loading_button_plus
+      sha256: "8baad9b66c4a81b02b597edf7691cf78f7267a999c08a68937e391af7b2da653"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
+  rxdart:
+    dependency: transitive
+    description:
+      name: rxdart
+      sha256: "0c7c0cedd93788d996e33041ffecda924cc54389199cde4e6a34b440f50044cb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.27.7"
   sanitize_html:
     dependency: transitive
     description:
@@ -1586,6 +1682,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  shimmer:
+    dependency: transitive
+    description:
+      name: shimmer
+      sha256: "5f88c883a22e9f9f299e5ba0e4f7e6054857224976a5d9f839d4ebdc94a14ac9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   showcaseview:
     dependency: "direct main"
     description:
@@ -1727,6 +1831,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  timeago:
+    dependency: transitive
+    description:
+      name: timeago
+      sha256: "054cedf68706bb142839ba0ae6b135f6b68039f0b8301cbe8784ae653d5ff8de"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.7.0"
   timing:
     dependency: transitive
     description:
@@ -1935,6 +2047,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  webview_flutter:
+    dependency: transitive
+    description:
+      name: webview_flutter
+      sha256: ec81f57aa1611f8ebecf1d2259da4ef052281cb5ad624131c93546c79ccc7736
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.9.0"
+  webview_flutter_android:
+    dependency: transitive
+    description:
+      name: webview_flutter_android
+      sha256: "47a8da40d02befda5b151a26dba71f47df471cddd91dfdb7802d0a87c5442558"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.16.9"
+  webview_flutter_platform_interface:
+    dependency: transitive
+    description:
+      name: webview_flutter_platform_interface
+      sha256: d937581d6e558908d7ae3dc1989c4f87b786891ab47bb9df7de548a151779d8d
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.10.0"
+  webview_flutter_wkwebview:
+    dependency: transitive
+    description:
+      name: webview_flutter_wkwebview
+      sha256: "3be297aa4ca78205abdd284cf55f168c35246c75b3079990ad8ba9d257681a30"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.16.2"
   whatsapp_unilink:
     dependency: "direct main"
     description:
@@ -1992,5 +2136,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.5.0 <4.0.0"
+  dart: ">=3.5.3 <4.0.0"
   flutter: ">=3.24.0"

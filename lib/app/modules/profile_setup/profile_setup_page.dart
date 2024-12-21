@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:hoode/app/data/enums/enums.dart';
 import 'package:hoode/app/modules/home/home_page.dart';
 import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+// import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:latlong2/latlong.dart';
 import '../../core/theme/colors.dart';
 import 'profile_setup_controller.dart';

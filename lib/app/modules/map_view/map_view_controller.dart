@@ -1,7 +1,45 @@
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:hoode/app/core/config/constants.dart';
+import 'package:hoode/app/data/models/marker.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:pocketbase/pocketbase.dart';
+import 'package:hoode/app/data/enums/enums.dart';
 
 class MapViewController extends GetxController {
-  //TODO: Implement MapViewController.
+
+  var status = Status.pending.obs;
+  final pb = PocketBase(POCKETBASE_URL);
+
+  Stream<List<Marker>> getPropertyMarkers(int page) async* {
+  status(Status.loading);
+  
+  final response = await pb.collection('properties').getList(
+    page: page,
+    perPage: 20,
+    sort: 'longitude,latitude',
+  );
+
+  final markers = response.items.map((property) => Marker(
+    point: LatLng(
+      property.data['latitude'], 
+      property.data['longitude']
+    ),
+    width: 60,
+    height: 60,
+    child: GestureDetector(
+      onTap: () {
+        // Handle marker tap - e.g. show property details
+      },
+      child: Icon(Icons.location_city),
+    )
+  )).toList();
+
+  status(Status.success);
+  yield markers;
+}
+
 
   @override
   void onInit() {

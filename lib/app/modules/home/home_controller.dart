@@ -4,7 +4,9 @@ import 'package:hoode/app/core/config/constants.dart';
 import 'package:hoode/app/data/enums/enums.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:bugsnag_flutter/bugsnag_flutter.dart' as bugnag;
+import 'package:geolocator/geolocator.dart';
+import 'package:maps_toolkit/maps_toolkit.dart' as mp;
+
 
 class HomeController extends GetxController {
   final properties = [].obs;
@@ -20,6 +22,12 @@ class HomeController extends GetxController {
   final pb = PocketBase(POCKETBASE_URL);
   // final pb = POCKETBASE;
 
+  // Add this method to get current location
+  Future<Position> getCurrentLocation() async {
+    return await Geolocator.getCurrentPosition();
+  }
+
+  // Modified getProperties to sort by distance from current location
   Stream<List<RecordModel>> getProperties(int page) async* {
     status(Status.loading);
     isLoading(true);
@@ -27,23 +35,68 @@ class HomeController extends GetxController {
       final response = await pb.collection('properties').getList(
             page: page,
             perPage: totalListing,
-            // filter: 'created >= "2022-01-01 00:00:00" && someField1 != someField2',
+            sort: 'longitude,latitude', // Add sorting parameters
+            // You can also use -longitude,-latitude for descending order
           );
-      yield response.items;
+    
+      // Optional: Additional client-side sorting using coordinates
+      final sortedItems = response.items
+        ..sort((a, b) {
+          final aLong = double.parse(a.data['longitude'].toString());
+          final bLong = double.parse(b.data['longitude'].toString());
+          return aLong.compareTo(bLong);
+        });
 
-      //properties.assignAll(response.items);
-      if (response.items.isNotEmpty) {
+      yield sortedItems;
+
+      if (sortedItems.isNotEmpty) {
         status(Status.success);
         isLoading(false);
       }
       update();
-    } catch (e, stack) {
+
+    } catch (e) {
       status(Status.error);
       logger.e('Error fetching properties: $e');
-      await bugnag.bugsnag.notify(e, stack);
     }
   }
 
+  // Modified getProperties to sort by distance from current location
+  Stream<List<RecordModel>> getNearestProperties(int page) async* {
+    status(Status.loading);
+    isLoading(true);
+    try {
+      final currentLocation = await getCurrentLocation();
+      final response = await pb.collection('properties').getList(
+            page: page,
+            perPage: totalListing,
+          );
+
+      // Sort by distance from current location
+      final sortedItems = response.items
+        ..sort((a, b) {
+          final aDistance = Geolocator.distanceBetween(
+              currentLocation.latitude,
+              currentLocation.longitude,
+              double.parse(a.data['latitude']),
+              double.parse(a.data['longitude']));
+
+          final bDistance = Geolocator.distanceBetween(
+              currentLocation.latitude,
+              currentLocation.longitude,
+              double.parse(b.data['latitude']),
+              double.parse(b.data['longitude']));
+
+          return aDistance.compareTo(bDistance);
+        });
+
+      yield sortedItems;
+    } catch (e) {
+      // Error handling
+      status(Status.error);
+      logger.e('Error fetching properties: $e');
+    }
+  }
   Future<void> loadProperties() async {
     getProperties(currentPage).listen((data) {
       properties(data);

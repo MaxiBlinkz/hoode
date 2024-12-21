@@ -7,5 +7,7 @@
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
-  "cmake.ignoreCMakeListsMissing": true
+  "cmake.ignoreCMakeListsMissing": true,
+  "java.compile.nullAnalysis.mode": "disabled",
+  "vscodeTodo.enableWideView": false
 }

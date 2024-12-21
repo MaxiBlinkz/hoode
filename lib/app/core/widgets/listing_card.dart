@@ -5,6 +5,8 @@ import 'package:hoode/app/core/config/constants.dart';
 import 'package:hoode/app/modules/listing_detail/listing_detail_page.dart';
 import 'package:pocketbase/pocketbase.dart';
 
+import 'card_controller.dart';
+
 class ListingCard extends StatelessWidget {
   final RecordModel property;
 
@@ -17,9 +19,11 @@ class ListingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(() => CardController());
     final id = property.id;
     final listing = property.data;
 
+    // TODO: fIx favourite listing toggle
     bool isFav = listing['is_favourite'];
 
     return Padding(
