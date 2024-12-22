@@ -20,8 +20,7 @@ class HomeController extends GetxController {
   final listController = ScrollController();
 
   final pb = PocketBase(POCKETBASE_URL);
-  // final pb = POCKETBASE;
-
+  
   // Add this method to get current location
   Future<Position> getCurrentLocation() async {
     return await Geolocator.getCurrentPosition();
@@ -97,6 +96,7 @@ class HomeController extends GetxController {
       logger.e('Error fetching properties: $e');
     }
   }
+  
   Future<void> loadProperties() async {
     getProperties(currentPage).listen((data) {
       properties(data);

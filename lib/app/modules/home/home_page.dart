@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hoode/app/core/widgets/category_item.dart';
+import 'package:hoode/app/data/services/adservice.dart';
 import 'package:icons_plus/icons_plus.dart';
 // import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -12,11 +14,12 @@ import 'package:hoode/app/data/enums/enums.dart';
 import '../../core/theme/colors.dart';
 import '../../core/widgets/avatar.dart';
 import '../../core/widgets/listing_card.dart';
-import '../../core/widgets/featured_card.dart';
 import 'home_controller.dart';
 
 class HomePage extends GetView<HomeController> {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  final adService = AdService.to;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +112,7 @@ class HomePage extends GetView<HomeController> {
                                   itemCount: snapshot.data!.length,
                                   itemBuilder: (context, index) {
                                     final property = snapshot.data![index];
-                                    return FeaturedCard(
+                                    return ListingCard(
                                       property: property,
                                     );
                                   })
@@ -132,7 +135,16 @@ class HomePage extends GetView<HomeController> {
                     ],
                   );
                 }),
-          ))
+          )),
+          // ################## Banner ad at bottom ########################
+                const SizedBox(height: 20),
+                adService.bannerAd != null
+                    ? SizedBox(
+                        width: adService.bannerAd!.size.width.toDouble(),
+                        height: adService.bannerAd!.size.height.toDouble(),
+                        child: AdWidget(ad: adService.bannerAd!),
+                      )
+                    : const SizedBox(),
         ]),
       ),
     );

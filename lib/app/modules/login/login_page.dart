@@ -6,10 +6,10 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+//import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hoode/app/core/widgets/social_button.dart';
 import 'package:hoode/app/data/enums/enums.dart';
-import 'package:hoode/app/data/services/adservice.dart';
+//import 'package:hoode/app/data/services/adservice.dart';
 import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 import '../../core/theme/colors.dart';
@@ -18,13 +18,13 @@ import 'login_controller.dart';
 class LoginPage extends GetView<LoginController> {
   LoginPage({super.key});
 
-  BannerAd? bannerAd;
-  bool isAdLoaded = false;
+  // final adService = AdService.to;
 
   @override
   Widget build(BuildContext context) {
     final emailController = controller.emailController;
     final passwordController = controller.passwordController;
+    // final adController = Get.put(AdController());
     //final btnController = Easy
     final formKey = GlobalKey<FormState>();
     return Scaffold(
@@ -149,7 +149,7 @@ class LoginPage extends GetView<LoginController> {
                             buttonColor: AppColors.primary,
                             borderRadius: 36,
                             onPressed: () async {
-                              AdService.interstitialAd?.show();
+                              //adService.interstitialAd?.show();
                               controller.login();
                               await Future.delayed(const Duration(seconds: 2));
                               if (controller.status.value == Status.success) {
@@ -234,16 +234,15 @@ class LoginPage extends GetView<LoginController> {
                     ),
                   ],
                 ),
-                // ################## Banner ad at bottom ########################
-                const SizedBox(height: 20),
-                controller.bannerAd != null
-                    ? SizedBox(
-                        width: controller.bannerAd!.size.width.toDouble(),
-                        height: controller.bannerAd!.size.height.toDouble(),
-                        child: AdWidget(ad: controller.bannerAd!),
-                      )
-                    : const SizedBox(),
-
+                // // ################## Banner ad at bottom ########################
+                // const SizedBox(height: 20),
+                // adService.bannerAd != null
+                //     ? SizedBox(
+                //         width: adService.bannerAd!.size.width.toDouble(),
+                //         height: adService.bannerAd!.size.height.toDouble(),
+                //         child: AdWidget(ad: adService.bannerAd!),
+                //       )
+                //     : const SizedBox(),
               ],
             ),
           ),

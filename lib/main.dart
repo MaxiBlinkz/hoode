@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hoode/app/data/services/authservice.dart';
 // import 'package:hoode/app/core/config/constants.dart';
 import 'package:toastification/toastification.dart';
 // import 'package:bugsnag_flutter/bugsnag_flutter.dart';
@@ -15,6 +16,9 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+
+  final authService = Get.put(AuthService());
+  await authService.checkLoginStatus();
 
   // bool isWindows = Platform.isWindows;
   // if (!isWindows) {

@@ -23,7 +23,7 @@ class NavBarPage extends StatelessWidget {
         return Scaffold(
           body: IndexedStack(
             index: controller.tabIndex,
-            children: const [
+            children: [
               HomePage(),
               ProfilePage(),
               MapViewPage(),

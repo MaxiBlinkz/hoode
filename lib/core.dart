@@ -9,7 +9,6 @@ export 'package:hoode/app/core/theme/colors.dart';
 export 'package:hoode/app/core/theme/theme.dart';
 export 'package:hoode/app/core/widgets/avatar.dart';
 export 'package:hoode/app/core/widgets/category_item.dart';
-export 'package:hoode/app/core/widgets/featured_card.dart';
 export 'package:hoode/app/core/widgets/header.dart';
 export 'package:hoode/app/core/widgets/listing_card.dart';
 export 'package:hoode/app/core/widgets/social_button.dart';

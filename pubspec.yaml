@@ -67,6 +67,7 @@ dependencies:
   google_fonts:
   google_maps_flutter: ^2.10.0
   google_mobile_ads:
+  google_sign_in: 
   http:
   hugeicons:
   iconly:

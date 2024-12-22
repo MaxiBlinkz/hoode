@@ -2,29 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/core/config/constants.dart';
+import 'package:hoode/app/data/services/adservice.dart';
+import 'package:hoode/app/data/services/bookmarkservice.dart';
 import 'package:hoode/app/modules/listing_detail/listing_detail_page.dart';
 import 'package:pocketbase/pocketbase.dart';
+//import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-import 'card_controller.dart';
+
+// import 'card_controller.dart';
 
 class ListingCard extends StatelessWidget {
-  final RecordModel property;
+  final RecordModel? property;
+  final bookmarkService = Get.find<BookmarkService>();
+  final adService = AdService.to;
 
   ListingCard({
     super.key,
     required this.property,
   });
 
-  PocketBase pb = PocketBase(POCKETBASE_URL);
+  // PocketBase pb = PocketBase(POCKETBASE_URL);
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(() => CardController());
-    final id = property.id;
-    final listing = property.data;
+    if (property != null) {
+      final id = property!.id;
+      final listing = property!.data;
 
     // TODO: fIx favourite listing toggle
-    bool isFav = listing['is_favourite'];
+      // bool isFav = listing['is_favourite'];
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -73,20 +79,14 @@ class ListingCard extends StatelessWidget {
                         child: IconButton(
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(0),
-                          icon: isFav
+                            icon:
+                                bookmarkService.bookmarks.contains(property!.id)
                               ? const Icon(IconlyBold.heart)
                               : const Icon(IconlyLight.heart),
                           color: Colors.red,
                           iconSize: 20.0,
-                          onPressed: () async {
-                            isFav = !isFav;
-                            final body = <String, bool>{"is_favourite": isFav};
-                            try {
-                              await pb
-                                  .collection('users')
-                                  .update(id, body: body);
-                            } catch (e) {}
-                          },
+                            onPressed: () =>
+                                bookmarkService.toggleBookmark(property!.id),
                         ),
                       ),
                     )
@@ -140,9 +140,14 @@ class ListingCard extends StatelessWidget {
         ),
         onTap: () {
           //listingDetailController.id = id;
+          adService.interstitialAd?.show();
           Get.to(() => const ListingDetailPage(), arguments: property);
         },
       ),
     );
+
+    }else{
+      return Container();
+    }
   }
 }

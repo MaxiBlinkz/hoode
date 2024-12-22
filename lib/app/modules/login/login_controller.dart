@@ -1,15 +1,17 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hoode/app/core/config/constants.dart';
 import 'package:hoode/app/data/enums/enums.dart';
-import 'package:hoode/app/data/services/adservice.dart';
+// import 'package:hoode/app/data/services/adservice.dart';
 import 'package:hoode/app/modules/home/home_page.dart';
 import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:bugsnag_flutter/bugsnag_flutter.dart' as bugnag;
 
 class LoginController extends GetxController {
@@ -22,6 +24,8 @@ class LoginController extends GetxController {
   var status = Status.pending.obs;
   Rx<Object> err = "".obs;
   var isPasswordVisible = false.obs;
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   BannerAd? bannerAd;
   bool isAdLoaded = false;
@@ -41,7 +45,12 @@ class LoginController extends GetxController {
           );
       if (pb.authStore.isValid) {
         status(Status.success);
-        storage.write('token', authData.token);
+
+        // Store Login data
+        //storage.write('token', authData.token);
+        storage.write('isLoggedIn', true);
+        storage.write('authToken', pb.authStore.token);
+        storage.write('userData', pb.authStore.model.toJson());
       } else {
         status(Status.pending);
       }
@@ -55,23 +64,58 @@ class LoginController extends GetxController {
     update();
   }
 
+  // Future<void> googleSignIn() async {
+  //   isLoggedIn(false);
+  //   try {
+  //     await pb.collection('users').authWithOAuth2('google', (url) async {
+  //       await launchUrl(url);
+  //       logger.i(url);
+  //     });
+  //   } catch (e) {
+  //     status(Status.error);
+  //     logger.e(e);
+  //     // await bugnag.bugsnag.notify(e, stack);
+  //   } finally {
+  //     isLoggedIn(true);
+  //     status(Status.success);
+  //     Get.offAll(() => const NavBarPage());
+  //   }
+  // }
+
   Future<void> googleSignIn() async {
-    isLoggedIn(false);
+    status(Status.loading);
     try {
-      await pb.collection('users').authWithOAuth2('google', (url) async {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) return;
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      // Use the correct PocketBase OAuth2 authentication method
+      final authData = await pb.collection('users').authWithOAuth2(
+        'google',
+        (url) async {
         await launchUrl(url);
-        logger.i(url);
-      });
+        },
+        createData: {
+          'email': googleUser.email,
+          'emailVisibility': true,
+        },
+      );
+
+      if (pb.authStore.isValid) {
+        status(Status.success);
+        storage.write('token', authData.token);
+        Get.offAll(() => const NavBarPage());
+      }
     } catch (e) {
       status(Status.error);
-      logger.e(e);
-      // await bugnag.bugsnag.notify(e, stack);
-    } finally {
-      isLoggedIn(true);
-      status(Status.success);
-      Get.offAll(() => const NavBarPage());
+      err.value = e.toString();
+      logger.e('Google Sign In Error: ${err.value}');
     }
-  }
+    update();
+}
+
 
   Future<void> appleSignIn() async {
     isLoggedIn(false);
@@ -99,7 +143,7 @@ class LoginController extends GetxController {
       print(e);
     } finally {
       isLoggedIn(true);
-      Get.offAll(() => const HomePage());
+      Get.offAll(() => HomePage());
     }
   }
 
@@ -114,16 +158,16 @@ class LoginController extends GetxController {
         .addListener(() => password.value = passwordController.text);
   }
 
-  void loadBannerAd() {
-    bannerAd = AdService.createBannerAd()..load();
-  }
+  // void loadBannerAd() {
+  //   bannerAd = AdService.createBannerAd()..load();
+  // }
 
   @override
   void onInit() {
     super.onInit();
     initControllers();
-    loadBannerAd();
-    AdService.loadInterstitialAd();
+    // loadBannerAd();
+    // AdService.loadInterstitialAd();
   }
 
   @override
@@ -135,8 +179,8 @@ class LoginController extends GetxController {
   void onClose() {
     emailController.dispose();
     passwordController.dispose();
-    bannerAd?.dispose();
-    AdService.interstitialAd?.dispose();
+    // bannerAd?.dispose();
+    // AdService.interstitialAd?.dispose();
     super.onClose();
   }
 }
