@@ -28,30 +28,33 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  admob_easy: any
   app_links:
   blobs:
   contained_tab_bar_view:
-  cool_alert:
   country_code_picker:
+  country_state_city_picker_2: ^1.0.5
   country_state_city_pro:
   cropperx:
-  csc_picker:
-  # The following adds the Cupertino Icons font to your application.
+  csc_picker: # The following adds the Cupertino Icons font to your application.
+
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   currency_textfield: ^4.12.0
   dio: ^5.7.0
   drift:
+  easy_loading_button:
   enefty_icons:
-  envied: 
+  envied:
   flex_color_scheme:
   flutter:
     sdk: flutter
+  flutter_builder_ui_kit: any
   flutter_form_builder: ^9.5.0
   flutter_iconly:
   flutter_map:
-  flutter_map_marker_popup:
   flutter_map_marker_cluster:
+  flutter_map_marker_popup:
   flutter_remix: ^0.0.1
   flutter_svg:
   form_builder_validators: ^11.0.0
@@ -63,6 +66,7 @@ dependencies:
   go_router:
   google_fonts:
   google_maps_flutter: ^2.10.0
+  google_mobile_ads:
   http:
   hugeicons:
   iconly:
@@ -75,9 +79,6 @@ dependencies:
   json_annotation: ^4.8.1
   latlong2:
   loading_transition_button:
-  rounded_loading_button_plus: 
-  rounded_loading_button:
-  easy_loading_button: 
   location:
   logger:
   lottie:
@@ -95,6 +96,8 @@ dependencies:
   redacted:
   responsive_builder:
   retrofit:
+  rounded_loading_button:
+  rounded_loading_button_plus:
   sentry_flutter: ^8.9.0
   share_plus:
   showcaseview:
@@ -102,23 +105,17 @@ dependencies:
   sqlite3_flutter_libs:
   stylish_bottom_bar:
   toastification:
-  uni_links3:
   url_launcher:
   whatsapp_unilink:
   wordpress_api:
-  admob_easy: any
-  flutter_builder_ui_kit: any
-    
+
 dev_dependencies:
   analyzer: any
   build_runner:
   drift_dev:
   flutter_gen_runner:
-  flutter_launcher_icons: 
-  json_serializable: ^6.7.1
-  mockito:
-  retrofit_generator:
-    
+  flutter_launcher_icons:
+
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -127,12 +124,13 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
-  
-
     # For information on the generic Dart part of this file, see the
     # following page: https://dart.dev/tools/pub/pubspec
 
     # The following section is specific to Flutter packages.
+  json_serializable: ^6.7.1
+  mockito:
+  retrofit_generator:
 flutter:
 
   # The following line ensures that the Material Icons font is

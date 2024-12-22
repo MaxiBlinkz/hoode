@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:cool_alert/cool_alert.dart';
 import 'package:easy_loading_button/easy_loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_builder_ui_kit/flutter_builder_ui_kit.dart';
@@ -7,15 +6,20 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hoode/app/core/widgets/social_button.dart';
 import 'package:hoode/app/data/enums/enums.dart';
+import 'package:hoode/app/data/services/adservice.dart';
 import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 import '../../core/theme/colors.dart';
 import 'login_controller.dart';
 
 class LoginPage extends GetView<LoginController> {
-  const LoginPage({super.key});
+  LoginPage({super.key});
+
+  BannerAd? bannerAd;
+  bool isAdLoaded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -145,6 +149,7 @@ class LoginPage extends GetView<LoginController> {
                             buttonColor: AppColors.primary,
                             borderRadius: 36,
                             onPressed: () async {
+                              AdService.interstitialAd?.show();
                               controller.login();
                               await Future.delayed(const Duration(seconds: 2));
                               if (controller.status.value == Status.success) {
@@ -229,6 +234,12 @@ class LoginPage extends GetView<LoginController> {
                     ),
                   ],
                 ),
+                // Banner ad at bottom
+                if (bannerAd != null)
+                  Container(
+                    height: 50,
+                    child: AdWidget(ad: bannerAd!),
+                  ),
               ],
             ),
           ),

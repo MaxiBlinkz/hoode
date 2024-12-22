@@ -23,13 +23,16 @@ class ProfileSetupController extends GetxController {
   TextEditingController lastnameController = TextEditingController();
   TextEditingController contactInfoController = TextEditingController();
   TextEditingController locationController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
+  TextEditingController stateController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
 
   var firstname = "".obs;
   var lastname = "".obs;
   var contactInfo = "".obs;
   var country = "".obs;
   var state = "".obs;
-  var town = "".obs;
+  var city = "".obs;
   var location = "".obs;
   var id = "".obs;
 
@@ -62,9 +65,9 @@ class ProfileSetupController extends GetxController {
     }
   }
 
-  void setTown(String? value) {
+  void setCity(String? value) {
     if (value != null) {
-      town(value);
+      city(value);
     }
   }
 
@@ -133,7 +136,7 @@ class ProfileSetupController extends GetxController {
       "contact_info": contactInfo.value,
       "location": location.value,
       "state": state.value,
-      "town": town.value
+      "town": city.value
     };
 
     try {
@@ -207,6 +210,12 @@ class ProfileSetupController extends GetxController {
         .addListener(() => contactInfo.value = contactInfoController.text);
     locationController
         .addListener(() => location.value = locationController.text);
+    countryController
+        .addListener(() => country.value = countryController.text);
+    stateController
+        .addListener(() => state.value = stateController.text);
+    cityController
+        .addListener(() => city.value = cityController.text);
   }
 
   @override

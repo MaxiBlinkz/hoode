@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:cool_alert/cool_alert.dart';
 import 'package:easy_loading_button/easy_loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_builder_ui_kit/flutter_builder_ui_kit.dart';

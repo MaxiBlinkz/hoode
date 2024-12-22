@@ -8,7 +8,7 @@ import 'package:pocketbase/pocketbase.dart';
 import 'package:flutter/widgets.dart';
 import 'package:toastification/toastification.dart';
 // import 'package:bugsnag_flutter/bugsnag_flutter.dart' as bugnag;
-import 'package:uni_links3/uni_links.dart';
+//import 'package:uni_links3/uni_links.dart';
 
 class RegisterController extends GetxController {
   final nameController = TextEditingController();
@@ -87,25 +87,25 @@ class RegisterController extends GetxController {
         () => confirmPassword.value = confirmPasswordController.text);
   }
 
-  void initDeepLinks() {
-    uriLinkStream.listen((Uri? uri) {
-      if (uri != null) {
-        if (uri.path.contains('login')) {
-          Get.toNamed('/login');
-        } else if (uri.path.contains('listing-detail')) {
-          String? id = uri.pathSegments.last;
-          Get.toNamed('/listing-detail/$id');
-        }
-      }
-    }, onError: (err) {
-      print('Deep link error: $err');
-    });
-  }
+  // void initDeepLinks() {
+  //   uriLinkStream.listen((Uri? uri) {
+  //     if (uri != null) {
+  //       if (uri.path.contains('login')) {
+  //         Get.toNamed('/login');
+  //       } else if (uri.path.contains('listing-detail')) {
+  //         String? id = uri.pathSegments.last;
+  //         Get.toNamed('/listing-detail/$id');
+  //       }
+  //     }
+  //   }, onError: (err) {
+  //     print('Deep link error: $err');
+  //   });
+  // }
 
   @override
   void onInit() {
     super.onInit();
-    initDeepLinks();
+    // initDeepLinks();
     initControllers();
   }
 

@@ -1,10 +1,11 @@
-import 'package:cool_alert/cool_alert.dart';
-import 'package:csc_picker/csc_picker.dart';
+import 'package:country_state_city_pro/country_state_city_pro.dart';
+// import 'package:csc_picker/csc_picker.dart';
+import 'package:country_state_city_picker_2/country_state_city_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/data/enums/enums.dart';
-import 'package:hoode/app/modules/home/home_page.dart';
+// import 'package:hoode/app/modules/home/home_page.dart';
 import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
 // import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:latlong2/latlong.dart';
@@ -17,14 +18,14 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
 
   @override
   Widget build(BuildContext context) {
-    //final id = Get.arguments.id;
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [AppColors.primary, AppColors.primary.withOpacity(0.7)],
+            colors: [AppColors.primary, AppColors.primary.withValues(blue: 0.7)],
           ),
         ),
         child: SafeArea(
@@ -106,15 +107,23 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
                           prefixIcon: Icons.description,
                         ),
                         const SizedBox(height: 20),
-                        CSCPicker(
-                          showCities: true,
-                          showStates: true,
-                          onCountryChanged: (value) =>
-                              controller.setCountry(value),
-                          onStateChanged: (value) =>
-                              controller.setState(value),
-                          onCityChanged: (value) => controller.setTown(value),
-                        ),
+                        // CSCPicker(
+                        //   showCities: true,
+                        //   showStates: true,
+                        //   onCountryChanged: (value) =>
+                        //       controller.setCountry(value),
+                        //   onStateChanged: (value) =>
+                        //       controller.setState(value),
+                        //   onCityChanged: (value) => controller.setCity(value),
+                        // ),
+                        // TODO Setup Country picker
+                        CountryStateCityPicker(
+                          country: controller.countryController, 
+                          state: controller.stateController, 
+                          city: controller.cityController,
+                          textFieldDecoration: InputDecoration(
+
+                          ),),
                         const SizedBox(height: 20),
                         Row(
                           children: [
@@ -192,11 +201,11 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
                               Get.offAll(() => const NavBarPage());
                               } else if (controller.status.value ==
                                   Status.error) {
-                                CoolAlert.show(
-                                    context: context,
-                                    type: CoolAlertType.error,
-                                    title: "Oops!!",
-                                    text: "Error Updating profile...");
+                                // CoolAlert.show(
+                                //     context: context,
+                                //     type: CoolAlertType.error,
+                                //     title: "Oops!!",
+                                //     text: "Error Updating profile...");
                               }
                           },
                           style: ElevatedButton.styleFrom(

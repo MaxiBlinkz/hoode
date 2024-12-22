@@ -10,6 +10,7 @@ import 'app/core/bindings/application_bindings.dart';
 import 'app/routes/app_pages.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +32,8 @@ void main() async {
   //     Get.toNamed('/home');
   //   }
   // });
+  // Initialize AdMob
+  await MobileAds.instance.initialize();
   await SentryFlutter.init((options) {
     options.dsn =
         'https://6685056ca34cce279f6104225aeb1145@o4508202731634688.ingest.us.sentry.io/4508202734321664';
