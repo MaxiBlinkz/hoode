@@ -9,9 +9,10 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+        <!-- Main app ID: ca-app-pub-8576327986501059~1860829890 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544/6300978111"/>
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"

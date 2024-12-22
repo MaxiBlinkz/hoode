@@ -234,12 +234,16 @@ class LoginPage extends GetView<LoginController> {
                     ),
                   ],
                 ),
-                // Banner ad at bottom
-                if (bannerAd != null)
-                  Container(
-                    height: 50,
-                    child: AdWidget(ad: bannerAd!),
-                  ),
+                // ################## Banner ad at bottom ########################
+                const SizedBox(height: 20),
+                controller.bannerAd != null
+                    ? SizedBox(
+                        width: controller.bannerAd!.size.width.toDouble(),
+                        height: controller.bannerAd!.size.height.toDouble(),
+                        child: AdWidget(ad: controller.bannerAd!),
+                      )
+                    : const SizedBox(),
+
               ],
             ),
           ),
