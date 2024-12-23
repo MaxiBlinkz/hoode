@@ -6,10 +6,7 @@ import 'package:hoode/app/data/services/adservice.dart';
 import 'package:hoode/app/data/services/bookmarkservice.dart';
 import 'package:hoode/app/modules/listing_detail/listing_detail_page.dart';
 import 'package:pocketbase/pocketbase.dart';
-//import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-
-// import 'card_controller.dart';
 
 class ListingCard extends StatelessWidget {
   final RecordModel? property;
@@ -21,7 +18,6 @@ class ListingCard extends StatelessWidget {
     required this.property,
   });
 
-  // PocketBase pb = PocketBase(POCKETBASE_URL);
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +54,19 @@ class ListingCard extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(12)),
-                      // Listing Image
-                      child: Image.network(
+                          child: listing['image'] != null && listing['image'].isNotEmpty
+                              ? Image.network(
                         "$POCKETBASE_URL/api/files/properties/$id/${listing['image'][0].toString()}",
                         fit: BoxFit.cover,
                         height: 115,
                         width: 180,
-                      ),
+                                )
+                              : Image.asset(
+                                  'assets/images/house_placeholder.jpg',
+                                  fit: BoxFit.cover,
+                                  height: 115,
+                                  width: 180
+                                )
                     ),
                     Positioned(
                       top: 8,

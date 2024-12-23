@@ -6,6 +6,7 @@ class BookmarkService extends GetxService {
   final pb = PocketBase(POCKETBASE_URL);
   final bookmarks = <String>[].obs;
 
+  // TODO Fix User authentication
   Future<void> toggleBookmark(String propertyId) async {
     try {
       if (!pb.authStore.isValid) {

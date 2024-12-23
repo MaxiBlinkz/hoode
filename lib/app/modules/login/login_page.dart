@@ -1,16 +1,11 @@
 import 'dart:async';
 import 'package:easy_loading_button/easy_loading_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_builder_ui_kit/flutter_builder_ui_kit.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
-//import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hoode/app/core/widgets/social_button.dart';
-import 'package:hoode/app/data/enums/enums.dart';
-//import 'package:hoode/app/data/services/adservice.dart';
-import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 import '../../core/theme/colors.dart';
 import 'login_controller.dart';
@@ -143,7 +138,22 @@ class LoginPage extends GetView<LoginController> {
                                 FormBuilderValidators.password(),
                               ]));
                         }),
-                        const SizedBox(height: 20),
+                        // const SizedBox(height: 20),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Obx(() => Checkbox(
+                                  value: controller.rememberMe.value,
+                                  onChanged: controller.toggleRememberMe,
+                                  activeColor: AppColors.primary,
+                                )),
+                            const Text(
+                              'Remember Me',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
                         // Login Button
                         EasyButton(
                             buttonColor: AppColors.primary,
@@ -151,21 +161,21 @@ class LoginPage extends GetView<LoginController> {
                             onPressed: () async {
                               //adService.interstitialAd?.show();
                               controller.login();
-                              await Future.delayed(const Duration(seconds: 2));
-                              if (controller.status.value == Status.success) {
-                                // btnController.success();
-                                await Future.delayed(
-                                    const Duration(seconds: 2));
-                                Get.offAll(() => const NavBarPage());
-                              } else if (controller.status.value ==
-                                  Status.error) {
-                                //btnController.error();
-                                ToastOverlay.show(
-                                  context: context,
-                                  message: "Something went wrong",
-                                  backgroundColor: Colors.red,
-                                );
-                              }
+                              // await Future.delayed(const Duration(seconds: 2));
+                              // if (controller.status.value == Status.success) {
+                              //   // btnController.success();
+                              //   await Future.delayed(
+                              //       const Duration(seconds: 2));
+                              //   Get.offAll(() => const NavBarPage());
+                              // } else if (controller.status.value ==
+                              //     Status.error) {
+                              //   //btnController.error();
+                              //   ToastOverlay.show(
+                              //     context: context,
+                              //     message: "Something went wrong",
+                              //     backgroundColor: Colors.red,
+                              //   );
+                              // }
                             },
                             idleStateWidget: const Text(
                               "Login",

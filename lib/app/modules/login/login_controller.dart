@@ -24,6 +24,7 @@ class LoginController extends GetxController {
   var status = Status.pending.obs;
   Rx<Object> err = "".obs;
   var isPasswordVisible = false.obs;
+  final rememberMe = false.obs;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -45,12 +46,19 @@ class LoginController extends GetxController {
           );
       if (pb.authStore.isValid) {
         status(Status.success);
-
-        // Store Login data
-        //storage.write('token', authData.token);
         storage.write('isLoggedIn', true);
         storage.write('authToken', pb.authStore.token);
         storage.write('userData', pb.authStore.model.toJson());
+        
+        if (rememberMe.value) {
+          storage.write('rememberedEmail', email.value);
+          storage.write('rememberedPassword', password.value);
+        } else {
+          storage.remove('rememberedEmail');
+          storage.remove('rememberedPassword');
+        }
+
+        Get.offAll(() => const NavBarPage());
       } else {
         status(Status.pending);
       }
@@ -60,6 +68,14 @@ class LoginController extends GetxController {
       logger.i('${status.value}');
       logger.e('${err.value}');
       // await bugnag.bugsnag.notify(e, stack);
+    } finally {
+      if (pb.authStore.isValid) {
+        status(Status.success);
+        storage.write('isLoggedIn', true);
+        storage.write('authToken', pb.authStore.token);
+        storage.write('userData', pb.authStore.model.toJson());
+        Get.offAll(() => const NavBarPage());
+      }
     }
     update();
   }
@@ -147,6 +163,17 @@ class LoginController extends GetxController {
     }
   }
 
+  void loadCredentials() {
+    final savedEmail = storage.read('rememberedEmail');
+    final savedPassword = storage.read('rememberedPassword');
+
+    if (savedEmail != null && savedPassword != null) {
+      emailController.text = savedEmail;
+      passwordController.text = savedPassword;
+      rememberMe.value = true;
+    }
+  }
+
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
     update();
@@ -158,16 +185,16 @@ class LoginController extends GetxController {
         .addListener(() => password.value = passwordController.text);
   }
 
-  // void loadBannerAd() {
-  //   bannerAd = AdService.createBannerAd()..load();
-  // }
+  void toggleRememberMe(bool? value) {
+    rememberMe.value = value ?? false;
+    update();
+  }
 
   @override
   void onInit() {
     super.onInit();
     initControllers();
-    // loadBannerAd();
-    // AdService.loadInterstitialAd();
+    loadCredentials();
   }
 
   @override

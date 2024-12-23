@@ -28,8 +28,13 @@ class MapViewPage extends GetView<MapViewController> {
                   ),
                   children: [
                     TileLayer(
-                        // Tile layer options
-                        ),
+                      urlTemplate:
+                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      userAgentPackageName: 'com.example.hoode',
+                      // Optional additional parameters
+                      maxZoom: 19,
+                      minZoom: 1,
+                    ),
                     MarkerLayer(
                       markers: snapshot.data!,
                     ),

@@ -1,3 +1,6 @@
+import 'package:get/get.dart';
+import 'package:hoode/app/data/services/authservice.dart';
+
 import 'home_routes.dart';
 import 'listing_detail_routes.dart';
 import 'listing_search_routes.dart';
@@ -16,7 +19,10 @@ import 'map_view_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = '/login';
+  static String get INITIAL {
+    final authService = Get.find<AuthService>();
+    return authService.isAuthenticated.value ? '/nav-bar' : '/login';
+  }
 
   static final routes = [
     ...HomeRoutes.routes,
