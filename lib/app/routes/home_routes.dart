@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hoode/app/core/middleware/auth_middleware.dart';
 
 import '../modules/home/home_binding.dart';
 import '../modules/home/home_page.dart';
@@ -13,6 +14,7 @@ class HomeRoutes {
       name: home,
       page: HomePage.new,
       binding: HomeBinding(),
+      middlewares: [AuthMiddleware()]
     ),
   ];
 }

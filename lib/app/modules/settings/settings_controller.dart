@@ -1,20 +1,33 @@
 import 'package:get/get.dart';
 
 class SettingsController extends GetxController {
-  //TODO: Implement SettingsController.
+  final isDarkMode = false.obs;
+  final isNotificationsEnabled = true.obs;
+  final selectedLanguage = 'English'.obs;
+  final selectedCurrency = 'USD'.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
+  void toggleTheme(bool value) {
+    isDarkMode.value = value;
+    // Get.changeThemeMode(value ? ThemeMode.dark : ThemeMode.light);
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void toggleNotifications(bool value) {
+    isNotificationsEnabled.value = value;
+    // Implement notification toggle logic
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  void setLanguage(String language) {
+    selectedLanguage.value = language;
+    // Implement language change logic
+  }
+
+  void setCurrency(String currency) {
+    selectedCurrency.value = currency;
+    // Implement currency change logic
+  }
+
+  void logout() {
+    // Implement logout logic
+    Get.offAllNamed('/login');
   }
 }

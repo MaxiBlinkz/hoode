@@ -31,6 +31,7 @@ dependencies:
   admob_easy: any
   app_links:
   blobs:
+  loading_animation_widget:
   contained_tab_bar_view:
   country_code_picker:
   country_state_city_picker_2: ^1.0.5
@@ -80,6 +81,7 @@ dependencies:
   json_annotation: ^4.8.1
   latlong2:
   loading_transition_button:
+  loading_indicator: ^3.1.1
   location:
   logger:
   lottie:

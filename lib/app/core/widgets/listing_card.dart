@@ -4,26 +4,36 @@ import 'package:get/get.dart';
 import 'package:hoode/app/core/config/constants.dart';
 import 'package:hoode/app/data/services/adservice.dart';
 import 'package:hoode/app/data/services/bookmarkservice.dart';
-import 'package:hoode/app/modules/listing_detail/listing_detail_page.dart';
 import 'package:pocketbase/pocketbase.dart';
 
-
 class ListingCard extends StatelessWidget {
-  final RecordModel? property;
+  final RecordModel property;
+  final double? imageWidth;
+  final double? imageHeight;
+  final double? cardHeight;
   final bookmarkService = Get.find<BookmarkService>();
   final adService = AdService.to;
+  final VoidCallback? onTap;
 
   ListingCard({
     super.key,
     required this.property,
+    this.imageWidth,
+    this.imageHeight,
+    this.cardHeight,
+    this.onTap,
   });
 
+  void _defaultOnTap() {
+    adService.interstitialAd?.show();
+    Get.toNamed('/listing-details', arguments: property.id);
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (property != null) {
-      final id = property!.id;
-      final listing = property!.data;
+    // if (property != null) {
+    //   final id = property!.id;
+    //   final listing = property!.data;
 
     // TODO: fIx favourite listing toggle
       // bool isFav = listing['is_favourite'];
@@ -31,8 +41,9 @@ class ListingCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
+        onTap: onTap ?? _defaultOnTap,
         child: Container(
-          height: 220,
+          height: cardHeight ?? 220,
           width: 180,
           decoration: BoxDecoration(
             color: const Color(0xFFFFFFFF),
@@ -53,21 +64,20 @@ class ListingCard extends StatelessWidget {
                 Stack(
                   children: [
                     ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(12)),
-                          child: listing['image'] != null && listing['image'].isNotEmpty
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(12)),
+                        child: property.data['image'] != null &&
+                                property.data['image'].isNotEmpty
                               ? Image.network(
-                        "$POCKETBASE_URL/api/files/properties/$id/${listing['image'][0].toString()}",
-                        fit: BoxFit.cover,
-                        height: 115,
-                        width: 180,
-                                )
+                                "$POCKETBASE_URL/api/files/properties/${property.id}/${property.data['image'][0].toString()}",
+                                fit: BoxFit.cover,
+                                height: imageHeight ?? 115,
+                                width: imageWidth ?? 180)
                               : Image.asset(
                                   'assets/images/house_placeholder.jpg',
                                   fit: BoxFit.cover,
-                                  height: 115,
-                                  width: 180
-                                )
-                    ),
+                                height: imageHeight ?? 115,
+                                width: imageWidth ?? 180)),
                     Positioned(
                       top: 8,
                       left: 130,
@@ -82,13 +92,13 @@ class ListingCard extends StatelessWidget {
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(0),
                             icon:
-                                bookmarkService.bookmarks.contains(property!.id)
+                                bookmarkService.bookmarks.contains(property.id)
                               ? const Icon(IconlyBold.heart)
                               : const Icon(IconlyLight.heart),
                           color: Colors.red,
                           iconSize: 20.0,
                             onPressed: () =>
-                                bookmarkService.toggleBookmark(property!.id),
+                              bookmarkService.toggleBookmark(property.id),
                         ),
                       ),
                     )
@@ -99,7 +109,7 @@ class ListingCard extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    listing['title'] ?? "",
+                    property.data['title'] ?? "",
                     overflow: TextOverflow.clip,
                     maxLines: 2,
                     style: const TextStyle(
@@ -115,7 +125,7 @@ class ListingCard extends StatelessWidget {
                     color: Colors.grey,
                   ),
                   Text(
-                    listing['location']!,
+                    property.data['location']!,
                     overflow: TextOverflow.clip,
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
@@ -128,7 +138,7 @@ class ListingCard extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "\$${listing['price']}",
+                    "\$${property.data['price']}",
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -140,16 +150,8 @@ class ListingCard extends StatelessWidget {
             ),
           ),
         ),
-        onTap: () {
-          //listingDetailController.id = id;
-          adService.interstitialAd?.show();
-          Get.to(() => const ListingDetailPage(), arguments: property);
-        },
       ),
     );
-
-    }else{
-      return Container();
-    }
+    
   }
 }

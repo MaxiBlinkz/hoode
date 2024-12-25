@@ -9,7 +9,7 @@ import 'package:hoode/app/data/enums/enums.dart';
 
 class MapViewController extends GetxController {
 
-  var status = Status.pending.obs;
+  var status = Status.initial.obs;
   final pb = PocketBase(POCKETBASE_URL);
 
   Stream<List<Marker>> getPropertyMarkers(int page) async* {

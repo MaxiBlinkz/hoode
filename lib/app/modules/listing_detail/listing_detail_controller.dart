@@ -1,46 +1,43 @@
 import 'package:get/get.dart';
-// import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:pocketbase/pocketbase.dart';
+import 'package:hoode/app/core/config/constants.dart';
+import 'package:hoode/app/data/services/bookmarkservice.dart';
 
 class ListingDetailController extends GetxController {
-  //int _id = 2;
-  //set id(int _id) => id = _id;
-  //final int id = 0;
-  // final RxInt id = 0.obs;
-  // var property = {}.obs;
-  // var isLoading = true.obs;
+  final pb = PocketBase(POCKETBASE_URL);
+  final bookmarkService = Get.find<BookmarkService>();
+  
+  final property = Rxn<RecordModel>();
+  final isLoading = true.obs;
+  final isBookmarked = false.obs;
 
   @override
-  void onInit() async {
+  void onInit() {
     super.onInit();
-    // id.value = Get.arguments ?? 0;
-    // fetchProperty();
+    final propertyId = Get.arguments as String;
+    loadPropertyDetails(propertyId);
   }
 
-  // void fetchProperty() async {
-  //   try {
-  //     final response = await Supabase.instance.client
-  //         .from('properties')
-  //         .select()
-  //         .eq('id', '${id.value}')
-  //         .single();
-
-  //     if (response.isNotEmpty) {
-  //       property.value = response;
-  //     }
-  //   } catch (e) {
-  //     Get.snackbar('Error', '$e');
-  //   } finally {
-  //     isLoading(false);
-  //   }
-  // }
-
-  @override
-  void onReady() {
-    super.onReady();
+  Future<void> loadPropertyDetails(String id) async {
+    isLoading(true);
+    try {
+      property.value = await pb.collection('properties').getOne(id);
+      isBookmarked.value = await bookmarkService.isBookmarked(id);
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to load property details');
+    } finally {
+      isLoading(false);
+    }
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  void toggleBookmark() {
+    if (property.value != null) {
+      bookmarkService.toggleBookmark(property.value!.id);
+      isBookmarked.toggle();
+    }
+  }
+
+  void contactAgent() {
+    // Implement agent contact logic
   }
 }

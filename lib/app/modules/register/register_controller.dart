@@ -28,7 +28,7 @@ class RegisterController extends GetxController {
   var isPasswordVisible = false.obs;
 
   var id = "".obs;
-  var status = Status.pending.obs;
+  var status = Status.initial.obs;
   var err = "".obs;
 
   final storage = GetStorage();

@@ -7,8 +7,6 @@ import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
 class AuthService extends GetxService {
   final storage = GetStorage();
   final pb = PocketBase(POCKETBASE_URL);
-  
-  // Add this to track auth state
   final isAuthenticated = false.obs;
 
   Future<void> checkLoginStatus() async {
@@ -23,5 +21,23 @@ class AuthService extends GetxService {
       }
     }
   }
-}
 
+  void requireAuth(Function callback) {
+    if (isAuthenticated.value) {
+      callback();
+    } else {
+      Get.toNamed('/login');
+    }
+  }
+
+  bool get isLoggedIn => isAuthenticated.value;
+
+  void logout() {
+    pb.authStore.clear();
+    storage.write('isLoggedIn', false);
+    storage.remove('authToken');
+    storage.remove('userData');
+    isAuthenticated(false);
+    Get.offAllNamed('/login');
+  }
+}

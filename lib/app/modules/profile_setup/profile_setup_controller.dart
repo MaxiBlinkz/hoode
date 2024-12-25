@@ -38,7 +38,7 @@ class ProfileSetupController extends GetxController {
 
   final Rx<LatLng?> selectedLocation = Rx<LatLng?>(null);
 
-  var status = Status.pending.obs;
+  var status = Status.initial.obs;
   final Logger logger = Logger(printer: PrettyPrinter());
   final storage = GetStorage();
 
@@ -177,7 +177,7 @@ class ProfileSetupController extends GetxController {
       if (pb.authStore.isValid) {
         status(Status.success);
       } else {
-        status(Status.pending);
+        status(Status.initial);
       }
     } catch (e) {
       status(Status.error);

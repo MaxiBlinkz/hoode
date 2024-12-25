@@ -21,7 +21,7 @@ class LoginController extends GetxController {
   var email = "".obs;
   var password = "".obs;
   final isLoggedIn = false.obs;
-  var status = Status.pending.obs;
+  var status = Status.initial.obs;
   Rx<Object> err = "".obs;
   var isPasswordVisible = false.obs;
   final rememberMe = false.obs;
@@ -60,7 +60,7 @@ class LoginController extends GetxController {
 
         Get.offAll(() => const NavBarPage());
       } else {
-        status(Status.pending);
+        status(Status.initial);
       }
     } catch (e) {
       err.value = e.toString();

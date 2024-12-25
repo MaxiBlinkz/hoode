@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/core/theme/colors.dart';
+import 'package:hoode/app/modules/bookmarks/bookmarks_page.dart';
 import 'package:hoode/app/modules/map_view/map_view_page.dart';
-import 'package:hoode/app/modules/onboarding/onboarding_page.dart';
-import 'package:hoode/app/modules/profile/profile_page.dart';
+import 'package:hoode/app/modules/dashboard/dashboard_page.dart';
 import 'package:hoode/app/modules/settings/settings_page.dart';
 import 'package:iconly/iconly.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
@@ -25,10 +25,10 @@ class NavBarPage extends StatelessWidget {
             index: controller.tabIndex,
             children: [
               HomePage(),
-              ProfilePage(),
+                DashboardPage(),
               MapViewPage(),
-              SettingsPage(),
-              OnboardingPage()
+                BookmarksPage(),
+                SettingsPage(),
             ],
           ),
           // floatingActionButton: FloatingActionButton(
@@ -72,16 +72,13 @@ class NavBarPage extends StatelessWidget {
               icon: IconlyLight.home,
                 label: "Home"),
                 NavItemData(
-              icon: IconlyLight.profile,
-                label: "Profile"),
+              icon: IconlyLight.category, label: "Dashboard"),
             ],
             rightItems: const [
                NavItemData(
-              icon: IconlyLight.home,
-                label: "Home"),
+              icon: IconlyLight.bookmark, label: "Bookmarks"),
                 NavItemData(
-              icon: IconlyLight.profile,
-                label: "Profile"),
+              icon: IconlyLight.setting, label: "Settings"),
             ],
             floatingAction: const FloatingActionData(icon: IconlyLight.discovery),
           )

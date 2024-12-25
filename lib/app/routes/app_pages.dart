@@ -9,12 +9,15 @@ import 'register_routes.dart';
 import 'profile_setup_routes.dart';
 import 'nav_bar_routes.dart';
 import 'settings_routes.dart';
-import 'profile_routes.dart';
-import 'sign_in_routes.dart';
+import 'dashboard_routes.dart';
 import 'splash_screen_routes.dart';
 import 'onboarding_routes.dart';
 import 'auth_routes.dart';
 import 'map_view_routes.dart';
+import 'add_listing_routes.dart';
+import 'my_listings_routes.dart';
+import 'edit_profile_routes.dart';
+import 'bookmarks_routes.dart';
 
 class AppPages {
   AppPages._();
@@ -34,10 +37,13 @@ class AppPages {
     ...NavBarRoutes.routes,
     ...SettingsRoutes.routes,
     ...ProfileRoutes.routes,
-		...SignInRoutes.routes,
 		...SplashScreenRoutes.routes,
 		...OnboardingRoutes.routes,
 		...AuthRoutes.routes,
 		...MapViewRoutes.routes,
+		...AddListingRoutes.routes,
+		...MyListingsRoutes.routes,
+		...EditProfileRoutes.routes,
+		...BookmarksRoutes.routes,
   ];
 }

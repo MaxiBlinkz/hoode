@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/core/config/constants.dart';
 import 'package:hoode/app/data/enums/enums.dart';
+import 'package:hoode/core.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,9 +15,12 @@ class HomeController extends GetxController {
   var isLoading = true.obs;
   int currentPage = 1;
   int totalListing = 20;
-  var status = Status.pending.obs;
+  var status = Status.initial.obs;
   final hasMoreData = true.obs;
   final totalItems = 0.obs;
+
+  //final _properties = BehaviorSubject<List<Property>>.seeded([]); // Initialize with an empty list
+
 
   Logger logger = Logger();
 
@@ -157,9 +161,10 @@ class HomeController extends GetxController {
 // }
 
   Future<void> loadMore() async {
-    listController.removeListener(() {}); // Clear any existing listeners
-
-    listController.addListener(() {
+    // Remove the separate removeListener call
+  
+    // Create a single scroll listener function
+    void scrollListener() {
       if (!listController.hasClients) return;
 
       if (listController.position.pixels >=
@@ -168,7 +173,7 @@ class HomeController extends GetxController {
           hasMoreData.value) {
         isLoading(true);
         currentPage++;
-      
+    
         getProperties(currentPage).listen((data) {
           if (data.isEmpty) {
             hasMoreData(false);
@@ -179,10 +184,16 @@ class HomeController extends GetxController {
         }, onError: (error) {
           isLoading(false);
           logger.e('Error loading more properties: $error');
-        });
+        }
+      );
       }
-    });
   }
+
+    // Remove any existing listeners and add the new one
+    listController.removeListener(scrollListener);
+    listController.addListener(scrollListener);
+  }
+
 
   Stream<List<RecordModel>> getFeaturedProperties() async* {
     try {

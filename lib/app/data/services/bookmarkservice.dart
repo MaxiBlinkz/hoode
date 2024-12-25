@@ -1,14 +1,18 @@
 import 'package:get/get.dart';
+import 'package:hoode/app/data/services/authservice.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:hoode/app/core/config/constants.dart';
 
 class BookmarkService extends GetxService {
   final pb = PocketBase(POCKETBASE_URL);
   final bookmarks = <String>[].obs;
+  final authService = Get.find<AuthService>();
 
   // TODO Fix User authentication
   Future<void> toggleBookmark(String propertyId) async {
-    try {
+    authService.requireAuth(() async {
+      // Your existing bookmark logic here
+      try {
       if (!pb.authStore.isValid) {
         Get.toNamed('/login');
       throw 'User must be logged in to bookmark properties';
@@ -37,6 +41,9 @@ class BookmarkService extends GetxService {
         } catch (e) {
       rethrow;
     }
+    });
+
+    
   }
 
   Future<bool> isBookmarked(String propertyId) async {

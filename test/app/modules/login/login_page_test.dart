@@ -14,7 +14,7 @@ class MockLoginController extends GetxController with Mock implements LoginContr
   @override
   final isPasswordVisible = false.obs;
   @override
-  final status = Status.pending.obs;
+  final status = Status.initial.obs;
 }
 
 void main() {
