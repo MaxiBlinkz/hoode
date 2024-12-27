@@ -30,7 +30,7 @@ class MapViewPage extends GetView<MapViewController> {
                     TileLayer(
                       urlTemplate:
                           'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                      userAgentPackageName: 'com.example.hoode',
+                      userAgentPackageName: 'com.codax.hoode',
                       // Optional additional parameters
                       maxZoom: 19,
                       minZoom: 1,

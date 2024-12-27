@@ -61,5 +61,16 @@
     <string>hoode</string>
   </dict>
 </array>
+    <!-- Location permission prompt -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs access to location when open to show your current location on the map.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>This app needs access to location when in the background to show your current location on the map.</string>
+
+    <!-- Maps/Network usage -->
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This app needs access to location to show your current location on the map.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>This app needs access to location to show your current location on the map.</string>
 </dict>
 </plist>

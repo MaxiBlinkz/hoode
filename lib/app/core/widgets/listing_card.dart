@@ -25,15 +25,13 @@ class ListingCard extends StatelessWidget {
   });
 
   void _defaultOnTap() {
-    adService.interstitialAd?.show();
-    Get.toNamed('/listing-details', arguments: property.id);
+    //adService.interstitialAd?.show();
+    Get.toNamed('/listing-detail', arguments: property);
   }
 
   @override
   Widget build(BuildContext context) {
-    // if (property != null) {
-    //   final id = property!.id;
-    //   final listing = property!.data;
+
 
     // TODO: fIx favourite listing toggle
       // bool isFav = listing['is_favourite'];

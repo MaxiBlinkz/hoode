@@ -8,6 +8,10 @@ class NavBarController extends GetxController {
     update();
   }
 
+  void gotoMapView() {
+    Get.toNamed('/map-view');
+  }
+
   @override
   void onInit() {
     super.onInit();

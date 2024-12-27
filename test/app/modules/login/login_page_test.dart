@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
@@ -38,7 +37,7 @@ void main() {
 
     expect(find.text('Hoode'), findsOneWidget);
     expect(find.text('Login'), findsOneWidget);
-    expect(find.byType(FormBuilderTextField), findsNWidgets(2));
+    expect(find.byType(TextField), findsNWidgets(2));
     expect(find.text("Don't have an account? Sign Up"), findsOneWidget);
     expect(find.text('Or continue with'), findsOneWidget);
     expect(find.byType(SocialButton), findsNWidgets(3));
@@ -51,7 +50,7 @@ void main() {
       ),
     );
 
-    await tester.enterText(find.byType(FormBuilderTextField).first, 'invalid-email');
+    await tester.enterText(find.byType(TextField).first, 'invalid-email');
     await tester.pump();
     await tester.tap(find.text('Login'));
     await tester.pump();
@@ -66,8 +65,8 @@ void main() {
       ),
     );
 
-    final passwordField = find.byType(FormBuilderTextField).last;
-    expect(tester.widget<FormBuilderTextField>(passwordField).obscureText, true);
+    final passwordField = find.byType(TextField).last;
+    expect(tester.widget<TextField>(passwordField).obscureText, true);
 
     await tester.tap(find.byIcon(IconlyLight.show));
     await tester.pump();
@@ -107,8 +106,8 @@ void main() {
       mockController.status.value = Status.success;
     });
 
-    await tester.enterText(find.byType(FormBuilderTextField).first, 'test@email.com');
-    await tester.enterText(find.byType(FormBuilderTextField).last, 'password123');
+    await tester.enterText(find.byType(TextField).first, 'test@email.com');
+    await tester.enterText(find.byType(TextField).last, 'password123');
     await tester.tap(find.text('Login'));
     await tester.pump(const Duration(seconds: 3));
 

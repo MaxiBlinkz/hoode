@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'package:easy_loading_button/easy_loading_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/core/widgets/social_button.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
@@ -13,15 +11,10 @@ import 'login_controller.dart';
 class LoginPage extends GetView<LoginController> {
   LoginPage({super.key});
 
-  // final adService = AdService.to;
-
   @override
   Widget build(BuildContext context) {
-    final emailController = controller.emailController;
-    final passwordController = controller.passwordController;
-    // final adController = Get.put(AdController());
-    //final btnController = Easy
     final formKey = GlobalKey<FormState>();
+
     return Scaffold(
         body: Container(
       decoration: BoxDecoration(
@@ -37,7 +30,6 @@ class LoginPage extends GetView<LoginController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Logo
                 const Text(
                   "Hoode",
                   style: TextStyle(
@@ -48,7 +40,6 @@ class LoginPage extends GetView<LoginController> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                // Login Form
                 Container(
                   width: 350,
                   padding: const EdgeInsets.all(20),
@@ -63,7 +54,7 @@ class LoginPage extends GetView<LoginController> {
                       ),
                     ],
                   ),
-                  child: FormBuilder(
+                  child: Form(
                     key: formKey,
                     child: Column(
                       children: [
@@ -76,13 +67,8 @@ class LoginPage extends GetView<LoginController> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        // Email Field
-                        FormBuilderTextField(
-                            name: "Email",
-                            controller: emailController,
-                            obscureText: false,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
+                        TextFormField(
+                          controller: controller.emailController,
                             decoration: InputDecoration(
                               hintText: "Email",
                               prefixIcon: const Icon(IconlyLight.message,
@@ -96,19 +82,20 @@ class LoginPage extends GetView<LoginController> {
                               contentPadding:
                                   const EdgeInsets.symmetric(vertical: 15),
                             ),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                              FormBuilderValidators.email()
-                            ])),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            }
+                            if (!GetUtils.isEmail(value)) {
+                              return 'Please enter a valid email';
+                            }
+                            return null;
+                          },
+                        ),
                         const SizedBox(height: 20),
-                        // Password Field
-                        Obx(() {
-                          return FormBuilderTextField(
-                              name: "Password",
-                              controller: passwordController,
+                        Obx(() => TextFormField(
+                              controller: controller.passwordController,
                               obscureText: !controller.isPasswordVisible.value,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
                               decoration: InputDecoration(
                                 hintText: "Password",
                                 prefixIcon: const Icon(IconlyLight.lock,
@@ -120,9 +107,8 @@ class LoginPage extends GetView<LoginController> {
                                         : IconlyLight.show,
                                     color: AppColors.primary,
                                   ),
-                                  onPressed: () {
-                                    controller.togglePasswordVisibility();
-                                  },
+                                  onPressed:
+                                      controller.togglePasswordVisibility,
                                 ),
                                 filled: true,
                                 fillColor: Colors.grey[200],
@@ -133,12 +119,16 @@ class LoginPage extends GetView<LoginController> {
                                 contentPadding:
                                     const EdgeInsets.symmetric(vertical: 15),
                               ),
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(),
-                                FormBuilderValidators.password(),
-                              ]));
-                        }),
-                        // const SizedBox(height: 20),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your password';
+                                }
+                                if (value.length < 6) {
+                                  return 'Password must be at least 6 characters';
+                                }
+                                return null;
+                              },
+                            )),
                         const SizedBox(height: 10),
                         Row(
                           children: [
@@ -154,38 +144,23 @@ class LoginPage extends GetView<LoginController> {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        // Login Button
                         EasyButton(
                             buttonColor: AppColors.primary,
                             borderRadius: 36,
-                            onPressed: () async {
-                              //adService.interstitialAd?.show();
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
                               controller.login();
-                              // await Future.delayed(const Duration(seconds: 2));
-                              // if (controller.status.value == Status.success) {
-                              //   // btnController.success();
-                              //   await Future.delayed(
-                              //       const Duration(seconds: 2));
-                              //   Get.offAll(() => const NavBarPage());
-                              // } else if (controller.status.value ==
-                              //     Status.error) {
-                              //   //btnController.error();
-                              //   ToastOverlay.show(
-                              //     context: context,
-                              //     message: "Something went wrong",
-                              //     backgroundColor: Colors.red,
-                              //   );
-                              // }
+                            }
                             },
                             idleStateWidget: const Text(
                               "Login",
                               style: TextStyle(color: Colors.white),
                             ),
-                            loadingStateWidget: CircularProgressIndicator(
+                          loadingStateWidget: const CircularProgressIndicator(
                               color: Colors.white,
-                            )),
+                          ),
+                        ),
                         const SizedBox(height: 20),
-                        // Forgot Password Button
                         TextButton(
                           onPressed: () {
                             // Implement forgot password logic

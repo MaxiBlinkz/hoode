@@ -15,7 +15,7 @@ class BookmarkService extends GetxService {
       try {
       if (!pb.authStore.isValid) {
         Get.toNamed('/login');
-      throw 'User must be logged in to bookmark properties';
+      //throw 'User must be logged in to bookmark properties';
     }
       final currentUser = pb.authStore.model.id;
       
@@ -39,7 +39,8 @@ class BookmarkService extends GetxService {
       }
       bookmarks.remove(propertyId);
         } catch (e) {
-      rethrow;
+          
+      //rethrow;
     }
     });
 

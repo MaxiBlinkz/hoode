@@ -4,23 +4,41 @@ import 'package:get/get.dart';
 import 'package:hoode/app/core/config/constants.dart';
 import 'package:hoode/app/core/theme/colors.dart';
 import 'package:hoode/app/core/widgets/avatar.dart';
+import 'package:logger/logger.dart';
 import 'listing_detail_controller.dart';
 
 class ListingDetailPage extends GetView<ListingDetailController> {
-  const ListingDetailPage({super.key});
+  ListingDetailPage({super.key});
+
+  Logger log = Logger();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() {
+        log.i('Property value: ${controller.property.value}');
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
 
         final property = controller.property.value;
         if (property == null) {
-          return const Center(child: Text('Property not found'));
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Failed to load property details.'),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () =>
+                      controller.loadPropertyDetails(Get.arguments as String),
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
+          );
         }
+
 
         return CustomScrollView(
           slivers: [
@@ -31,7 +49,7 @@ class ListingDetailPage extends GetView<ListingDetailController> {
                 background: Hero(
                   tag: 'property-${property.id}',
                   child: Image.network(
-                    '$POCKETBASE_URL/api/files/properties/${property.id}/${property.data['image']}',
+                    '$POCKETBASE_URL/api/files/properties/${property.id}/${property.data['image'][0].toString()}',
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -137,7 +155,7 @@ class ListingDetailPage extends GetView<ListingDetailController> {
                           ),
                         ),
                       ],
-                    ),
+                    ),                    
                   ],
                 ),
               ),
@@ -145,18 +163,26 @@ class ListingDetailPage extends GetView<ListingDetailController> {
           ],
         );
       }),
-      bottomNavigationBar: Padding(
+      // In the bottomNavigationBar section, update the Row widget:
+bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
             Expanded(
               child: Text(
-                '\$${controller.property.value?.data['price']}',
+                "\${controller.property.value?.data['price']}",
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
+            ),
+            IconButton(
+              icon: const Icon(IconlyLight.chat),
+              onPressed: () => Get.toNamed('/chat-view', arguments: {
+                'agentId': controller.property.value?.data['agent'],
+                'propertyId': controller.property.value?.id,
+              }),
             ),
             Expanded(
               child: ElevatedButton(
@@ -167,6 +193,7 @@ class ListingDetailPage extends GetView<ListingDetailController> {
           ],
         ),
       ),
+
     );
   }
 

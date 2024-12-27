@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:hoode/app/core/theme/colors.dart';
 import 'package:hoode/app/core/widgets/listing_card.dart';
 import 'listing_search_controller.dart';
+import 'dart:math' as math;
+
 
 class ListingSearchPage extends GetView<ListingSearchController> {
   const ListingSearchPage({super.key});
@@ -16,67 +18,22 @@ class ListingSearchPage extends GetView<ListingSearchController> {
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: SearchAnchor.bar(
-                barHintText: 'Search properties...',
-                barLeading: IconButton(
-                  icon: const Icon(IconlyLight.arrowLeft2),
-                  onPressed: () => Get.back(),
+              child: TextField(
+                controller: controller.searchController,
+                decoration: InputDecoration(
+                  hintText: 'Search properties...',
+                  prefixIcon: const Icon(IconlyLight.search),
+                  suffixIcon: IconButton(
+                    icon: const Icon(IconlyLight.filter),
+                    onPressed: () => _showFilterBottomSheet(context),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
-                onSubmitted: (value) => controller.updateSearchQuery(value),
-                suggestionsBuilder: (context, controller) {
-                  return List<ListTile>.generate(5, (index) {
-                    return ListTile(
-                      leading: const Icon(IconlyLight.search),
-                      title: Text('Suggestion $index'),
-                      onTap: () {
-                        controller.closeView(controller.text);
-                      },
-                    );
-                  });
-                },
+                onChanged: controller.updateSearchQuery,
               ),
             ),
-            
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                children: [
-                  _buildFilterChip(
-                    'Price Range',
-                    IconlyLight.wallet,
-                    () => _showPriceRangeDialog(context),
-                  ),
-                  _buildFilterChip(
-                    'Property Type',
-                    IconlyLight.home,
-                    () => _showPropertyTypeDialog(context),
-                  ),
-                  _buildFilterChip(
-                    'Bedrooms',
-                    Icons.bed,
-                    () => _showBedroomsDialog(context),
-                  ),
-                  _buildFilterChip(
-                    'Location',
-                    IconlyLight.location,
-                    () => _showLocationDialog(context),
-                  ),
-                ],
-              ),
-            ),
-
-            Obx(() => Wrap(
-                  spacing: 8,
-                  children: controller.activeFilters.map((filter) {
-                    return Chip(
-                      label: Text(filter),
-                      deleteIcon: const Icon(IconlyLight.closeSquare, size: 18),
-                      onDeleted: () => controller.removeFilter(filter),
-                    );
-                  }).toList(),
-                )),
-
             Expanded(
               child: Obx(() => controller.isLoading.value
                   ? const Center(child: CircularProgressIndicator())
@@ -92,138 +49,117 @@ class ListingSearchPage extends GetView<ListingSearchController> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: controller.clearFilters,
-        child: const Icon(IconlyLight.delete),
-      ),
     );
   }
 
-  Widget _buildFilterChip(String label, IconData icon, VoidCallback onTap) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8.0),
-      child: ActionChip(
-        avatar: Icon(icon, size: 18, color: AppColors.primary),
-        label: Text(label),
-        onPressed: onTap,
-        backgroundColor: Colors.grey[200],
+  void _showFilterBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-    );
-  }
-
-  void _showPriceRangeDialog(BuildContext context) {
-    Get.dialog(
-      AlertDialog(
-        title: const Text('Select Price Range'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RangeSlider(
-              values: RangeValues(0, 1000000),
-              max: 1000000,
-              divisions: 100,
-              labels: RangeLabels('\$0', '\$1M'),
-              onChanged: (RangeValues values) {
-                controller.setPriceRange(values.start, values.end);
-              },
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.7,
+        maxChildSize: 0.9,
+        minChildSize: 0.5,
+        builder: (context, scrollController) => SingleChildScrollView(
+          controller: scrollController,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Search Filters',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ExpansionTile(
+                  title: const Text('Price Range'),
+                  children: [
+                    RangeSlider(
+                      values: controller.priceRange.value,
+                      min: 0,
+                      max: 1000000,
+                      divisions: 100,
+                      labels: RangeLabels(
+                        '\$${controller.priceRange.value.start.toInt()}',
+                        '\$${controller.priceRange.value.end.toInt()}',
+                      ),
+                      onChanged: controller.updatePriceRange,
+                    ),
+                  ],
+                ),
+                ExpansionTile(
+                  title: const Text('Features'),
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _buildFeatureCounter('Beds', controller.bedrooms),
+                        _buildFeatureCounter('Baths', controller.bathrooms),
+                      ],
+                    ),
+                  ],
+                ),
+                ExpansionTile(
+                  title: const Text('Location'),
+                  children: [
+                    TextField(
+                      controller: controller.locationController,
+                      decoration: InputDecoration(
+                        hintText: 'Enter location',
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.my_location),
+                          onPressed: controller.useCurrentLocation,
+                        ),
+                      ),
+                      onChanged: controller.geocodeAddress,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      controller.applyFilters();
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Apply Filters'),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: const Text('Apply'),
           ),
-        ],
+        ),
       ),
     );
   }
 
-  void _showPropertyTypeDialog(BuildContext context) {
-    Get.dialog(
-      AlertDialog(
-        title: const Text('Select Property Type'),
-        content: Column(
+  Widget _buildFeatureCounter(String label, RxInt value) {
+    return Column(
+      children: [
+        Text(label),
+        Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ListTile(
-              title: const Text('House'),
-              onTap: () {
-                controller.setPropertyType('House');
-                Get.back();
-              },
+            IconButton(
+              icon: const Icon(Icons.remove),
+              onPressed: () => value.value = math.max(0, value.value - 1),
             ),
-            ListTile(
-              title: const Text('Apartment'),
-              onTap: () {
-                controller.setPropertyType('Apartment');
-                Get.back();
-              },
-            ),
-            ListTile(
-              title: const Text('Villa'),
-              onTap: () {
-                controller.setPropertyType('Villa');
-                Get.back();
-              },
+            Obx(() => Text('${value.value}')),
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () => value.value++,
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  void _showBedroomsDialog(BuildContext context) {
-    Get.dialog(
-      AlertDialog(
-        title: const Text('Select Bedrooms'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: List.generate(5, (index) {
-            return ListTile(
-              title: Text('${index + 1} Bedrooms'),
-              onTap: () {
-                controller.setBedrooms(index + 1);
-                Get.back();
-              },
-            );
-          }),
-        ),
-      ),
-    );
-  }
-
-  void _showLocationDialog(BuildContext context) {
-    Get.dialog(
-      AlertDialog(
-        title: const Text('Select Location'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              title: const Text('New York'),
-              onTap: () {
-                controller.setLocation('New York');
-                Get.back();
-              },
-            ),
-            ListTile(
-              title: const Text('Los Angeles'),
-              onTap: () {
-                controller.setLocation('Los Angeles');
-                Get.back();
-              },
-            ),
-            ListTile(
-              title: const Text('Chicago'),
-              onTap: () {
-                controller.setLocation('Chicago');
-                Get.back();
-              },
-            ),
-          ],
-        ),
-      ),
+      ],
     );
   }
 }

@@ -27,4 +27,9 @@ class BookmarksController extends GetxController {
     await bookmarkService.toggleBookmark(listingId);
     loadBookmarks();
   }
+
+  @override 
+  void onClose() {
+    super.onClose();
+  }
 }

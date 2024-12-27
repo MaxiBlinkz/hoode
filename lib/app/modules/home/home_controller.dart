@@ -19,9 +19,6 @@ class HomeController extends GetxController {
   final hasMoreData = true.obs;
   final totalItems = 0.obs;
 
-  //final _properties = BehaviorSubject<List<Property>>.seeded([]); // Initialize with an empty list
-
-
   Logger logger = Logger();
 
   final listController = ScrollController();
@@ -112,87 +109,35 @@ class HomeController extends GetxController {
     });
   }
 
-  // Future<void> loadMore() async {
-  //   listController.addListener(() async {
-  //     if (listController.position.maxScrollExtent == listController.offset) {
-  //       currentPage++;
-  //       try {
-  //         // final response = await pb.collection('properties').getList(
-  //         //       page: currentPage,
-  //         //       perPage: totalListing,
-  //         //       // filter: 'created >= "2022-01-01 00:00:00" && someField1 != someField2',
-  //         //     );
-  //         getProperties(currentPage).listen((data) {
-  //           properties.value.addAll(data);
-  //         });
-  //         //properties.addAll(response.items);
-  //         update();
-  //       } catch (e) {
-  //         logger.e('Error loading more properties: $e');
-  //       }
-  //     }
-  //   });
-  // }
+  void loadMore() {
+  listController.addListener(() {
+    if (!listController.hasClients) return;
 
-//   Future<void> loadMore() async {
-//   listController.addListener(() {
-//     if (listController.position.pixels >= listController.position.maxScrollExtent * 0.8 &&
-//         !isLoading.value &&
-//         hasMoreData.value) {
-//       isLoading(true);
-//       currentPage++;
+    final maxScroll = listController.position.maxScrollExtent;
+    final currentScroll = listController.position.pixels;
+    const threshold = 200; // Load more when 200px away from bottom
 
-//       getProperties(currentPage).listen(
-//         (data) {
-//           if(data.isEmpty) {
-//             hasMoreData(false);
-//           } else {
-//             properties.addAll(data);
-//           }
-//           isLoading(false);
-//         },
-//         onError: (error) {
-//           isLoading(false);
-//           logger.e('Error loading more properties: $error');
-//         }
-//       );
-//     }
-//   });
-// }
-
-  Future<void> loadMore() async {
-    // Remove the separate removeListener call
-  
-    // Create a single scroll listener function
-    void scrollListener() {
-      if (!listController.hasClients) return;
-
-      if (listController.position.pixels >=
-              listController.position.maxScrollExtent * 0.8 &&
-          !isLoading.value &&
-          hasMoreData.value) {
-        isLoading(true);
-        currentPage++;
-    
-        getProperties(currentPage).listen((data) {
-          if (data.isEmpty) {
-            hasMoreData(false);
-          } else {
-            properties.addAll(data);
-          }
-          isLoading(false);
-        }, onError: (error) {
-          isLoading(false);
-          logger.e('Error loading more properties: $error');
+    if ((maxScroll - currentScroll) <= threshold &&
+        !isLoading.value &&
+        hasMoreData.value) {
+      isLoading(true);
+      currentPage++;
+      getProperties(currentPage).listen((data) {
+        if (data.isEmpty) {
+          hasMoreData(false);
+        } else {
+          properties.addAll(data);
         }
-      );
-      }
-  }
+        isLoading(false);
+      }, onError: (error) {
+        isLoading(false);
+        logger.e('Error loading more properties: $error');
+      });
+    }
+  });
+}
 
-    // Remove any existing listeners and add the new one
-    listController.removeListener(scrollListener);
-    listController.addListener(scrollListener);
-  }
+
 
 
   Stream<List<RecordModel>> getFeaturedProperties() async* {
