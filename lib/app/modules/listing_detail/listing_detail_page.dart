@@ -170,7 +170,7 @@ bottomNavigationBar: Padding(
           children: [
             Expanded(
               child: Text(
-                "\${controller.property.value?.data['price']}",
+                "\$${controller.property.value?.data['price']}",
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
