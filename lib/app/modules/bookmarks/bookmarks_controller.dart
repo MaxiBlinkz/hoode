@@ -3,6 +3,8 @@ import 'package:pocketbase/pocketbase.dart';
 import 'package:hoode/app/data/services/bookmarkservice.dart';
 
 class BookmarksController extends GetxController {
+  static BookmarksController get to => Get.find();
+  
   final bookmarkService = Get.find<BookmarkService>();
   final bookmarkedListings = <RecordModel>[].obs;
   final isLoading = false.obs;
@@ -33,3 +35,4 @@ class BookmarksController extends GetxController {
     super.onClose();
   }
 }
+

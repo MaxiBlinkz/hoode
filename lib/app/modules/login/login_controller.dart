@@ -11,8 +11,9 @@ import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:bugsnag_flutter/bugsnag_flutter.dart' as bugnag;
+import 'package:hoode/app/data/services/db_helper.dart';
+
 
 class LoginController extends GetxController {
   final emailController = TextEditingController();
@@ -33,8 +34,8 @@ class LoginController extends GetxController {
 
   final storage = GetStorage();
 
-  // final pb = POCKETBASE;
-  final pb = PocketBase(POCKETBASE_URL);
+  // final pb = PocketBase(POCKETBASE_URL);
+  final pb = PocketBase(DbHelper.getPocketbaseUrl());
 
   Future<void> login() async {
     status(Status.loading);

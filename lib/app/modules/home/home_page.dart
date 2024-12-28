@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:hoode/app/core/widgets/category_item.dart';
-import 'package:hoode/app/core/widgets/listing_card_placeholder.dart';
+// import 'package:hoode/app/core/widgets/category_item.dart';
 import 'package:hoode/app/data/services/adservice.dart';
 import 'package:hoode/app/modules/listing_search/listing_search_page.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 import 'package:lottie/lottie.dart';
+// import 'package:loading_animation_widget/loading_animation_widget.dart';
+// import 'package:loading_indicator/loading_indicator.dart';
+// import 'package:lottie/lottie.dart';
 import 'package:pocketbase/pocketbase.dart';
 // import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:flutter_remix/flutter_remix.dart';
-import 'package:hoode/app/data/enums/enums.dart';
+// import 'package:hoode/app/data/enums/enums.dart';
 
 //import '../../../gen/assets.gen.dart';
 import '../../core/theme/colors.dart';
@@ -49,7 +49,9 @@ class HomePage extends GetView<HomeController> {
                 color: AppColors.primary,
               ),
               iconSize: 20.0,
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed("/messages");
+              },
             ),
           ),
         ],
@@ -66,116 +68,137 @@ class HomePage extends GetView<HomeController> {
                 const SizedBox(height: 8.0),
                 // Horizontal category list
                 SizedBox(
-                  height: 80,
+                  height: 50,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     children: const [
-                      CategoryItem(title: "House", icon: IconlyBold.home),
-                      CategoryItem(title: "Apartment", icon: IconlyBold.home),
-                      CategoryItem(
-                          title: "Villa", icon: FlutterRemix.building_2_fill),
-                      CategoryItem(
-                          title: "House", icon: FlutterRemix.building_fill),
-                      CategoryItem(
-                          title: "Apartment", icon: EvaIcons.home_outline),
-                      CategoryItem(title: "Villa", icon: EvaIcons.award),
-                      CategoryItem(title: "House", icon: EvaIcons.home),
-                      CategoryItem(
-                          title: "Apartment", icon: EvaIcons.home_outline),
-                      CategoryItem(title: "Villa", icon: EvaIcons.award),
+                      Padding(
+                        padding: EdgeInsets.only(right: 8.0),
+                        child: FilterChip(
+                          label: Text("House"),
+                          avatar: Icon(IconlyBold.home, size: 16),
+                          selected: false,
+                          onSelected: null,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 8.0),
+                        child: FilterChip(
+                          label: Text("Apartment"),
+                          avatar: Icon(IconlyBold.home, size: 16),
+                          selected: false,
+                          onSelected: null,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 8.0),
+                        child: FilterChip(
+                          label: Text("Villa"),
+                          avatar: Icon(FlutterRemix.building_2_fill, size: 16),
+                          selected: false,
+                          onSelected: null,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 8.0),
+                        child: FilterChip(
+                          label: Text("House"),
+                          avatar: Icon(FlutterRemix.building_fill, size: 16),
+                          selected: false,
+                          onSelected: null,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 8.0),
+                        child: FilterChip(
+                          label: Text("Apartment"),
+                          avatar: Icon(EvaIcons.home_outline, size: 16),
+                          selected: false,
+                          onSelected: null,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 8.0),
+                        child: FilterChip(
+                          label: Text("Villa"),
+                          avatar: Icon(EvaIcons.award, size: 16),
+                          selected: false,
+                          onSelected: null,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 16.0),
 
-                // Featured Properties Section
-                Text("Featured Properties",
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold))
-                    .paddingOnly(left: 16),
-                const SizedBox(height: 8.0),
-                SizedBox(
-                  height: 250,
-                  child: StreamBuilder(
-                    stream: controller.getFeaturedProperties(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 3, // Placeholder items
-                          itemBuilder: (context, index) =>
-                              ListingCardPlaceholder(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return const Center(
-                            child: Text('No featured properties found.'));
-                      } else {
-                        return ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            final property = snapshot.data![index];
-                            return ListingCard(property: property);
-                          },
-                        );
-                      }
-                    },
-                  ),
-                ),
-                const SizedBox(height: 16.0),
 
-                // All Properties Section
-                Text("All Properties",
+                const SizedBox(height: 16.0),
+                Text("Properties",
                         style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold))
                     .paddingOnly(left: 16),
                 const SizedBox(height: 8.0),
                 Obx(
-                  () => ListView.builder(
-                    primary: false,
-                    shrinkWrap: true,
-                    itemCount: controller.properties.length +
-                        (controller.hasMoreData.value ? 1 : 0),
-                    itemBuilder: (context, index) {
-                      if (index < controller.properties.length) {
-                        final property = controller.properties[index];
+                  () => Skeletonizer(
+                    enabled: controller.isLoading.value,
+                    child: ListView.builder(
+                      primary: false,
+                      shrinkWrap: true,
+                      itemCount: controller.properties.isEmpty
+                          ? 3
+                          : controller.properties.length,
+                      itemBuilder: (context, index) {
+                        if (controller.properties.isNotEmpty) {
+                          final property = controller.properties[index];
+                          return ListingCard(
+                            property: property,
+                            imageWidth: double.infinity,
+                            imageHeight: 180,
+                            cardHeight: 300,
+                          );
+                        }
                         return ListingCard(
-                          property: property,
+                          property: RecordModel(),
                           imageWidth: double.infinity,
-                          imageHeight: 200,
+                          imageHeight: 180,
                           cardHeight: 300,
                         );
-                      } else if (controller.hasMoreData.value) {
-                        return LoadingAnimationWidget.waveDots(
-                          color: Colors.white,
-                          size: 20,
-                        );
-                      } else {
-                        return const SizedBox.shrink();
-                      }
-                    },
+                      },
+                    ),
                   ),
                 ),
 
+                // Loading indicator at bottom
+                Obx(() => controller.isLoadingMore.value
+                    ? SizedBox(
+                        height: 100,
+                        child: Center(
+                          child: Lottie.asset(
+                            'assets/animations/loading_more.json',
+                            height: 50,
+                            width: 50,
+                          ),
+                        ),
+                      )
+                    : const SizedBox()),
+
                 // No more data message
-                Obx(() => controller.isLoading.value
-                    ? const SizedBox.shrink()
-                    : !controller.hasMoreData.value
-                        ? const Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Text(
-                              "No more properties to load",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          )
-                        : const SizedBox()),
+                Obx(() => !controller.isLoadingMore.value &&
+                        !controller.hasMoreData.value
+                    ? const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Text(
+                          "No more properties to load",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      )
+                    : const SizedBox()),
 
                 // Banner ad at the bottom
-                if (adService.bannerAd != null)
+                if (adService.isAdLoaded.value)
                   SizedBox(
+                    key: UniqueKey(),
                     width: adService.bannerAd!.size.width.toDouble(),
                     height: adService.bannerAd!.size.height.toDouble(),
                     child: AdWidget(ad: adService.bannerAd!),

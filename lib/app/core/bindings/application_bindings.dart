@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 import 'package:hoode/app/data/services/adservice.dart';
 import 'package:hoode/app/data/services/bookmarkservice.dart';
+import 'package:hoode/app/data/services/user_service.dart';
 import 'package:hoode/app/modules/add_listing/add_listing_controller.dart';
+import 'package:hoode/app/modules/become_agent/become_agent_controller.dart';
 import 'package:hoode/app/modules/bookmarks/bookmarks_controller.dart';
 import 'package:hoode/app/modules/edit_profile/edit_profile_controller.dart';
 import 'package:hoode/app/modules/home/home_controller.dart';
@@ -19,10 +21,13 @@ class ApplicationBindings extends Bindings {
     // Services - Permanent instances
     Get.put(AdService(), permanent: true);
     Get.put(BookmarkService(), permanent: true);
+    Get.put(UserService(), permanent: true);
 
     // Core features - Permanent controllers
     Get.put(HomeController(), permanent: true);
     Get.put(DashboardController(), permanent: true);
+    Get.lazyPut(()=> DashboardController(), fenix: true);
+    Get.lazyPut(()=> BookmarksController(), fenix: true);
 
     // Feature controllers - Created on demand
     Get.create(() => ListingDetailController());
@@ -31,7 +36,7 @@ class ApplicationBindings extends Bindings {
     Get.create(() => MapViewController());
     Get.create(() => ListingSearchController());
     Get.create(() => SettingsController());
-    Get.create(() => BookmarksController());
+    Get.create(() => BecomeAgentController());
     Get.create(() => EditProfileController());
     Get.create(() => AddListingController());
   }

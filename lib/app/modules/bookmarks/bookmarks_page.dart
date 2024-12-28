@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/core/theme/colors.dart';
+// import 'package:hoode/app/core/theme/colors.dart';
 import 'package:hoode/app/core/widgets/listing_card.dart';
 import 'bookmarks_controller.dart';
 

@@ -23,7 +23,7 @@ class MapViewPage extends GetView<MapViewController> {
                 return FlutterMap(
                   mapController: _mapController,
                   options: MapOptions(
-                    initialCenter: LatLng(0.55, 0.55),
+                    initialCenter: LatLng(6.70231, -1.553706),
                     initialZoom: 16,
                   ),
                   children: [

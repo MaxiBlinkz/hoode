@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hoode/app/data/services/authservice.dart';
 
 import 'home_routes.dart';
@@ -20,14 +21,22 @@ import 'edit_profile_routes.dart';
 import 'bookmarks_routes.dart';
 import 'messages_routes.dart';
 import 'chat_view_routes.dart';
+import 'become_agent_routes.dart';
 
 class AppPages {
   AppPages._();
 
   static String get INITIAL {
-    final authService = Get.find<AuthService>();
-    return authService.isAuthenticated.value ? '/nav-bar' : '/login';
+  final storage = GetStorage();
+  final hasSeenOnboarding = storage.read('has_seen_onboarding') ?? false;
+  
+  if (!hasSeenOnboarding) {
+    return '/onboarding';
   }
+  
+  final authService = Get.find<AuthService>();
+  return authService.isAuthenticated.value ? '/nav-bar' : '/login';
+}
 
   static final routes = [
     ...HomeRoutes.routes,
@@ -49,5 +58,6 @@ class AppPages {
 		...BookmarksRoutes.routes,
 		...MessagesRoutes.routes,
 		...ChatViewRoutes.routes,
+		...BecomeAgentRoutes.routes,
   ];
 }

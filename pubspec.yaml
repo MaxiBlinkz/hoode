@@ -149,8 +149,13 @@ flutter:
     - assets/fonts/Poppins/
     - assets/images/
     - assets/icons/
-    - assets/lottie/house_loading.json
     - assets/images/house_placeholder.jpg
+    - assets/animations/house_search.json
+    - assets/animations/property_filter.json
+    - assets/animations/chat_agent.json
+    - assets/animations/agent.json
+    - assets/animations/loading_more.json
+    - assets/animations/load_more.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -2,9 +2,12 @@ import 'package:get/get.dart';
 import 'package:hoode/app/data/services/authservice.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:hoode/app/core/config/constants.dart';
+import 'package:hoode/app/data/services/db_helper.dart';
+
 
 class BookmarkService extends GetxService {
-  final pb = PocketBase(POCKETBASE_URL);
+  // final pb = PocketBase(POCKETBASE_URL);
+  final pb = PocketBase(DbHelper.getPocketbaseUrl());
   final bookmarks = <String>[].obs;
   final authService = Get.find<AuthService>();
 

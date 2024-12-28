@@ -15,8 +15,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'dart:typed_data';
 import 'package:image/image.dart' as img;
 import 'package:geolocator/geolocator.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:hoode/app/data/services/db_helper.dart';
 
 class ProfileSetupController extends GetxController {
   TextEditingController firstnameController = TextEditingController();
@@ -44,7 +44,8 @@ class ProfileSetupController extends GetxController {
 
   Rx<Object> err = "".obs;
 
-  final pb = PocketBase(POCKETBASE_URL);
+  // final pb = PocketBase(POCKETBASE_URL);
+  final pb = PocketBase(DbHelper.getPocketbaseUrl());
 
   RecordModel user = RecordModel();
 

@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:hoode/app/data/services/db_helper.dart';
+import 'package:hoode/app/data/services/user_service.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class DashboardController extends GetxController {
@@ -6,6 +8,9 @@ class DashboardController extends GetxController {
   final isLoading = false.obs;
   final listingsCount = 0.obs;
   final savedListingsCount = 0.obs;
+  final isAgent = false.obs;
+  final userService = Get.find<UserService>();
+  final pb = PocketBase(DbHelper.getPocketbaseUrl());
 
   @override
   void onInit() {
@@ -14,25 +19,39 @@ class DashboardController extends GetxController {
   }
 
   Future<void> loadUserDashboard() async {
-    isLoading.value = true;
-    try {
-      // Load user dashboard data
-      // Load listings count
-      // Load saved listings count
-    } finally {
-      isLoading.value = false;
+  isLoading(true);
+  try {
+    user.value = pb.authStore.record;
+    if (user.value != null) {
+      isAgent.value = await userService.isUserAgent(user.value!.id);
+      
+      if (isAgent.value) {
+        final records = await pb.collection('properties').getList(
+          filter: 'agent = "${user.value!.id}"',
+        );
+        listingsCount.value = records.totalItems;
+        
+        await loadAgentStats();
+      }
     }
+  } finally {
+    isLoading(false);
+  }
+}
+
+
+  Future<void> loadAgentStats() async {
+    // Load messages count, bookings, etc.
   }
 
-  void navigateToMyListings() {
-    Get.toNamed('/my-listings');
-  }
+  void navigateToMyListings() => Get.toNamed('/my-listings');
+  void navigateToAddListing() => Get.toNamed('/add-listing');
+  void navigateToMessages() => Get.toNamed('/messages');
+  void navigateToAnalytics() => Get.toNamed('/analytics');
+  void navigateToBookings() => Get.toNamed('/bookings');
+  void navigateToSettings() => Get.toNamed('/settings');
 
-  void navigateToAddListing() {
-    Get.toNamed('/add-listing');
-  }
-
-  void navigateToSettings() {
-    Get.toNamed('/settings');
+  Future<void> becomeAgent() async {
+    Get.toNamed('/become-agent');
   }
 }

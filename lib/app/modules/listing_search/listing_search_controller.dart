@@ -2,12 +2,14 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:hoode/app/data/services/db_helper.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:hoode/app/core/config/constants.dart';
 import 'package:logger/logger.dart';
 
 class ListingSearchController extends GetxController {
-  final pb = PocketBase(POCKETBASE_URL);
+  // final pb = PocketBase(POCKETBASE_URL);
+  final pb = PocketBase(DbHelper.getPocketbaseUrl());
   final logger = Logger();
   
   // Controllers

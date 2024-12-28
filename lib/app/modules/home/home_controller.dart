@@ -1,56 +1,82 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/core/config/constants.dart';
+// import 'package:hoode/app/core/config/constants.dart';
 import 'package:hoode/app/data/enums/enums.dart';
 import 'package:hoode/core.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:maps_toolkit/maps_toolkit.dart' as mp;
-
+import 'package:hoode/app/data/services/db_helper.dart';
 
 class HomeController extends GetxController {
   final properties = [].obs;
-  final featuredProperties = [].obs; 
   var isLoading = true.obs;
   int currentPage = 1;
   int totalListing = 20;
   var status = Status.initial.obs;
   final hasMoreData = true.obs;
   final totalItems = 0.obs;
+  final isLoadingMore = false.obs;
 
   Logger logger = Logger();
-
   final listController = ScrollController();
+  final pb = PocketBase(DbHelper.getPocketbaseUrl());
 
-  final pb = PocketBase(POCKETBASE_URL);
-  
-  // Add this method to get current location
-  Future<Position> getCurrentLocation() async {
-    return await Geolocator.getCurrentPosition();
+  @override
+  void onInit() {
+    super.onInit();
+    loadProperties();
+    loadMore();
   }
 
-  // Modified getProperties to sort by distance from current location
   Stream<List<RecordModel>> getProperties(int page) async* {
     status(Status.loading);
     isLoading(true);
     try {
+      final currentUser = pb.authStore.record;
+      final userCountry = currentUser?.data['country'];
+      final userState = currentUser?.data['state'];
+      final userCity = currentUser?.data['city'];
+
       final response = await pb.collection('properties').getList(
             page: page,
             perPage: totalListing,
-            sort: 'longitude,latitude',
           );
-    
-      totalItems(response.totalItems); // Set total items from response
-      hasMoreData(properties.length <
-          totalItems.value); // Compare current items with total
+  
+      totalItems(response.totalItems);
+      hasMoreData(properties.length < totalItems.value);
 
-      final sortedItems = response.items
-        ..sort((a, b) {
-          final aLong = double.parse(a.data['longitude'].toString());
-          final bLong = double.parse(b.data['longitude'].toString());
-          return aLong.compareTo(bLong);
-        });
+      final sortedItems = response.items;
+
+      // Enhanced location-based sorting
+      sortedItems.sort((a, b) {
+        // Country match comparison
+        final aCountryMatch = a.data['country'] == userCountry;
+        final bCountryMatch = b.data['country'] == userCountry;
+        if (aCountryMatch != bCountryMatch) {
+          return aCountryMatch ? -1 : 1;
+        }
+
+        // If same country match status, check state
+        if (aCountryMatch && bCountryMatch) {
+          final aStateMatch = a.data['state'] == userState;
+          final bStateMatch = b.data['state'] == userState;
+          if (aStateMatch != bStateMatch) {
+            return aStateMatch ? -1 : 1;
+          }
+
+          // If same state match status, check city
+          if (aStateMatch && bStateMatch) {
+            final aCityMatch = a.data['city'] == userCity;
+            final bCityMatch = b.data['city'] == userCity;
+            if (aCityMatch != bCityMatch) {
+              return aCityMatch ? -1 : 1;
+            }
+          }
+        }
+
+        // If all location matches are equal, sort by created date
+        return b.get<String>('created').compareTo(a.get<String>('created'));
+      });
 
       yield sortedItems;
 
@@ -66,43 +92,7 @@ class HomeController extends GetxController {
     }
   }
 
-  // Modified getProperties to sort by distance from current location
-  Stream<List<RecordModel>> getNearestProperties(int page) async* {
-    status(Status.loading);
-    isLoading(true);
-    try {
-      final currentLocation = await getCurrentLocation();
-      final response = await pb.collection('properties').getList(
-            page: page,
-            perPage: totalListing,
-          );
 
-      // Sort by distance from current location
-      final sortedItems = response.items
-        ..sort((a, b) {
-          final aDistance = Geolocator.distanceBetween(
-              currentLocation.latitude,
-              currentLocation.longitude,
-              double.parse(a.data['latitude']),
-              double.parse(a.data['longitude']));
-
-          final bDistance = Geolocator.distanceBetween(
-              currentLocation.latitude,
-              currentLocation.longitude,
-              double.parse(b.data['latitude']),
-              double.parse(b.data['longitude']));
-
-          return aDistance.compareTo(bDistance);
-        });
-
-      yield sortedItems;
-    } catch (e) {
-      // Error handling
-      status(Status.error);
-      logger.e('Error fetching properties: $e');
-    }
-  }
-  
   Future<void> loadProperties() async {
     getProperties(currentPage).listen((data) {
       properties(data);
@@ -110,72 +100,33 @@ class HomeController extends GetxController {
   }
 
   void loadMore() {
-  listController.addListener(() {
-    if (!listController.hasClients) return;
+    listController.addListener(() {
+      if (!listController.hasClients) return;
 
-    final maxScroll = listController.position.maxScrollExtent;
-    final currentScroll = listController.position.pixels;
-    const threshold = 200; // Load more when 200px away from bottom
+      final maxScroll = listController.position.maxScrollExtent;
+      final currentScroll = listController.position.pixels;
+      const threshold = 200;
 
-    if ((maxScroll - currentScroll) <= threshold &&
-        !isLoading.value &&
-        hasMoreData.value) {
-      isLoading(true);
-      currentPage++;
-      getProperties(currentPage).listen((data) {
-        if (data.isEmpty) {
-          hasMoreData(false);
-        } else {
-          properties.addAll(data);
-        }
-        isLoading(false);
-      }, onError: (error) {
-        isLoading(false);
-        logger.e('Error loading more properties: $error');
-      });
-    }
-  });
-}
-
-
-
-
-  Stream<List<RecordModel>> getFeaturedProperties() async* {
-    try {
-      final response = await pb.collection('properties').getList(
-            filter: 'is_featured = true',
-            sort: '-created', // Optional: sort by creation date
-          );
-
-      yield response.items;
-
-      if (response.items.isNotEmpty) {
-        status(Status.success);
+      if ((maxScroll - currentScroll) <= threshold &&
+          !isLoadingMore.value &&
+          hasMoreData.value) {
+        isLoadingMore(true);
+        currentPage++;
+        getProperties(currentPage).listen((data) {
+          if (data.isEmpty) {
+            hasMoreData(false);
+          } else {
+            properties.addAll(data); // This preserves existing items
+          }
+          isLoadingMore(false);
+        }, onError: (error) {
+          isLoadingMore(false);
+          logger.e('Error loading more properties: $error');
+        });
       }
-      update();
-      
-    } catch (e) {
-      status(Status.error);
-      logger.e('Error fetching featured properties: $e');
-    }
-  }
-
-  // Add this method to load featured properties
-  Future<void> loadFeaturedProperties() async {
-    getFeaturedProperties().listen((data) {
-      featuredProperties(data);
     });
   }
 
-  
-  @override
-  void onInit() async {
-    super.onInit();
-    getProperties(currentPage);
-    loadProperties();
-    loadFeaturedProperties(); 
-    loadMore();
-  }
 
   @override
   void onReady() {

@@ -24,132 +24,180 @@ class ListingCard extends StatelessWidget {
     this.onTap,
   });
 
-  void _defaultOnTap() {
-    //adService.interstitialAd?.show();
-    Get.toNamed('/listing-detail', arguments: property);
-  }
-
   @override
   Widget build(BuildContext context) {
+    final String? imageUrl = property.data['image'] != null &&
+            property.data['image'] is List &&
+            property.data['image'].isNotEmpty
+        ? "$POCKETBASE_URL/api/files/properties/${property.id}/${property.data['image'][0].toString()}"
+        : null;
 
-
-    // TODO: fIx favourite listing toggle
-      // bool isFav = listing['is_favourite'];
+    final String title = property.data['title']?.toString() ?? "No Title";
+    final String location = property.data['location']?.toString() ?? "No Location";
+    final String price = property.data['price']?.toString() ?? "0";
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       child: GestureDetector(
         onTap: onTap ?? _defaultOnTap,
         child: Container(
-          height: cardHeight ?? 220,
-          width: 180,
+          height: cardHeight ?? 240,
           decoration: BoxDecoration(
-            color: const Color(0xFFFFFFFF),
+            color: Colors.white,
             borderRadius: BorderRadius.circular(16),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Color.fromARGB(66, 169, 173, 189),
-                offset: Offset(0, 2),
-                blurRadius: 2,
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 8,
+                offset: const Offset(0, 2),
               ),
             ],
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Stack(
-                  children: [
-                    ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(12)),
-                        child: property.data['image'] != null &&
-                                property.data['image'].isNotEmpty
-                              ? Image.network(
-                                "$POCKETBASE_URL/api/files/properties/${property.id}/${property.data['image'][0].toString()}",
-                                fit: BoxFit.cover,
-                                height: imageHeight ?? 115,
-                                width: imageWidth ?? 180)
-                              : Image.asset(
-                                  'assets/images/house_placeholder.jpg',
-                                  fit: BoxFit.cover,
-                                height: imageHeight ?? 115,
-                                width: imageWidth ?? 180)),
-                    Positioned(
-                      top: 8,
-                      left: 130,
-                      child: Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 229, 234, 240),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: IconButton(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(0),
-                            icon:
-                                bookmarkService.bookmarks.contains(property.id)
-                              ? const Icon(IconlyBold.heart)
-                              : const Icon(IconlyLight.heart),
-                          color: Colors.red,
-                          iconSize: 20.0,
-                            onPressed: () =>
-                              bookmarkService.toggleBookmark(property.id),
-                        ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                    child: imageUrl != null
+                        ? Image.network(
+                            imageUrl,
+                            fit: BoxFit.cover,
+                            height: imageHeight ?? 140,
+                            width: double.infinity,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Image.asset(
+                              'assets/images/house_placeholder.jpg',
+                              fit: BoxFit.cover,
+                              height: imageHeight ?? 140,
+                              width: double.infinity,
+                            ),
+                          )
+                        : Image.asset(
+                            'assets/images/house_placeholder.jpg',
+                            fit: BoxFit.cover,
+                            height: imageHeight ?? 140,
+                            width: double.infinity,
+                          ),
+                  ),
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(18),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            spreadRadius: 1,
+                            blurRadius: 2,
+                          ),
+                        ],
                       ),
-                    )
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: Obx(() => Icon(
+                          bookmarkService.bookmarks.contains(property.id)
+                              ? IconlyBold.heart
+                              : IconlyLight.heart,
+                          color: Colors.red,
+                          size: 20,
+                        )),
+                        onPressed: () => bookmarkService.toggleBookmark(property.id),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        const Icon(
+                          IconlyLight.location,
+                          size: 16,
+                          color: Colors.grey,
+                        ),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            location,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "\$$price",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            _buildFeatureIcon(IconlyLight.home, "${property.data['bedrooms'] ?? 0}"),
+                            const SizedBox(width: 12),
+                            _buildFeatureIcon(IconlyLight.discovery, "${property.data['bathrooms'] ?? 0}"),
+                          ],
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-                const Row(),
-                const Spacer(flex: 1),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    property.data['title'] ?? "",
-                    overflow: TextOverflow.clip,
-                    maxLines: 2,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-                Row(children: [
-                  const Icon(
-                    Icons.location_city_rounded,
-                    size: 16.0,
-                    color: Colors.grey,
-                  ),
-                  Text(
-                    property.data['location']!,
-                    overflow: TextOverflow.clip,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                      color: Colors.grey,
-                    ),
-                  )
-                ]),
-                const Spacer(flex: 2),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "\$${property.data['price']}",
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      color: Color(0xFF0744BC),
-                    ),
-                  ),
-                )
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
-    
+  }
+
+  Widget _buildFeatureIcon(IconData icon, String count) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: Colors.grey),
+        const SizedBox(width: 4),
+        Text(
+          count,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Colors.grey,
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _defaultOnTap() {
+    Get.toNamed('/listing-detail', arguments: property);
   }
 }

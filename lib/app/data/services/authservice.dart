@@ -2,11 +2,12 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:hoode/app/core/config/constants.dart';
-import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
+import 'package:hoode/app/data/services/db_helper.dart';
 
 class AuthService extends GetxService {
   final storage = GetStorage();
-  final pb = PocketBase(POCKETBASE_URL);
+  // final pb = PocketBase(POCKETBASE_URL);
+  final pb = PocketBase(DbHelper.getPocketbaseUrl());
   final isAuthenticated = false.obs;
 
   Future<void> checkLoginStatus() async {

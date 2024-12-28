@@ -14,14 +14,26 @@ class ListingDetailPage extends GetView<ListingDetailController> {
 
   @override
   Widget build(BuildContext context) {
+    final property = controller.property.value!;
+    final String? imageUrl = property.data['image'] != null &&
+            property.data['image'] is List &&
+            property.data['image'].isNotEmpty
+        ? "$POCKETBASE_URL/api/files/properties/${property.id}/${property.data['image'][0].toString()}"
+        : null;
+    final String title = property.data['title']?.toString() ?? "No Title";
+    final String location =
+        property.data['location']?.toString() ?? "No Location";
+    final String price = property.data['price']?.toString() ?? "0";
+    final String description =
+        property.data['description']?.toString() ?? "Description";
+    
     return Scaffold(
       body: Obx(() {
-        log.i('Property value: ${controller.property.value}');
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final property = controller.property.value;
+
         if (property == null) {
           return Center(
             child: Column(
@@ -48,10 +60,17 @@ class ListingDetailPage extends GetView<ListingDetailController> {
               flexibleSpace: FlexibleSpaceBar(
                 background: Hero(
                   tag: 'property-${property.id}',
-                  child: Image.network(
+                  child: imageUrl != null
+                      ? Image.network(
                     '$POCKETBASE_URL/api/files/properties/${property.id}/${property.data['image'][0].toString()}',
                     fit: BoxFit.cover,
-                  ),
+                          errorBuilder: (context, error, stackTrace) =>
+                              Image.asset(
+                                'assets/images/house_placeholder.jpg',
+                              ))
+                      : Image.asset(
+                          'assets/images/house_placeholder.jpg',
+                        ),
                 ),
               ),
               leading: IconButton(
@@ -81,7 +100,7 @@ class ListingDetailPage extends GetView<ListingDetailController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      property.data['title'],
+                      title,
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -94,7 +113,7 @@ class ListingDetailPage extends GetView<ListingDetailController> {
                             color: Colors.grey[600], size: 18),
                         const SizedBox(width: 4),
                         Text(
-                          property.data['location'],
+                          location,
                           style: TextStyle(color: Colors.grey[600]),
                         ),
                       ],
@@ -104,13 +123,17 @@ class ListingDetailPage extends GetView<ListingDetailController> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         _buildFeature(IconlyBold.home,
-                            '${property.data['bedrooms']} Beds'),
+                            property.data['bedrooms']?.toString()),
                         _buildFeature(Icons.bathtub,
-                            '${property.data['bathrooms']} Baths'),
+                            property.data['bathrooms']?.toString()),
                         _buildFeature(
-                            IconlyBold.chart, '${property.data['area']} sqft'),
+                            IconlyBold.chart,
+                            property.data['area']?.toString() != null
+                                ? '${property.data['area']} sqft'
+                                : null),
                       ],
                     ),
+
                     const Divider(height: 32),
                     const Text(
                       'Description',
@@ -120,7 +143,7 @@ class ListingDetailPage extends GetView<ListingDetailController> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text(property.data['description']),
+                    Text(description),
                     const Divider(height: 32),
                     const Text(
                       'Listed by',
@@ -164,30 +187,83 @@ class ListingDetailPage extends GetView<ListingDetailController> {
         );
       }),
       // In the bottomNavigationBar section, update the Row widget:
-bottomNavigationBar: Padding(
+bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 1,
+              blurRadius: 10,
+              offset: const Offset(0, -1),
+            ),
+          ],
+        ),
         child: Row(
           children: [
             Expanded(
-              child: Text(
-                "\$${controller.property.value?.data['price']}",
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+              flex: 2,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Price",
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 14,
+                    ),
+                  ),
+                  Text(
+                    "\$$price",
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ],
               ),
             ),
-            IconButton(
-              icon: const Icon(IconlyLight.chat),
-              onPressed: () => Get.toNamed('/chat-view', arguments: {
-                'agentId': controller.property.value?.data['agent'],
-                'propertyId': controller.property.value?.id,
-              }),
-            ),
             Expanded(
+              flex: 3,
+              child: Row(
+                children: [
+                  Expanded(
               child: ElevatedButton(
-                onPressed: controller.contactAgent,
-                child: const Text('Contact Agent'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      onPressed: controller.bookProperty,
+                      child: Obx(() => Text(
+                            controller.isBooked.value ? 'Booked' : 'Book Now',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: AppColors.primary,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      side: const BorderSide(color: AppColors.primary),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    onPressed: controller.contactAgent,
+                    child: const Icon(IconlyBold.chat),
+                  ),
+                ],
               ),
             ),
           ],
@@ -197,7 +273,11 @@ bottomNavigationBar: Padding(
     );
   }
 
-  Widget _buildFeature(IconData icon, String text) {
+  Widget _buildFeature(IconData icon, String? text) {
+    if (text == null || text.isEmpty || text == '0') {
+      return const SizedBox.shrink();
+    }
+
     return Column(
       children: [
         Icon(icon, color: AppColors.primary),
@@ -206,4 +286,5 @@ bottomNavigationBar: Padding(
       ],
     );
   }
+
 }

@@ -11,7 +11,8 @@ class ChatViewPage extends GetView<ChatViewController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Obx(() => Text(controller.otherUser.value?.data['name'] ?? 'Chat')),
+        title:
+            Obx(() => Text(controller.otherUser.value?.data['name'] ?? 'Chat')),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Get.back(),
@@ -28,7 +29,31 @@ class ChatViewPage extends GetView<ChatViewController> {
           replyMessageColor: Theme.of(context).primaryColor,
           defaultSendButtonColor: Theme.of(context).primaryColor,
         ),
+        messageConfig: MessageConfiguration(
+          messageReactionConfig: MessageReactionConfiguration(
+            backgroundColor: Theme.of(context).primaryColor,
+          ),
+        ),
+        chatBubbleConfig: ChatBubbleConfiguration(
+          outgoingChatBubbleConfig: ChatBubble(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        typeIndicatorConfig: TypeIndicatorConfiguration(
+          indicatorSize: 10,
+          indicatorSpacing: 3,
+          flashingCircleDarkColor: Theme.of(context).primaryColor,
+          flashingCircleBrightColor:
+              Theme.of(context).primaryColor.withOpacity(0.5),
+        ),
+        featureActiveConfig: const FeatureActiveConfig(
+          enableSwipeToReply: true,
+          enableReactionPopup: true,
+          enableReplySnackBar: true,
+        ),
       ),
     );
   }
+
+
 }
