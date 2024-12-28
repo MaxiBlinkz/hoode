@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hoode/app/core/theme/dark_theme.dart';
+import 'package:hoode/app/core/theme/light_theme.dart';
+import 'package:hoode/app/core/theme/theme_controller.dart';
 import 'package:hoode/app/data/services/authservice.dart';
 // import 'package:hoode/app/core/config/constants.dart';
 import 'package:toastification/toastification.dart';
@@ -52,8 +55,12 @@ void main() async {
             ToastificationWrapper(
               child: GetMaterialApp(
                 debugShowCheckedModeBanner: true,
-                title: 'Your App Title',
+                title: 'Hoode',
                 initialBinding: ApplicationBindings(),
+      theme: LightTheme.theme,
+      darkTheme: DarkTheme.theme,
+      themeMode: ThemeController.to.themeMode.value,
+                
                 initialRoute: AppPages.INITIAL,
                 getPages: AppPages.routes,
               ),

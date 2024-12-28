@@ -1,0 +1,133 @@
+import 'package:pocketbase/pocketbase.dart';
+
+class MockPropertyDatabase {
+  static List<RecordModel> getMockProperties() {
+    return [
+      RecordModel.fromJson({
+        'id': '1',
+        'collectionId': 'properties',
+        'collectionName': 'properties',
+        'created': '2024-01-15 10:00:00.000Z',
+        'updated': '2024-01-15 10:00:00.000Z',
+        'price': 250000.0,
+        'price_history': [240000, 245000, 250000],
+        'latitude': 4.7617,
+        'longitude': -6.1918,
+        'location': 'Kumasi',
+        'city': 'Kumasi',
+        'state': 'Florida',
+        'country': 'Ghana',
+        'type': 'apartment',
+        'amenities': ['pool', 'parking', 'gym'],
+        'features': ['balcony', 'security', 'elevator'],
+        'size': 1200,
+        'bedrooms': 2,
+        'bathrooms': 2,
+        'view_count': 150,
+        'favorite_count': 45,
+        'click_count': 80,
+        'last_interaction_date': '2024-01-15',
+        'market_demand': 0.8,
+        'price_trend': 0.05,
+        'seasonal_rating': 0.75
+      }),
+      RecordModel.fromJson({
+        'id': '2',
+        'collectionId': 'properties',
+        'collectionName': 'properties',
+        'created': '2024-01-16 10:00:00.000Z',
+        'updated': '2024-01-16 10:00:00.000Z',
+        'price': 450000.0,
+        'price_history': [420000, 435000, 450000],
+        'latitude': 2.7616,
+        'longitude': -1.1917,
+        'location': 'Station',
+        'city': 'Lome',
+        'state': 'East Coast',
+        'country': 'Togo',
+        'type': 'villa',
+        'amenities': ['pool', 'parking', 'garden', 'security'],
+        'features': ['ocean_view', 'private_pool', 'smart_home'],
+        'size': 2500,
+        'bedrooms': 4,
+        'bathrooms': 3,
+        'view_count': 300,
+        'favorite_count': 120,
+        'click_count': 200,
+        'market_demand': 0.9,
+        'price_trend': 0.08,
+        'seasonal_rating': 0.85
+      }),
+      RecordModel.fromJson({
+        'id': '3',
+        'collectionId': 'properties',
+        'collectionName': 'properties',
+        'created': '2024-01-17 10:00:00.000Z',
+        'updated': '2024-01-17 10:00:00.000Z',
+        'price': 180000.0,
+        'price_history': [170000, 175000, 180000],
+        'latitude': 25.7615,
+        'longitude': 80.1916,
+        'location': 'Brickell',
+        'city': 'Miami',
+        'state': 'Florida',
+        'country': 'USA',
+        'type': 'apartment',
+        'amenities': ['parking', 'gym'],
+        'features': ['city_view', 'modern_kitchen'],
+        'size': 800,
+        'bedrooms': 1,
+        'bathrooms': 1,
+        'view_count': 90,
+        'favorite_count': 25,
+        'click_count': 45,
+        'market_demand': 0.7,
+        'price_trend': 0.03,
+        'seasonal_rating': 0.65
+      }),
+      RecordModel.fromJson({
+        'id': '4',
+        'collectionId': 'properties',
+        'collectionName': 'properties',
+        'created': '2024-01-17 10:00:00.000Z',
+        'updated': '2024-01-17 10:00:00.000Z',
+        'price': 12000.0,
+        'price_history': [170000, 175000, 180000],
+        'latitude': 25.7615,
+        'longitude': 80.1916,
+        'location': 'Brickell',
+        'city': 'Miami',
+        'state': 'Florida',
+        'country': 'USA',
+        'type': 'apartment',
+        'amenities': ['parking', 'gym'],
+        'features': ['city_view', 'modern_kitchen'],
+        'size': 800,
+        'bedrooms': 1,
+        'bathrooms': 1,
+        'view_count': 90,
+        'favorite_count': 25,
+        'click_count': 45,
+        'market_demand': 0.7,
+        'price_trend': 0.03,
+        'seasonal_rating': 0.65
+      }),
+      // Add more mock properties with varying attributes
+    ];
+  }
+
+  static RecordModel getMockUserPreferences() {
+    return RecordModel.fromJson({
+      'id': 'user1',
+      'target_price': 300000.0,
+      'preferred_location': {'latitude': 25.7617, 'longitude': 80.1918},
+      'preferred_type': 'apartment',
+      'preferred_amenities': ['parking', 'pool'],
+      'interaction_history': {
+        'viewed_properties': ['1', '2'],
+        'favorited_properties': ['1'],
+        'clicked_properties': ['1', '2', '3']
+      }
+    });
+  }
+}

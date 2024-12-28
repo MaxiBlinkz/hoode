@@ -14,13 +14,23 @@ class OnboardingController extends GetxController {
       animation: "assets/animations/house_search.json",
     ),
     OnboardingItem(
-      title: "Easy Property Search",
-      description: "Filter by location, price and property features",
-      animation: "assets/animations/property_filter.json",
+      title: "AI-Powered Recommendations",
+      description: "Get personalized property suggestions based on your preferences and behavior",
+      animation: "assets/animations/ai_recommendations.json",
+    ),
+    OnboardingItem(
+      title: "Market Intelligence",
+      description: "Access real-time market trends, price predictions and property analytics",
+      animation: "assets/animations/market_trends.json",
+    ),
+    OnboardingItem(
+      title: "Smart Property Insights",
+      description: "Make informed decisions with seasonal trends and location-based analytics",
+      animation: "assets/animations/property_insights.json",
     ),
     OnboardingItem(
       title: "Connect with Agents",
-      description: "Direct messaging with verified property agents",
+      description: "Direct messaging with verified property agents and track your interactions",
       animation: "assets/animations/chat_agent.json",
     ),
   ];

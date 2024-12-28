@@ -130,44 +130,78 @@ class HomePage extends GetView<HomeController> {
                     ],
                   ),
                 ),
-
-
                 const SizedBox(height: 16.0),
-                Text("Properties",
+                controller.recommendedProperties.isNotEmpty
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(
+                          "Recommended for You",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+                controller.recommendedProperties.isNotEmpty
+                    ? SizedBox(
+                        height: 280,
+                        child: Obx(() => ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              itemCount:
+                                  controller.recommendedProperties.length,
+                              itemBuilder: (context, index) {
+                                final property =
+                                    controller.recommendedProperties[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 16.0),
+                                  child: ListingCard(
+                                    property: property,
+                                    imageWidth: 220,
+                                    imageHeight: 160,
+                                    cardHeight: 260,
+                                  ),
+                                );
+                              },
+                            )))
+                    : const SizedBox.shrink(),
+                
+                const SizedBox(height: 16.0),
+                Text("All Properties",
                         style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold))
                     .paddingOnly(left: 16),
                 const SizedBox(height: 8.0),
                 Obx(
-                  () => Skeletonizer(
-                    enabled: controller.isLoading.value,
-                    child: ListView.builder(
-                      primary: false,
-                      shrinkWrap: true,
-                      itemCount: controller.properties.isEmpty
-                          ? 3
-                          : controller.properties.length,
-                      itemBuilder: (context, index) {
-                        if (controller.properties.isNotEmpty) {
-                          final property = controller.properties[index];
-                          return ListingCard(
-                            property: property,
-                            imageWidth: double.infinity,
-                            imageHeight: 180,
-                            cardHeight: 300,
-                          );
-                        }
+                  () => ListView.builder(
+                    primary: false,
+                    shrinkWrap: true,
+                    itemCount: controller.properties.length +
+                        (controller.isLoadingMore.value ? 3 : 0),
+                    itemBuilder: (context, index) {
+                      if (index < controller.properties.length) {
+                        final property = controller.properties[index];
                         return ListingCard(
-                          property: RecordModel(),
+                          property: property,
                           imageWidth: double.infinity,
                           imageHeight: 180,
                           cardHeight: 300,
                         );
-                      },
-                    ),
+                      } else {
+                        // Show skeleton only for new loading items
+                        return Skeletonizer(
+                          enabled: true,
+                          child: ListingCard(
+                            property: RecordModel(),
+                            imageWidth: double.infinity,
+                            imageHeight: 180,
+                            cardHeight: 300,
+                          ),
+                        );
+                      }
+                    },
                   ),
                 ),
-
                 // Loading indicator at bottom
                 Obx(() => controller.isLoadingMore.value
                     ? SizedBox(

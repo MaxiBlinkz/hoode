@@ -1,7 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:hoode/app/core/algorithms/models/geo_point.dart';
+import 'package:hoode/app/core/algorithms/models/market_trends.dart';
+import 'package:hoode/app/core/algorithms/models/seasonal_data.dart';
+import 'package:hoode/app/core/algorithms/models/user_interaction_history.dart';
+import 'package:hoode/app/core/algorithms/models/user_preferences.dart';
+import 'package:hoode/app/core/algorithms/property_recommender.dart';
 // import 'package:hoode/app/core/config/constants.dart';
 import 'package:hoode/app/data/enums/enums.dart';
+import 'package:hoode/app/data/repositories/mock_property_database.dart';
 import 'package:hoode/core.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -17,6 +24,13 @@ class HomeController extends GetxController {
   final totalItems = 0.obs;
   final isLoadingMore = false.obs;
 
+  late final UserPreferences userPrefs;
+  late final UserInteractionHistory interactions;
+  late final MarketTrends trends;
+  late final SeasonalData seasonal;
+  final recommendedProperties = <RecordModel>[].obs;
+  RxMap<String, double> pricePredictions = <String, double>{}.obs;
+
   Logger logger = Logger();
   final listController = ScrollController();
   final pb = PocketBase(DbHelper.getPocketbaseUrl());
@@ -25,6 +39,9 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     loadProperties();
+    _initializeRecommendationSystem();
+    loadRecommendations();
+    // testWithMockData();
     loadMore();
   }
 
@@ -116,7 +133,8 @@ class HomeController extends GetxController {
           if (data.isEmpty) {
             hasMoreData(false);
           } else {
-            properties.addAll(data); // This preserves existing items
+            // Preserve existing items and add new ones
+            properties.addAll(data);
           }
           isLoadingMore(false);
         }, onError: (error) {
@@ -126,6 +144,56 @@ class HomeController extends GetxController {
       }
     });
   }
+
+
+  void _initializeRecommendationSystem() {
+    // Initialize with user data from your auth system
+    userPrefs = UserPreferences(
+      targetPrice: 250000.0,
+      preferredLocation: GeoPoint(latitude: 0, longitude: 0),
+      preferredAmenities: ['parking', 'pool'],
+      preferredType: 'apartment',
+    );
+
+    interactions = UserInteractionHistory(
+      viewCounts: {},
+      favorites: {},
+      clicks: {},
+    );
+
+    trends = MarketTrends();
+    seasonal = SeasonalData();
+  }
+
+  Future<void> loadRecommendations() async {
+    if (properties.isNotEmpty) {
+      recommendedProperties.value = PropertyRecommender.getRecommendations(
+        properties.cast<RecordModel>().toList(),
+        userPrefs,
+        interactions,
+        trends,
+        seasonal,
+      );
+    }
+  }
+
+  // Add this method
+  void testWithMockData() {
+    // Load mock properties
+    properties.value = MockPropertyDatabase.getMockProperties();
+    _initializeRecommendationSystem();
+    loadRecommendations();
+
+    // Log results for verification
+    logger.d('Total properties loaded: ${properties.length}');
+    logger.d('Recommended properties: ${recommendedProperties.length}');
+
+    // Test property sorting and filtering
+    final sortedByPrice =
+        properties.where((p) => p.data['price'] < 300000).toList();
+    logger.d('Properties under 300k: ${sortedByPrice.length}');
+  }
+
 
 
   @override

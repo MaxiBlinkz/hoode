@@ -1,4 +1,6 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
+import 'package:hoode/app/core/analytics/models/market_analytics.dart';
 import 'package:hoode/app/data/services/db_helper.dart';
 import 'package:hoode/app/data/services/user_service.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -11,6 +13,11 @@ class DashboardController extends GetxController {
   final isAgent = false.obs;
   final userService = Get.find<UserService>();
   final pb = PocketBase(DbHelper.getPocketbaseUrl());
+
+  final marketPriceTrend = <FlSpot>[].obs;
+  final marketDemandTrend = <FlSpot>[].obs;
+  final propertyTypeTrends = <String, double>{}.obs;
+  final monthlyRevenue = <FlSpot>[].obs;
 
   @override
   void onInit() {
@@ -42,6 +49,10 @@ class DashboardController extends GetxController {
 
   Future<void> loadAgentStats() async {
     // Load messages count, bookings, etc.
+    marketPriceTrend.value = MarketAnalytics.getPriceTrends();
+    marketDemandTrend.value = MarketAnalytics.getDemandTrends();
+    propertyTypeTrends.value = MarketAnalytics.getPropertyTypeDistribution();
+    monthlyRevenue.value = MarketAnalytics.getRevenueData();
   }
 
   void navigateToMyListings() => Get.toNamed('/my-listings');

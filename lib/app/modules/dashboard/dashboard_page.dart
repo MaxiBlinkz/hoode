@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/core/theme/colors.dart';
+import 'package:hoode/app/core/widgets/market_trends_dashboard.dart';
 import 'package:lottie/lottie.dart';
 import 'dashboard_controller.dart';
 
@@ -67,6 +68,13 @@ class DashboardPage extends GetView<DashboardController> {
                   ],
                 ),
               ),
+              // Add Market Trends Dashboard
+              Obx(() => MarketTrendsDashboard(
+                    priceTrend: controller.marketPriceTrend,
+                    demandTrend: controller.marketDemandTrend,
+                    propertyTypes: controller.propertyTypeTrends,
+                    revenue: controller.monthlyRevenue,
+                  )),
               _buildActionButton(
                 'My Properties',
                 IconlyBold.home,
