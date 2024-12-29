@@ -406,6 +406,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.7"
+  csc_picker_plus:
+    dependency: "direct main"
+    description:
+      name: csc_picker_plus
+      sha256: "105e1989dd7462a504d60af024880918bb2936dbb9c97f46c4bd4923fe011411"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   csslib:
     dependency: transitive
     description:
@@ -430,6 +438,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.14.1"
+  custom_text_form_field_plus:
+    dependency: "direct main"
+    description:
+      name: custom_text_form_field_plus
+      sha256: e424ea6f31f200840a795e0fef36760f5cc957cc9e9718c366a54c6edbdee9d1
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.5"
   customisable_stepper:
     dependency: "direct main"
     description:
@@ -470,6 +486,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.10"
+  diamond_node_slider:
+    dependency: "direct main"
+    description:
+      name: diamond_node_slider
+      sha256: "2cdf289a04a6fa384ae2737fa3f9cd231df6c6b5c1cc359d960e57472d0e7501"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.6"
   dio:
     dependency: "direct main"
     description:
@@ -659,6 +683,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
+  flutter_flavor:
+    dependency: "direct main"
+    description:
+      name: flutter_flavor
+      sha256: "611e2279cb250c2cb2565757e28545527f963692614a4b0671fa2e1e985c8c71"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.4"
   flutter_gen_core:
     dependency: transitive
     description:
@@ -731,6 +763,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.24"
+  flutter_pw_validator:
+    dependency: "direct main"
+    description:
+      name: flutter_pw_validator
+      sha256: "01960d4d701f6b972f3a2f324e202d840ecfe1b84e00522f92dece874b1c9b30"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.6.0"
   flutter_remix:
     dependency: "direct main"
     description:
@@ -1349,6 +1389,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.0"
+  location_plus:
+    dependency: "direct main"
+    description:
+      name: location_plus
+      sha256: "0a6c7dbfdce5557bbcf9c2015cf20bf6d266af1a8e8803f100a47c5cd2a905df"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.6"
   location_web:
     dependency: transitive
     description:
@@ -1501,6 +1549,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  osm_search_and_pick:
+    dependency: "direct main"
+    description:
+      name: osm_search_and_pick
+      sha256: e7d81db296fdeac2d0c449fe7537e69e9e9d2aa67c448555e238674efc160a4b
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.4"
   package_config:
     dependency: transitive
     description:
@@ -1653,6 +1709,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.20.0"
+  pocketbase_server_flutter:
+    dependency: "direct main"
+    description:
+      name: pocketbase_server_flutter
+      sha256: fe4abedca52d347ba977b0f8eb032d84cfb3df7717870a2e52e7415bf6014255
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
+  pocketbase_utils:
+    dependency: "direct main"
+    description:
+      name: pocketbase_utils
+      sha256: "4bce753695190153ea6f800826a341c3da979ec10d4b4c73674bca537e3c7361"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.7"
   polylabel:
     dependency: transitive
     description:

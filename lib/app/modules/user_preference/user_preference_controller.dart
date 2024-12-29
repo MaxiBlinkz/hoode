@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/core/theme/colors.dart';
-import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
+import 'package:logger/logger.dart';
+import 'package:osm_search_and_pick/open_street_map_search_and_pick.dart';
+import '../../core/theme/colors.dart';
+import '../nav_bar/nav_bar_page.dart';
 import 'package:latlong2/latlong.dart';
 
 class UserPreferenceController extends GetxController {
@@ -14,6 +16,9 @@ class UserPreferenceController extends GetxController {
   final locationRadius = 10.0.obs;
   final locationLatitude = 0.0.obs;
   final locationLongitude = 0.0.obs;
+  final address = "".obs;
+
+  Logger logger = Logger();
 
   void updatePriceRange(RangeValues values) => priceRange.value = values;
   void togglePropertyType(String type) {
@@ -69,34 +74,19 @@ class UserPreferenceController extends GetxController {
       Get.dialog(
         Dialog(
           child: SizedBox(
-            height: 400,
-            child: FlutterMap(
-              options: MapOptions(
-                initialCenter: LatLng(position.latitude, position.longitude),
-                initialZoom: 13,
-                onTap: (tapPosition, point) {
-                  locationLatitude.value = point.latitude;
-                  locationLongitude.value = point.longitude;
-                  Get.back();
-                },
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                ),
-                MarkerLayer(
-                  markers: [
-                    Marker(
-                      point: LatLng(
-                          locationLatitude.value, locationLongitude.value),
-                      width: 30,
-                      height: 30,
-                      child: Icon(Icons.location_pin, color: AppColors.primary),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            height: MediaQuery.of(Get.context!).size.height * 0.8,
+            width: MediaQuery.of(Get.context!).size.width * 0.8,
+            child: OpenStreetMapSearchAndPick(
+                // center: LatLong(23, 89),
+                buttonColor: Colors.blue,
+                buttonText: 'Set Current Location',
+                onPicked: (pickedData) {
+                  locationLatitude(pickedData.latLong.latitude);
+                  locationLongitude(pickedData.latLong.longitude);
+                  address(pickedData.addressName);
+                }),
+
+            
           ),
         ),
       );

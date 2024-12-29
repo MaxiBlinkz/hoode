@@ -1,13 +1,12 @@
 import 'package:country_state_city_pro/country_state_city_pro.dart';
 // import 'package:csc_picker/csc_picker.dart';
 import 'package:country_state_city_picker_2/country_state_city_picker.dart';
+import 'package:csc_picker_plus/csc_picker_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/data/enums/enums.dart';
-// import 'package:hoode/app/modules/home/home_page.dart';
 import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
-// import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:latlong2/latlong.dart';
 import '../../core/theme/colors.dart';
 import 'profile_setup_controller.dart';
@@ -107,89 +106,36 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
                           prefixIcon: Icons.description,
                         ),
                         const SizedBox(height: 20),
-                        // CSCPicker(
-                        //   showCities: true,
-                        //   showStates: true,
-                        //   onCountryChanged: (value) =>
-                        //       controller.setCountry(value),
-                        //   onStateChanged: (value) =>
-                        //       controller.setState(value),
-                        //   onCityChanged: (value) => controller.setCity(value),
-                        // ),
+                        CSCPickerPlus(
+                          showCities: true,
+                          showStates: true,
+                          onCountryChanged: (value) =>
+                              controller.setCountry(value),
+                          onStateChanged: (value) =>
+                              controller.setState(value),
+                          onCityChanged: (value) => controller.setCity(value),
+                        ),
                         // TODO Setup Country picker
-                        CountryStateCityPicker(
-                          country: controller.countryController, 
-                          state: controller.stateController, 
-                          city: controller.cityController,
-                          textFieldDecoration: InputDecoration(
+                        // CountryStateCityPicker(
+                        //   country: controller.countryController, 
+                        //   state: controller.stateController, 
+                        //   city: controller.cityController,
+                        //   textFieldDecoration: InputDecoration(
 
-                          ),),
+                        //   ),),
                         const SizedBox(height: 20),
                         Row(
                           children: [
-                            Expanded(
-                              child: _buildTextField(
-                                controller: controller.locationController,
-                                hintText: "Location",
-                                prefixIcon: Icons.location_on,
-                                readOnly: true,
+                            Row(
+                              children: [
+                                Text(
+                                "Location:"
                               ),
-                            ),
-                            IconButton(
+                              IconButton(
                               icon: Icon(Icons.my_location),
-                              onPressed: () => controller.getCurrentLocation(),
+                              onPressed: () => controller.setCurrentLocation(),
                             ),
-                            IconButton(
-                              icon: Icon(Icons.map),
-                              onPressed: () => Get.dialog(
-                                Dialog(
-                                  child: SizedBox(
-                                    height: 400,
-                                    child: FlutterMap(
-                                      options: MapOptions(
-                                        initialCenter:
-                                            controller.selectedLocation.value ??
-                                                LatLng(0, 0),
-                                        initialZoom: 13,
-                                        onTap: (tapPosition, point) {
-                                          controller.selectedLocation.value =
-                                              point;
-                                          controller.locationController.text =
-                                              "${point.latitude}, ${point.longitude}";
-                                          Get.back();
-                                        },
-                                      ),
-                                      children: [
-                                        TileLayer(
-                                          urlTemplate:
-                                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                                        ),
-                                        MarkerLayer(
-                                          markers: [
-                                            if (controller
-                                                    .selectedLocation.value !=
-                                                null)
-                                              Marker(
-                                                key: UniqueKey(),
-                                                point: controller
-                                                    .selectedLocation.value!,
-                                                width: 30,
-                                                height: 30,
-                                                alignment: Alignment.center,
-                                                rotate: true,
-                                                child: Icon(
-                                                  Icons.location_pin,
-                                                  color: AppColors.primary,
-                                                  size: 30,
-                                                ),
-                                              ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              ]
                             ),
                           ],
 ),
@@ -199,13 +145,6 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
                             await controller.saveProfile();
                               if (controller.status.value == Status.success) {
                               Get.offAll(() => const NavBarPage());
-                              } else if (controller.status.value ==
-                                  Status.error) {
-                                // CoolAlert.show(
-                                //     context: context,
-                                //     type: CoolAlertType.error,
-                                //     title: "Oops!!",
-                                //     text: "Error Updating profile...");
                               }
                           },
                           style: ElevatedButton.styleFrom(

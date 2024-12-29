@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/core/theme/colors.dart';
+import '../../core/theme/colors.dart';
 
 import 'user_preference_controller.dart';
 

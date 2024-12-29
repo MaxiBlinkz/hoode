@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:hoode/app/core/config/constants.dart';
+import '../../core/config/constants.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:hoode/app/data/services/db_helper.dart';
+import '../../data/services/db_helper.dart';
 
 class MessagesController extends GetxController {
   final pb = PocketBase(DbHelper.getPocketbaseUrl());

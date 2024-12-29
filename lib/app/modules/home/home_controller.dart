@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/core/algorithms/models/geo_point.dart';
-import 'package:hoode/app/core/algorithms/models/market_trends.dart';
-import 'package:hoode/app/core/algorithms/models/seasonal_data.dart';
-import 'package:hoode/app/core/algorithms/models/user_interaction_history.dart';
-import 'package:hoode/app/core/algorithms/models/user_preferences.dart';
-import 'package:hoode/app/core/algorithms/property_recommender.dart';
+import '../../core/algorithms/models/geo_point.dart';
+import '../../core/algorithms/models/market_trends.dart';
+import '../../core/algorithms/models/seasonal_data.dart';
+import '../../core/algorithms/models/user_interaction_history.dart';
+import '../../core/algorithms/models/user_preferences.dart';
+import '../../core/algorithms/property_recommender.dart';
 // import 'package:hoode/app/core/config/constants.dart';
 import 'package:hoode/app/data/enums/enums.dart';
 import 'package:hoode/app/data/repositories/mock_property_database.dart';

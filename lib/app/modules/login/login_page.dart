@@ -3,7 +3,7 @@ import 'package:easy_loading_button/easy_loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/core/widgets/social_button.dart';
+import '../../core/widgets/social_button.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 import '../../core/theme/colors.dart';
 import 'login_controller.dart';
@@ -13,7 +13,7 @@ class LoginPage extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
+    final loginFormKey = GlobalKey<FormState>();
 
     return Scaffold(
         body: Container(
@@ -55,7 +55,7 @@ class LoginPage extends GetView<LoginController> {
                     ],
                   ),
                   child: Form(
-                    key: formKey,
+                    key: loginFormKey,
                     child: Column(
                       children: [
                         const Text(
@@ -148,7 +148,7 @@ class LoginPage extends GetView<LoginController> {
                             buttonColor: AppColors.primary,
                             borderRadius: 36,
                           onPressed: () {
-                            if (formKey.currentState!.validate()) {
+                            if (loginFormKey.currentState!.validate()) {
                               controller.login();
                             }
                             },

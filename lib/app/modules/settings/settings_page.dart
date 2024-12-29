@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/core/theme/colors.dart';
-import 'package:hoode/app/modules/user_preference/user_preference_page.dart';
+import '../../core/theme/colors.dart';
+import '../user_preference/user_preference_page.dart';
 import 'settings_controller.dart';
 
 class SettingsPage extends GetView<SettingsController> {

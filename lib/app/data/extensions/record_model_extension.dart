@@ -1,4 +1,4 @@
-import 'package:hoode/app/core/algorithms/models/geo_point.dart';
+import '../../core/algorithms/models/geo_point.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 extension RecordModelExtension on RecordModel {

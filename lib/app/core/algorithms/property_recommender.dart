@@ -1,4 +1,4 @@
-import 'package:hoode/app/data/extensions/record_model_extension.dart';
+import '../../data/extensions/record_model_extension.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pocketbase/pocketbase.dart';
 

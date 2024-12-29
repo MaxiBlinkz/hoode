@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:hoode/app/core/middleware/auth_middleware.dart';
+import '../core/middleware/auth_middleware.dart';
 
 import '../modules/dashboard/dashboard_binding.dart';
 import '../modules/dashboard/dashboard_page.dart';

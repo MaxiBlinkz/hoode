@@ -2,8 +2,9 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:hoode/app/core/config/constants.dart';
-import 'package:hoode/app/data/enums/enums.dart';
+import '../../core/config/constants.dart';
+import '../../data/enums/enums.dart';
+import '../../data/services/authservice.dart';
 // import 'package:hoode/app/data/services/adservice.dart';
 import 'package:hoode/app/modules/home/home_page.dart';
 import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
@@ -36,6 +37,7 @@ class LoginController extends GetxController {
 
   // final pb = PocketBase(POCKETBASE_URL);
   final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  final authService = Get.find<AuthService>();
 
   Future<void> login() async {
     status(Status.loading);
@@ -47,9 +49,7 @@ class LoginController extends GetxController {
           );
       if (pb.authStore.isValid) {
         status(Status.success);
-        storage.write('isLoggedIn', true);
-        storage.write('authToken', pb.authStore.token);
-        storage.write('userData', pb.authStore.model.toJson());
+        authService.saveAuthState(authData.token, authData.record);
         
         if (rememberMe.value) {
           storage.write('rememberedEmail', email.value);
@@ -68,16 +68,7 @@ class LoginController extends GetxController {
       status(Status.error);
       logger.i('${status.value}');
       logger.e('${err.value}');
-      // await bugnag.bugsnag.notify(e, stack);
-    } finally {
-      if (pb.authStore.isValid) {
-        status(Status.success);
-        storage.write('isLoggedIn', true);
-        storage.write('authToken', pb.authStore.token);
-        storage.write('userData', pb.authStore.model.toJson());
-        Get.offAll(() => const NavBarPage());
-      }
-    }
+    } 
     update();
   }
 
@@ -122,7 +113,7 @@ class LoginController extends GetxController {
 
       if (pb.authStore.isValid) {
         status(Status.success);
-        storage.write('token', authData.token);
+        authService.saveAuthState(authData.token, authData.record);
         Get.offAll(() => const NavBarPage());
       }
     } catch (e) {

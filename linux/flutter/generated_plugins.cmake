@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  custom_text_form_field_plus
   emoji_picker_flutter
   file_selector_linux
   gtk

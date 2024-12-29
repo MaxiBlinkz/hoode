@@ -1,6 +1,6 @@
+import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:chatview/chatview.dart';
 
 import 'chat_view_controller.dart';
 

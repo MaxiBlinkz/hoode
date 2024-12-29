@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/core/theme/colors.dart';
+import '../../core/theme/colors.dart';
 
 import 'become_agent_controller.dart';
 
@@ -18,7 +18,7 @@ class BecomeAgentPage extends GetView<BecomeAgentController> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
-            key: controller.formKey,
+            key: controller.agentFormKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

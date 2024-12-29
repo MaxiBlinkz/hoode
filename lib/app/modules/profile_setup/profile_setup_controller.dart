@@ -8,6 +8,7 @@ import 'package:hoode/app/data/enums/enums.dart';
 import 'package:hoode/app/modules/register/register_controller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
+import 'package:osm_search_and_pick/open_street_map_search_and_pick.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:hoode/app/core/config/constants.dart';
 import 'package:http/http.dart' as http;
@@ -22,10 +23,10 @@ class ProfileSetupController extends GetxController {
   TextEditingController firstnameController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
   TextEditingController contactInfoController = TextEditingController();
-  TextEditingController locationController = TextEditingController();
   TextEditingController countryController = TextEditingController();
   TextEditingController stateController = TextEditingController();
   TextEditingController cityController = TextEditingController();
+  
 
   var firstname = "".obs;
   var lastname = "".obs;
@@ -35,6 +36,9 @@ class ProfileSetupController extends GetxController {
   var city = "".obs;
   var location = "".obs;
   var id = "".obs;
+  final latitude = 0.0.obs;
+  final longitude = 0.0.obs;
+  final address = "".obs;
 
   final Rx<LatLng?> selectedLocation = Rx<LatLng?>(null);
 
@@ -137,17 +141,13 @@ class ProfileSetupController extends GetxController {
       "contact_info": contactInfo.value,
       "location": location.value,
       "state": state.value,
-      "town": city.value
+      "city": city.value,
+      "address": address.value,
+      "longitude": longitude.value,
+      "lattitude": latitude.value,
     };
 
     try {
-      // if (selectedImage.value != null) {
-      // final avatarFile = http.MultipartFile.fromString(
-      // 'avatar',
-      //  selectedImage.value!.readAsBytesSync().toString(),
-      // filename: 'avatar.jpg',
-      //  );
-
       if (selectedImage.value != null) {
         final avatarBytes = await selectedImage.value!.readAsBytes();
         final avatarFile = http.MultipartFile.fromBytes(
@@ -190,15 +190,48 @@ class ProfileSetupController extends GetxController {
     update();
   }
 
-  Future<void> getCurrentLocation() async {
-    final permission = await Geolocator.checkPermission();
+  Future<void> setCurrentLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+
     if (permission == LocationPermission.denied) {
-      await Geolocator.requestPermission();
+      permission = await Geolocator.requestPermission();
     }
-    
-    final position = await Geolocator.getCurrentPosition();
-    selectedLocation.value = LatLng(position.latitude, position.longitude);
-    locationController.text = "${position.latitude}, ${position.longitude}";
+
+    if (permission == LocationPermission.deniedForever) {
+      Get.snackbar(
+        'Location Required',
+        'Please enable location services in your device settings',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      final position = await Geolocator.getCurrentPosition();
+      latitude.value = position.latitude;
+      longitude.value = position.longitude;
+
+      // Show map dialog for precise location selection
+      Get.dialog(
+        Dialog(
+          child: SizedBox(
+            height: MediaQuery.of(Get.context!).size.height * 0.8,
+            width: MediaQuery.of(Get.context!).size.width * 0.8,
+            child: OpenStreetMapSearchAndPick(
+                // center: LatLong(23, 89),
+                buttonColor: Colors.blue,
+                buttonText: 'Set Current Location',
+                onPicked: (pickedData) {
+                  latitude(pickedData.latLong.latitude);
+                  longitude(pickedData.latLong.longitude);
+                  address(pickedData.addressName);
+                  address(pickedData.addressName);
+                }),
+          ),
+        ),
+      );
+    }
   }
 
 
@@ -209,8 +242,6 @@ class ProfileSetupController extends GetxController {
         .addListener(() => lastname.value = lastnameController.text);
     contactInfoController
         .addListener(() => contactInfo.value = contactInfoController.text);
-    locationController
-        .addListener(() => location.value = locationController.text);
     countryController
         .addListener(() => country.value = countryController.text);
     stateController

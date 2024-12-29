@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+
 import '../../core/theme/colors.dart';
 import 'onboarding_controller.dart';
 

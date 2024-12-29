@@ -7,6 +7,7 @@ class ThemeController extends GetxController {
   static ThemeController get to => Get.find();
   
   final themeMode = ThemeMode.system.obs;
+  final isDarkMode = false.obs;
   final storage = GetStorage();
 
   @override
@@ -18,15 +19,18 @@ class ThemeController extends GetxController {
   void loadThemeMode() {
     final savedMode = storage.read('theme_mode');
     if (savedMode != null) {
-      themeMode.value = ThemeMode.values[savedMode];
+      isDarkMode.value = savedMode == 1;
+      themeMode.value = isDarkMode.value ? ThemeMode.dark : ThemeMode.light;
+      Get.changeThemeMode(themeMode.value);
     }
   }
 
-  void toggleTheme() {
-    themeMode.value = themeMode.value == ThemeMode.light 
-        ? ThemeMode.dark 
-        : ThemeMode.light;
-    storage.write('theme_mode', themeMode.value.index);
-    Get.changeThemeMode(themeMode.value);
+  void toggleTheme(bool value) {
+    isDarkMode.value = value;
+    themeMode.value = value ? ThemeMode.dark : ThemeMode.light;
+    storage.write('theme_mode', value ? 1 : 0);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.changeThemeMode(themeMode.value);
+    });
   }
 }

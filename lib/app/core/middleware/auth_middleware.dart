@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/data/services/authservice.dart';
+import '../../data/services/authservice.dart';
 
 class AuthMiddleware extends GetMiddleware {
   @override

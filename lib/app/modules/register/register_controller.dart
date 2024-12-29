@@ -1,14 +1,12 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hoode/app/core/config/constants.dart';
-import 'package:hoode/app/data/enums/enums.dart';
-// import 'package:hoode/app/modules/profile_setup/profile_setup_page.dart';
+import '../../core/config/constants.dart';
+import '../../data/enums/enums.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:flutter/widgets.dart';
 import 'package:toastification/toastification.dart';
-// import 'package:bugsnag_flutter/bugsnag_flutter.dart' as bugnag;
-//import 'package:uni_links3/uni_links.dart';
+
 
 class RegisterController extends GetxController {
   final nameController = TextEditingController();
@@ -25,7 +23,8 @@ class RegisterController extends GetxController {
   var password = "".obs;
   var confirmPassword = "".obs;
   var isRegistered = false.obs;
-  var isPasswordVisible = false.obs;
+  var hidePassword = true.obs;
+  var hideConfirmPassword = true.obs;
 
   var id = "".obs;
   var status = Status.initial.obs;
@@ -74,7 +73,12 @@ class RegisterController extends GetxController {
   }
 
   void togglePasswordVisibility() {
-    isPasswordVisible.value = !isPasswordVisible.value;
+    hidePassword.value = !hidePassword.value;
+    update();
+  }
+
+  void toggleConfirmPasswordVisibility() {
+    hideConfirmPassword.value = !hideConfirmPassword.value;
     update();
   }
 
@@ -86,21 +90,6 @@ class RegisterController extends GetxController {
     confirmPasswordController.addListener(
         () => confirmPassword.value = confirmPasswordController.text);
   }
-
-  // void initDeepLinks() {
-  //   uriLinkStream.listen((Uri? uri) {
-  //     if (uri != null) {
-  //       if (uri.path.contains('login')) {
-  //         Get.toNamed('/login');
-  //       } else if (uri.path.contains('listing-detail')) {
-  //         String? id = uri.pathSegments.last;
-  //         Get.toNamed('/listing-detail/$id');
-  //       }
-  //     }
-  //   }, onError: (err) {
-  //     print('Deep link error: $err');
-  //   });
-  // }
 
   @override
   void onInit() {

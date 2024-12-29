@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/core/config/constants.dart';
-import 'package:hoode/app/core/theme/colors.dart';
-import 'package:hoode/app/core/widgets/avatar.dart';
+import '../../core/config/constants.dart';
+import '../../core/theme/colors.dart';
+import '../../core/widgets/avatar.dart';
 import 'package:logger/logger.dart';
 import 'listing_detail_controller.dart';
 

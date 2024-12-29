@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import '../../core/theme/theme_controller.dart';
 
 class SettingsController extends GetxController {
   final isDarkMode = Get.isDarkMode.obs;
@@ -8,26 +9,17 @@ class SettingsController extends GetxController {
   final selectedLanguage = 'English'.obs;
   final selectedCurrency = 'USD'.obs;
   final storage = GetStorage();
+  final themeController = Get.find<ThemeController>();
 
   @override
   void onInit() {
     super.onInit();
-    final savedTheme = storage.read('theme_mode');
-    if (savedTheme != null) {
-      isDarkMode.value = savedTheme == 'dark';
-      Get.changeThemeMode(isDarkMode.value ? ThemeMode.dark : ThemeMode.light);
-    }
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
+    isDarkMode.value = themeController.isDarkMode.value;
   }
 
   void toggleTheme(bool value) {
+    themeController.toggleTheme(value);
     isDarkMode.value = value;
-    Get.changeThemeMode(value ? ThemeMode.dark : ThemeMode.light);
-    storage.write('theme_mode', value ? 'dark' : 'light');
   }
 
   void toggleNotifications(bool value) {
@@ -50,4 +42,3 @@ class SettingsController extends GetxController {
     Get.offAllNamed('/login');
   }
 }
-

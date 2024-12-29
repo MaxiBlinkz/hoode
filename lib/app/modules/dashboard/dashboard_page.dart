@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/core/theme/colors.dart';
-import 'package:hoode/app/core/widgets/market_trends_dashboard.dart';
+import '../../core/theme/colors.dart';
+import '../../core/widgets/market_trends_dashboard.dart';
 import 'package:lottie/lottie.dart';
 import 'dashboard_controller.dart';
 

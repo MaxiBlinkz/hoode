@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:hoode/app/data/enums/enums.dart';
+import '../../data/enums/enums.dart';
 
 class EditProfileController extends GetxController {
   final firstnameController = TextEditingController();

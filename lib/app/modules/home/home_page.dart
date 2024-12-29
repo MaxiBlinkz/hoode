@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:flutter_remix/flutter_remix.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 // import 'package:hoode/app/core/widgets/category_item.dart';
@@ -13,7 +14,7 @@ import 'package:lottie/lottie.dart';
 import 'package:pocketbase/pocketbase.dart';
 // import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:flutter_remix/flutter_remix.dart';
+
 // import 'package:hoode/app/data/enums/enums.dart';
 
 //import '../../../gen/assets.gen.dart';

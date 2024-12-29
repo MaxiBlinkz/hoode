@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/data/services/db_helper.dart';
-import 'package:hoode/app/data/services/user_service.dart';
+import '../../data/services/db_helper.dart';
+import '../../data/services/user_service.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class BecomeAgentController extends GetxController {
-  final formKey = GlobalKey<FormState>();
+  final agentFormKey = GlobalKey<FormState>();
   final userService = Get.find<UserService>();
   final pb = PocketBase(DbHelper.getPocketbaseUrl());
   final isLoading = false.obs;
@@ -34,8 +34,8 @@ class BecomeAgentController extends GetxController {
   }
 
   Future<void> submitAgentApplication() async {
-  if (formKey.currentState == null) return;
-  if (!formKey.currentState!.validate()) return;
+  if (agentFormKey.currentState == null) return;
+  if (!agentFormKey.currentState!.validate()) return;
     
   isLoading(true);
   try {

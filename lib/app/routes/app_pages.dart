@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hoode/app/data/services/authservice.dart';
+import '../data/services/authservice.dart';
 
 import 'home_routes.dart';
 import 'listing_detail_routes.dart';

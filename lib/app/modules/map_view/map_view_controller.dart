@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:hoode/app/core/config/constants.dart';
-import 'package:hoode/app/data/models/marker.dart';
+import '../../core/config/constants.dart';
+import '../../data/models/marker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:hoode/app/data/enums/enums.dart';
+import '../../data/enums/enums.dart';
 
 class MapViewController extends GetxController {
 

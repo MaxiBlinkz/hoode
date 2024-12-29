@@ -1,8 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/core/analytics/models/market_analytics.dart';
-import 'package:hoode/app/data/services/db_helper.dart';
-import 'package:hoode/app/data/services/user_service.dart';
+import '../../core/analytics/models/market_analytics.dart';
+import '../../data/services/db_helper.dart';
+import '../../data/services/user_service.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class DashboardController extends GetxController {

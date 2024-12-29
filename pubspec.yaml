@@ -43,6 +43,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   currency_textfield: ^4.12.0
+  custom_text_form_field_plus: ^0.0.5
   customisable_stepper:
   dio: ^5.7.0
   drift:
@@ -57,6 +58,7 @@ dependencies:
   flutter_map:
   flutter_map_marker_cluster:
   flutter_map_marker_popup:
+  flutter_pw_validator: ^1.6.0
   flutter_remix: ^0.0.1
   flutter_svg:
   free_map:
@@ -80,18 +82,24 @@ dependencies:
   image: ^4.3.0
   image_cropper: ^8.0.2
   image_picker: ^1.1.2
-  json_annotation: ^4.8.1
+  diamond_node_slider: 
+  json_annotation:
+  flutter_flavor:
   latlong2:
+  csc_picker_plus:
   loading_animation_widget:
   loading_indicator: ^3.1.1
   loading_transition_button:
-  location: # location_plus:
-
+  location: 
+  location_plus:
+  pocketbase_server_flutter:
+  pocketbase_utils:
   logger:
   lottie:
   maps_toolkit: ^3.0.0
   mix: ^1.4.6
   objectbox:
+  osm_search_and_pick:
   password_strength_checker: ^1.2.4
   path:
   path_provider:
@@ -115,6 +123,7 @@ dependencies:
   url_launcher:
   whatsapp_unilink:
   wordpress_api:
+
 
 dev_dependencies:
   analyzer: any
@@ -187,3 +196,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+pocketbase_utils:
+  enabled: true # Required. Must be set to true to activate the package. Default: false
+  pb_schema_path: pb_schema.json # Optional. Sets the path of your collection schema file. Default: pb_schema.json
+  output_dir: lib/generated/pocketbase # Optional. Sets the directory of generated model files. If the directory doesn't exist — it'll be created. Default: lib/generated/pocketbase
+  line_length: 80 # Optional. Sets the length of line for dart formatter of generated code. Default: 80

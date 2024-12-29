@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:hoode/app/core/config/constants.dart';
-import 'package:hoode/app/data/services/bookmarkservice.dart';
-import 'package:hoode/app/data/services/db_helper.dart';
+import '../../core/config/constants.dart';
+import '../../data/services/bookmarkservice.dart';
+import '../../data/services/db_helper.dart';
 
 
 class ListingDetailController extends GetxController {

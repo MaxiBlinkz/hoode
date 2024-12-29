@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/core/config/constants.dart';
-import 'package:hoode/app/data/services/adservice.dart';
-import 'package:hoode/app/data/services/bookmarkservice.dart';
+import '../config/constants.dart';
+import '../../data/services/adservice.dart';
+import '../../data/services/bookmarkservice.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class ListingCard extends StatelessWidget {

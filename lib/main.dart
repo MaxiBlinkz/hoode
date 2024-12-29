@@ -19,27 +19,9 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-
+  Get.put(ThemeController(), permanent: true);
   final authService = Get.put(AuthService());
   await authService.checkLoginStatus();
-
-  // bool isWindows = Platform.isWindows;
-  // if (!isWindows) {
-  //   await bugsnag.start(apiKey: BUGSNAG_API_KEY);
-  //   await bugsnag.setUser(id: '1', email: 'test@email.com', name: 'Test User');
-  // }
-
-  // final _appLinks = AppLinks();
-
-  // // Setup deep link listener
-  // _appLinks.uriLinkStream.listen((Uri? uri) {
-  //   if (uri != null && uri.host.contains('hoode-2024.web.app')) {
-  //     // final listingId = uri.pathSegments.last;
-  //     // Get.toNamed('/listing-detail', arguments: listingId);
-  //     Get.toNamed('/home');
-  //   }
-  // });
-  // Initialize AdMob
   await MobileAds.instance.initialize();
   await SentryFlutter.init((options) {
     options.dsn =
@@ -57,10 +39,9 @@ void main() async {
                 debugShowCheckedModeBanner: true,
                 title: 'Hoode',
                 initialBinding: ApplicationBindings(),
-      theme: LightTheme.theme,
-      darkTheme: DarkTheme.theme,
-      themeMode: ThemeController.to.themeMode.value,
-                
+                theme: LightTheme.theme,
+                darkTheme: DarkTheme.theme,
+                themeMode: ThemeController.to.themeMode.value,
                 initialRoute: AppPages.INITIAL,
                 getPages: AppPages.routes,
               ),

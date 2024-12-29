@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/core/theme/colors.dart';
+import '../../core/theme/colors.dart';
 import 'package:latlong2/latlong.dart';
 import 'edit_profile_controller.dart';
 
