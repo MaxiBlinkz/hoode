@@ -91,7 +91,8 @@ dependencies:
   loading_indicator: ^3.1.1
   loading_transition_button:
   location: 
-  location_plus:
+  #location_plus:
+  
   pocketbase_server_flutter:
   pocketbase_utils:
   logger:
@@ -122,7 +123,9 @@ dependencies:
   toastification:
   url_launcher:
   whatsapp_unilink:
+  flutter_intro:
   wordpress_api:
+  double_back_to_exit:
 
 
 dev_dependencies:
@@ -131,6 +134,7 @@ dev_dependencies:
   drift_dev:
   flutter_gen_runner:
   flutter_launcher_icons:
+  flutter_flavorizr: 
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -201,3 +205,5 @@ pocketbase_utils:
   pb_schema_path: pb_schema.json # Optional. Sets the path of your collection schema file. Default: pb_schema.json
   output_dir: lib/generated/pocketbase # Optional. Sets the directory of generated model files. If the directory doesn't exist — it'll be created. Default: lib/generated/pocketbase
   line_length: 80 # Optional. Sets the length of line for dart formatter of generated code. Default: 80
+
+

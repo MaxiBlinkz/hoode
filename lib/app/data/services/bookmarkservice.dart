@@ -32,35 +32,45 @@ class BookmarkService extends GetxService {
       }
 
         final currentUser = pb.authStore.record!.id;
-        final existingBookmark = await pb
+      
+      // Try to get existing bookmark or create new one
+      RecordModel bookmarkRecord;
+      try {
+        bookmarkRecord = await pb
             .collection('bookmarks')
-            .getFirstListItem(
-                'user = "$currentUser" && properties ~ "$propertyId"')
-            .catchError((error) => RecordModel.fromJson({
-                  'collectionId': 'bookmarks',
-                  'collectionName': 'bookmarks',
-                  'created': DateTime.now().toIso8601String(),
-                  'updated': DateTime.now().toIso8601String(),
-                  'id': '',
-                  'properties': []
-                }));
-
-
-        List properties = existingBookmark.data['properties'] ?? [];
-        properties.remove(propertyId);
-
-        if (properties.isEmpty) {
-          await pb.collection('bookmarks').delete(existingBookmark.id);
-        } else {
-          await pb.collection('bookmarks').update(existingBookmark.id, body: {
-            'properties': properties,
-          });
-        }
-        bookmarks.remove(propertyId);
+            .getFirstListItem('user = "$currentUser"');
       } catch (e) {
-        logger.e('Bookmark operation failed: $e');
+        // Create new bookmark record if none exists
+        bookmarkRecord = await pb.collection('bookmarks').create(body: {
+          'user': currentUser,
+          'properties': [propertyId]
+        });
+        bookmarks.add(propertyId);
+        return;
       }
-    });
+
+      // Update existing bookmark
+      List properties = bookmarkRecord.data['properties'] ?? [];
+      if (properties.contains(propertyId)) {
+        properties.remove(propertyId);
+      } else {
+        properties.add(propertyId);
+      }
+
+      await pb.collection('bookmarks').update(bookmarkRecord.id, body: {
+        'properties': properties,
+      });
+      
+      if (properties.contains(propertyId)) {
+        bookmarks.add(propertyId);
+      } else {
+        bookmarks.remove(propertyId);
+      }
+
+    } catch (e) {
+      logger.e('Bookmark operation failed: $e');
+    }
+  });
   }
 
   Future<bool> isBookmarked(String propertyId) async {

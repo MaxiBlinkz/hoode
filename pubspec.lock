@@ -510,6 +510,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  double_back_to_exit:
+    dependency: "direct main"
+    description:
+      name: double_back_to_exit
+      sha256: bb5b3074984e2a618af591e89fb47b5e1956e907ebdabc8d175958b2abba92a5
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   drift:
     dependency: "direct main"
     description:
@@ -691,6 +699,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.4"
+  flutter_flavorizr:
+    dependency: "direct dev"
+    description:
+      name: flutter_flavorizr
+      sha256: e9550f67a890b9111ac5a555954f3808cb8c0132ce6dea08e3381964de39b906
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.3"
   flutter_gen_core:
     dependency: transitive
     description:
@@ -1389,14 +1405,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.0"
-  location_plus:
-    dependency: "direct main"
-    description:
-      name: location_plus
-      sha256: "0a6c7dbfdce5557bbcf9c2015cf20bf6d266af1a8e8803f100a47c5cd2a905df"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.6"
   location_web:
     dependency: transitive
     description:

@@ -1,0 +1,31 @@
+flavors:
+  prod:
+    app:
+      name: "Hoode"
+      icon: "assets/icons/prod_icon.png"
+    
+    android:
+      applicationId: "com.codax.hoode"
+    
+    ios:
+      bundleId: "com.codax.hoode"
+      
+    variables:
+      pocketbaseUrl: "https://hoode.pockethost.io/_/"
+      useLocalPocketbase: true
+      
+  dev:
+    app:
+      name: "Hoode Dev"
+      icon: "assets/icons/dev_icon.png"
+    
+    android:
+      applicationId: "com.codax.hoode.dev"
+      
+    ios:
+      bundleId: "com.codax.hoode.dev"
+    
+    variables:
+      useLocalPocketbase: true
+
+# flutter run --dart-define=apiUrl=https://api.hoode.com --dart-define=wsUrl=wss://ws.hoode.com --dart-define=analyticsEnabled=true --flavor prod
