@@ -54,6 +54,25 @@ class AuthService extends GetxService {
     isAuthenticated(true);
   }
 
+  Future<RecordModel?> getCurrentUser() async {
+  if (!pb.authStore.isValid || pb.authStore.record == null) {
+    final token = GetStorage().read('authToken');
+    final userData = GetStorage().read('userData');
+    
+    if (token != null && userData != null) {
+      pb.authStore.save(token, RecordModel.fromJson(userData));
+      await pb.collection('users').authRefresh();
+      
+      if (!pb.authStore.isValid) {
+        Get.toNamed('/login');
+        return null;
+      }
+    }
+  }
+  return pb.authStore.record;
+}
+
+
   bool get isLoggedIn => isAuthenticated.value;
 
   void logout() {

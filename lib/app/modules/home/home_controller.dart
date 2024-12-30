@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:hoode/app/data/services/bookmarkservice.dart';
 import '../../core/algorithms/models/geo_point.dart';
 import '../../core/algorithms/models/market_trends.dart';
 import '../../core/algorithms/models/seasonal_data.dart';
@@ -8,7 +9,6 @@ import '../../core/algorithms/models/user_preferences.dart';
 import '../../core/algorithms/property_recommender.dart';
 // import 'package:hoode/app/core/config/constants.dart';
 import 'package:hoode/app/data/enums/enums.dart';
-import 'package:hoode/app/data/repositories/mock_property_database.dart';
 import 'package:hoode/core.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -111,6 +111,10 @@ class HomeController extends GetxController {
 
 
   Future<void> loadProperties() async {
+    properties.clear();
+    currentPage = 1;
+    final bookmarkService = Get.find<BookmarkService>();
+    await bookmarkService.getBookmarkedListings();
     getProperties(currentPage).listen((data) {
       properties(data);
     });
@@ -178,21 +182,21 @@ class HomeController extends GetxController {
   }
 
   // Add this method
-  void testWithMockData() {
-    // Load mock properties
-    properties.value = MockPropertyDatabase.getMockProperties();
-    _initializeRecommendationSystem();
-    loadRecommendations();
+  // void testWithMockData() {
+  //   // Load mock properties
+  //   properties.value = MockPropertyDatabase.getMockProperties();
+  //   _initializeRecommendationSystem();
+  //   loadRecommendations();
 
-    // Log results for verification
-    logger.d('Total properties loaded: ${properties.length}');
-    logger.d('Recommended properties: ${recommendedProperties.length}');
+  //   // Log results for verification
+  //   logger.d('Total properties loaded: ${properties.length}');
+  //   logger.d('Recommended properties: ${recommendedProperties.length}');
 
-    // Test property sorting and filtering
-    final sortedByPrice =
-        properties.where((p) => p.data['price'] < 300000).toList();
-    logger.d('Properties under 300k: ${sortedByPrice.length}');
-  }
+  //   // Test property sorting and filtering
+  //   final sortedByPrice =
+  //       properties.where((p) => p.data['price'] < 300000).toList();
+  //   logger.d('Properties under 300k: ${sortedByPrice.length}');
+  // }
 
 
 

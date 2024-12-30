@@ -53,7 +53,8 @@ class NavBarPage extends StatelessWidget {
                 child: NavigationBar(
                   selectedIndex: controller.tabIndex,
                   onDestinationSelected: controller.changeTabIndex,
-                  backgroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).colorScheme.surface,
+                  indicatorColor: Theme.of(context).colorScheme.primary,
                   elevation: 0,
                   destinations: const [
                     NavigationDestination(

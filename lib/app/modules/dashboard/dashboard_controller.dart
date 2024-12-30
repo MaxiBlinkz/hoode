@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
+import 'package:hoode/app/data/services/authservice.dart';
 import '../../core/analytics/models/market_analytics.dart';
 import '../../data/services/db_helper.dart';
 import '../../data/services/user_service.dart';
@@ -12,6 +13,7 @@ class DashboardController extends GetxController {
   final savedListingsCount = 0.obs;
   final isAgent = false.obs;
   final userService = Get.find<UserService>();
+  final authService = Get.find<AuthService>();
   final pb = PocketBase(DbHelper.getPocketbaseUrl());
 
   final marketPriceTrend = <FlSpot>[].obs;
@@ -28,7 +30,7 @@ class DashboardController extends GetxController {
   Future<void> loadUserDashboard() async {
   isLoading(true);
   try {
-    user.value = pb.authStore.record;
+    user.value = authService.getCurrentUser() as RecordModel?;
     if (user.value != null) {
       isAgent.value = await userService.isUserAgent(user.value!.id);
       

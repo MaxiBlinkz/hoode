@@ -43,7 +43,7 @@ class ListingCard extends StatelessWidget {
         child: Container(
           height: cardHeight ?? 240,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color:Theme.of(context).colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(

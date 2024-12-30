@@ -14,71 +14,53 @@ class BookmarkService extends GetxService {
   Future<void> toggleBookmark(String propertyId) async {
     authService.requireAuth(() async {
       try {
-        if (!pb.authStore.isValid || pb.authStore.record == null) {
-        // Get stored auth data
-        final token = GetStorage().read('authToken');
-        final userData = GetStorage().read('userData');
-        
-        if (token != null && userData != null) {
-          // Restore auth state
-          pb.authStore.save(token, RecordModel.fromJson(userData));
-          await pb.collection('users').authRefresh();
-          
-          if (!pb.authStore.isValid) {
-            Get.toNamed('/login');
-            return;
-          }
+        final currentUser = await authService.getCurrentUser();
+        if (currentUser == null) return;
+
+        // Try to get existing bookmark or create new one
+        RecordModel bookmarkRecord;
+        try {
+          bookmarkRecord = await pb
+              .collection('bookmarks')
+              .getFirstListItem('user = "$currentUser"');
+        } catch (e) {
+          // Create new bookmark record if none exists
+          bookmarkRecord = await pb.collection('bookmarks').create(body: {
+            'user': currentUser,
+            'properties': [propertyId]
+          });
+          bookmarks.add(propertyId);
+          return;
         }
-      }
 
-        final currentUser = pb.authStore.record!.id;
-      
-      // Try to get existing bookmark or create new one
-      RecordModel bookmarkRecord;
-      try {
-        bookmarkRecord = await pb
-            .collection('bookmarks')
-            .getFirstListItem('user = "$currentUser"');
-      } catch (e) {
-        // Create new bookmark record if none exists
-        bookmarkRecord = await pb.collection('bookmarks').create(body: {
-          'user': currentUser,
-          'properties': [propertyId]
+        // Update existing bookmark
+        List properties = bookmarkRecord.data['properties'] ?? [];
+        if (properties.contains(propertyId)) {
+          properties.remove(propertyId);
+        } else {
+          properties.add(propertyId);
+        }
+
+        await pb.collection('bookmarks').update(bookmarkRecord.id, body: {
+          'properties': properties,
         });
-        bookmarks.add(propertyId);
-        return;
-      }
 
-      // Update existing bookmark
-      List properties = bookmarkRecord.data['properties'] ?? [];
-      if (properties.contains(propertyId)) {
-        properties.remove(propertyId);
-      } else {
-        properties.add(propertyId);
+        if (properties.contains(propertyId)) {
+          bookmarks.add(propertyId);
+        } else {
+          bookmarks.remove(propertyId);
+        }
+      } catch (e) {
+        logger.e('Bookmark operation failed: $e');
       }
-
-      await pb.collection('bookmarks').update(bookmarkRecord.id, body: {
-        'properties': properties,
-      });
-      
-      if (properties.contains(propertyId)) {
-        bookmarks.add(propertyId);
-      } else {
-        bookmarks.remove(propertyId);
-      }
-
-    } catch (e) {
-      logger.e('Bookmark operation failed: $e');
-    }
-  });
+    });
   }
 
   Future<bool> isBookmarked(String propertyId) async {
     try {
-      if (!pb.authStore.isValid || pb.authStore.record == null) {
-        return false;
-      }
-      final currentUser = pb.authStore.record?.id;
+      final currentUser = await authService.getCurrentUser();
+      if (currentUser == null) return false;
+
       final result = await pb
           .collection('bookmarks')
           .getFirstListItem(
@@ -96,14 +78,12 @@ class BookmarkService extends GetxService {
     } catch (e) {
       return false;
     }
-}
+  }
 
   Future<List<RecordModel>> getBookmarkedListings() async {
     try {
-      if (!pb.authStore.isValid || pb.authStore.record == null) {
-        return [];
-      }
-      final currentUser = pb.authStore.record?.id;
+      final currentUser = await authService.getCurrentUser();
+      if (currentUser == null) return [];
       final bookmarkRecords = await pb
           .collection('bookmarks')
           .getFirstListItem('user = "$currentUser"');
@@ -116,4 +96,22 @@ class BookmarkService extends GetxService {
       return [];
     }
   }
+
+  // Future<List> loadBookmarks() async {
+  //   try {
+  //     final currentUser = await authService.getCurrentUser();
+  //     if (currentUser == null) return [];
+
+  //     final bookmarkRecord = await pb
+  //         .collection('bookmarks')
+  //         .getFirstListItem('user = "$currentUser"');
+
+  //     List properties = bookmarkRecord.data['properties'] ?? [];
+  //     bookmarks.value = properties.cast<String>();
+  //     return bookmarks;
+  //   } catch (e) {
+  //     bookmarks.clear();
+  //     return [];
+  //   }
+  // }
 }

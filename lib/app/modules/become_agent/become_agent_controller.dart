@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hoode/app/data/services/authservice.dart';
 import '../../data/services/db_helper.dart';
 import '../../data/services/user_service.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -7,6 +8,7 @@ import 'package:pocketbase/pocketbase.dart';
 class BecomeAgentController extends GetxController {
   final agentFormKey = GlobalKey<FormState>();
   final userService = Get.find<UserService>();
+  final authService = Get.find<AuthService>();
   final pb = PocketBase(DbHelper.getPocketbaseUrl());
   final isLoading = false.obs;
   
@@ -39,11 +41,8 @@ class BecomeAgentController extends GetxController {
     
   isLoading(true);
   try {
-    final currentUser = pb.authStore.record;
-    if (currentUser == null) {
-      Get.snackbar('Error', 'Please login first');
-      return;
-    }
+    final currentUser = await authService.getCurrentUser();
+      if (currentUser == null) return;
 
     await userService.upgradeUserToAgent(
       currentUser.id,

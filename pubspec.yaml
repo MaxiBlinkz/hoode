@@ -135,6 +135,8 @@ dev_dependencies:
   flutter_gen_runner:
   flutter_launcher_icons:
   flutter_flavorizr: 
+  fake_async:
+  clock:
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -163,16 +165,7 @@ flutter:
     - assets/fonts/Poppins/
     - assets/images/
     - assets/icons/
-    - assets/images/house_placeholder.jpg
-    - assets/animations/house_search.json
-    - assets/animations/property_filter.json
-    - assets/animations/chat_agent.json
-    - assets/animations/agent.json
-    - assets/animations/loading_more.json
-    - assets/animations/load_more.json
-    - assets/animations/property_insights.json
-    - assets/animations/market_trends.json
-    - assets/animations/ai_recommendations.json
+    - assets/animations/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

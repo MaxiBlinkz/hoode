@@ -7,8 +7,8 @@ flavors:
     android:
       applicationId: "com.codax.hoode"
     
-    ios:
-      bundleId: "com.codax.hoode"
+    # ios:
+    #   bundleId: "com.codax.hoode"
       
     variables:
       pocketbaseUrl: "https://hoode.pockethost.io/_/"
@@ -22,8 +22,8 @@ flavors:
     android:
       applicationId: "com.codax.hoode.dev"
       
-    ios:
-      bundleId: "com.codax.hoode.dev"
+    # ios:
+    #   bundleId: "com.codax.hoode.dev"
     
     variables:
       useLocalPocketbase: true
