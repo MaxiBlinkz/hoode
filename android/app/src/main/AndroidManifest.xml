@@ -1,74 +1,122 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.codax.hoode">
-  <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-  <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
-  <application android:label="@string/app_name" android:name="${applicationName}" android:icon="@mipmap/ic_launcher">
-    <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
-    <!-- Main app ID: ca-app-pub-8576327986501059~1860829890 -->
-    <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-3940256099942544~3347511713"/>
-    <activity android:name="com.yalantis.ucrop.UCropActivity" android:screenOrientation="portrait" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-    <activity android:name=".MainActivity" android:exported="true" android:launchMode="singleTop" android:taskAffinity="" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize">
-      <!-- Specifies an Android theme to apply to this Activity as soon as
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.codax.hoode">
+    <uses-permission
+        android:name="android.permission.INTERNET"/>
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission
+        android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <application
+        android:label="@string/app_name"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher">
+        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+        <!-- Main app ID: ca-app-pub-8576327986501059~1860829890 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
                  to determine the Window background behind the Flutter UI. -->
-      <meta-data android:name="io.flutter.embedding.android.NormalTheme" android:resource="@style/NormalTheme"/>
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
-      <!-- App Links (verified links) -->
-      <intent-filter android:autoVerify="true">
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="https" android:host="hoode-2024.web.app"/>
-        <data android:scheme="http" android:host="hoode-2024.web.app"/>
-        <!-- Add specific paths you want to handle -->
-        <data android:pathPattern="/listing-detail/.*"/>
-        <data android:pathPattern="/login"/>
-        <data android:pathPattern="/register"/>
-      </intent-filter>
-      <!-- Custom scheme for direct deep linking -->
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="hoode" android:host="app"/>
-      </intent-filter>
-    </activity>
-    <!-- Don't delete the meta-data below.
+            <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme"/>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <!-- App Links (verified links) -->
+            <intent-filter
+                android:autoVerify="true">
+                <action
+                    android:name="android.intent.action.VIEW"/>
+                <category
+                    android:name="android.intent.category.DEFAULT"/>
+                <category
+                    android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="https"
+                    android:host="hoode-2024.web.app"/>
+                <data
+                    android:scheme="http"
+                    android:host="hoode-2024.web.app"/>
+                <!-- Add specific paths you want to handle -->
+                <data
+                    android:pathPattern="/listing-detail/.*"/>
+                <data
+                    android:pathPattern="/login"/>
+                <data
+                    android:pathPattern="/register"/>
+            </intent-filter>
+            <!-- Custom scheme for direct deep linking -->
+            <intent-filter>
+                <action
+                    android:name="android.intent.action.VIEW"/>
+                <category
+                    android:name="android.intent.category.DEFAULT"/>
+                <category
+                    android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="hoode"
+                    android:host="app"/>
+            </intent-filter>
+        </activity>
+        <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
-    <meta-data android:name="flutterEmbedding" android:value="2"/>
-  </application>
-  <!-- Required to query activities that can process text, see:
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2"/>
+    </application>
+    <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
 
          In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
-  <queries>
-    <intent>
-      <action android:name="android.intent.action.PROCESS_TEXT"/>
-      <data android:mimeType="text/plain"/>
-    </intent>
-  </queries>
-  <!-- Provide required visibility configuration for API level 30 and above -->
-  <queries>
-    <!-- If your app checks for SMS support -->
-    <intent>
-      <action android:name="android.intent.action.VIEW"/>
-      <data android:scheme="sms"/>
-    </intent>
-    <!-- If your app checks for call support -->
-    <intent>
-      <action android:name="android.intent.action.VIEW"/>
-      <data android:scheme="tel"/>
-    </intent>
-    <!-- If your application checks for inAppBrowserView launch mode support -->
-    <intent>
-      <action android:name="android.support.customtabs.action.CustomTabsService"/>
-    </intent>
-  </queries>
+    <queries>
+        <intent>
+            <action
+                android:name="android.intent.action.PROCESS_TEXT"/>
+            <data
+                android:mimeType="text/plain"/>
+        </intent>
+    </queries>
+    <!-- Provide required visibility configuration for API level 30 and above -->
+    <queries>
+        <!-- If your app checks for SMS support -->
+        <intent>
+            <action
+                android:name="android.intent.action.VIEW"/>
+            <data
+                android:scheme="sms"/>
+        </intent>
+        <!-- If your app checks for call support -->
+        <intent>
+            <action
+                android:name="android.intent.action.VIEW"/>
+            <data
+                android:scheme="tel"/>
+        </intent>
+        <!-- If your application checks for inAppBrowserView launch mode support -->
+        <intent>
+            <action
+                android:name="android.support.customtabs.action.CustomTabsService"/>
+        </intent>
+    </queries>
 </manifest>
