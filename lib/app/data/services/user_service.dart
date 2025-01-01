@@ -1,10 +1,14 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:hoode/app/data/services/authservice.dart';
 import 'db_helper.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class UserService extends GetxService {
   static UserService get to => Get.find();
   final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  final authService = Get.find<AuthService>();
+
 
   Future<void> upgradeUserToAgent(String userId, Map<String, dynamic> agentDetails) async {
     try {
@@ -31,8 +35,10 @@ class UserService extends GetxService {
   }
 
   Future<bool> isUserAgent(String userId) async {
-    final user = await pb.collection('users').getOne(userId);
-    return user.data['is_agent'] ?? false;
+    //final user = await pb.collection('users').getOne(userId);
+    final user = await getCurrentUser();
+    if (user?.id == null) return false;
+    return user?.data['is_agent'] ?? false;
   }
 
   Future<RecordModel?> getAgentProfile(String userId) async {
@@ -41,5 +47,23 @@ class UserService extends GetxService {
       expand: 'user'
     );
     return records.items.isNotEmpty ? records.items.first : null;
+  }
+
+  Future<RecordModel?> getCurrentUser() async {
+    if (!pb.authStore.isValid || pb.authStore.record == null) {
+      final token = GetStorage().read('authToken');
+      final userData = GetStorage().read('userData');
+
+      if (token != null && userData != null) {
+        pb.authStore.save(token, RecordModel.fromJson(userData));
+        await pb.collection('users').authRefresh();
+
+        if (!pb.authStore.isValid) {
+          Get.toNamed('/login');
+          return null;
+        }
+      }
+    }
+    return pb.authStore.record;
   }
 }

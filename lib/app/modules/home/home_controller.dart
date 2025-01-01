@@ -23,6 +23,10 @@ class HomeController extends GetxController {
   final hasMoreData = true.obs;
   final totalItems = 0.obs;
   final isLoadingMore = false.obs;
+  final hasError = false.obs;
+
+  final selectedFilter = RxString('');
+  final filteredProperties = <RecordModel>[].obs;
 
   late final UserPreferences userPrefs;
   late final UserInteractionHistory interactions;
@@ -48,6 +52,7 @@ class HomeController extends GetxController {
   Stream<List<RecordModel>> getProperties(int page) async* {
     status(Status.loading);
     isLoading(true);
+    hasError(false);
     try {
       final currentUser = pb.authStore.record;
       final userCountry = currentUser?.data['country'];
@@ -105,20 +110,33 @@ class HomeController extends GetxController {
 
     } catch (e) {
       status(Status.error);
+      hasError(true);
       logger.e('Error fetching properties: $e');
     }
   }
 
-
   Future<void> loadProperties() async {
     properties.clear();
+    filteredProperties.clear();
     currentPage = 1;
     final bookmarkService = Get.find<BookmarkService>();
-    await bookmarkService.getBookmarkedListings();
+    await bookmarkService.loadBookmarks();
     getProperties(currentPage).listen((data) {
       properties(data);
+      filterProperties(selectedFilter.value);
     });
   }
+
+  void refreshAfterBookmarkChange() {
+  loadProperties();
+  update();
+}
+
+void retryLoading() {
+  loadProperties();
+  update();
+}
+
 
   void loadMore() {
     listController.addListener(() {
@@ -181,24 +199,18 @@ class HomeController extends GetxController {
     }
   }
 
-  // Add this method
-  // void testWithMockData() {
-  //   // Load mock properties
-  //   properties.value = MockPropertyDatabase.getMockProperties();
-  //   _initializeRecommendationSystem();
-  //   loadRecommendations();
+  void filterProperties(String category) {
+  selectedFilter.value = category;
+  
+  if (category.isEmpty) {
+    filteredProperties.value = properties.cast<RecordModel>().toList();
+    return;
+  }
 
-  //   // Log results for verification
-  //   logger.d('Total properties loaded: ${properties.length}');
-  //   logger.d('Recommended properties: ${recommendedProperties.length}');
-
-  //   // Test property sorting and filtering
-  //   final sortedByPrice =
-  //       properties.where((p) => p.data['price'] < 300000).toList();
-  //   logger.d('Properties under 300k: ${sortedByPrice.length}');
-  // }
-
-
+  filteredProperties.value = properties.cast<RecordModel>().where((property) {
+    return property.data['category']?.toString().toLowerCase() == category.toLowerCase();
+  }).toList();
+}
 
   @override
   void onReady() {

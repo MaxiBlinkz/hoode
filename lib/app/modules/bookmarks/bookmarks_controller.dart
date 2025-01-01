@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hoode/app/modules/home/home_controller.dart';
 import 'package:pocketbase/pocketbase.dart';
 import '../../data/services/bookmarkservice.dart';
 
@@ -26,9 +27,9 @@ class BookmarksController extends GetxController {
   }
 
   void removeBookmark(String listingId) async {
-    await bookmarkService.toggleBookmark(listingId);
     loadBookmarks();
-  }
+    Get.find<HomeController>().refreshAfterBookmarkChange();
+}
 
   @override 
   void onClose() {

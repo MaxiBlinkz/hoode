@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -55,22 +56,33 @@ class AuthService extends GetxService {
   }
 
   Future<RecordModel?> getCurrentUser() async {
-  if (!pb.authStore.isValid || pb.authStore.record == null) {
-    final token = GetStorage().read('authToken');
-    final userData = GetStorage().read('userData');
-    
-    if (token != null && userData != null) {
-      pb.authStore.save(token, RecordModel.fromJson(userData));
-      await pb.collection('users').authRefresh();
+  try {
+    if (!pb.authStore.isValid || pb.authStore.record == null) {
+      final token = GetStorage().read('authToken');
+      final userData = GetStorage().read('userData');
       
-      if (!pb.authStore.isValid) {
-        Get.toNamed('/login');
-        return null;
+      if (token != null && userData != null) {
+        pb.authStore.save(token, RecordModel.fromJson(userData));
+        await pb.collection('users').authRefresh();
+        
+        if (!pb.authStore.isValid) {
+          Get.toNamed('/login');
+          return null;
+        }
       }
     }
+    return pb.authStore.record;
+  } catch (e) {
+    Get.snackbar(
+      'Connection Error',
+      'Unable to connect to server. Please check your internet connection.',
+      backgroundColor: Colors.red,
+      colorText: Colors.white,
+    );
+    return null;
   }
-  return pb.authStore.record;
 }
+
 
 
   bool get isLoggedIn => isAuthenticated.value;

@@ -1,3 +1,4 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
@@ -29,6 +30,13 @@ class SettingsPage extends GetView<SettingsController> {
                     value: controller.isDarkMode.value,
                     onChanged: controller.toggleTheme,
                   )),
+              ListTile(
+                leading: Icon(Icons.color_lens),
+                title: const Text('Color Scheme'),
+                trailing: Obx(() => Text(controller.currentScheme.value.name)),
+                onTap: () => _showColorSchemeDialog(context),
+              ),
+                  
             ],
           ),
           _buildSection(
@@ -178,6 +186,38 @@ class SettingsPage extends GetView<SettingsController> {
             child: const Text('Logout', style: TextStyle(color: Colors.red)),
           ),
         ],
+      ),
+    );
+  }
+  void _showColorSchemeDialog(BuildContext context) {
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Select Color Scheme'),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: FlexScheme.values.length,
+            itemBuilder: (context, index) {
+              final scheme = FlexScheme.values[index];
+              return ListTile(
+                title: Text(scheme.name),
+                onTap: () {
+                  controller.changeColorScheme(scheme);
+                  Get.back();
+                },
+                trailing: Container(
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: FlexThemeData.light(scheme: scheme).primaryColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
       ),
     );
   }

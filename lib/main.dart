@@ -6,6 +6,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hoode/app/core/config/app_config.dart';
 import 'package:hoode/app/core/theme/theme_controller.dart';
 import 'package:hoode/app/data/services/authservice.dart';
+import 'package:hoode/app/data/services/bookmarkservice.dart';
 import 'package:pocketbase_server_flutter/pocketbase_server_flutter.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'app.dart';
@@ -25,10 +26,9 @@ Future<void> main() async {
 
   final authService = Get.put(AuthService());
   await authService.checkLoginStatus();
+  Get.put(BookmarkService());
   await MobileAds.instance.initialize();
 
-
-  
   await SentryFlutter.init(
     (options) {
       options.dsn =

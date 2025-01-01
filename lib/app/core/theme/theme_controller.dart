@@ -1,36 +1,50 @@
-
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 class ThemeController extends GetxController {
-  static ThemeController get to => Get.find();
-  
-  final themeMode = ThemeMode.system.obs;
   final isDarkMode = false.obs;
+  final currentScheme = FlexScheme.material.obs;
   final storage = GetStorage();
 
   @override
   void onInit() {
     super.onInit();
-    loadThemeMode();
+    ever(isDarkMode, (_) => _applyTheme());
+    ever(currentScheme, (_) => _applyTheme());
+    
+    isDarkMode.value = storage.read('isDarkMode') ?? false;
+    currentScheme.value = _loadScheme();
   }
 
-  void loadThemeMode() {
-    final savedMode = storage.read('theme_mode');
-    if (savedMode != null) {
-      isDarkMode.value = savedMode == 1;
-      themeMode.value = isDarkMode.value ? ThemeMode.dark : ThemeMode.light;
-      Get.changeThemeMode(themeMode.value);
-    }
+  FlexScheme _loadScheme() {
+    String? schemeName = storage.read('colorScheme');
+    return schemeName != null 
+        ? FlexScheme.values.firstWhere(
+            (scheme) => scheme.name == schemeName,
+            orElse: () => FlexScheme.material)
+        : FlexScheme.material;
   }
 
   void toggleTheme(bool value) {
     isDarkMode.value = value;
-    themeMode.value = value ? ThemeMode.dark : ThemeMode.light;
-    storage.write('theme_mode', value ? 1 : 0);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.changeThemeMode(themeMode.value);
-    });
+    storage.write('isDarkMode', value);
+    _applyTheme();
+  }
+
+  void changeScheme(FlexScheme scheme) {
+    currentScheme.value = scheme;
+    storage.write('colorScheme', scheme.name);
+    _applyTheme();
+  }
+
+  void _applyTheme() {
+    Get.changeThemeMode(isDarkMode.value ? ThemeMode.dark : ThemeMode.light);
+    Get.changeTheme(
+      isDarkMode.value 
+          ? FlexThemeData.dark(scheme: currentScheme.value)
+          : FlexThemeData.light(scheme: currentScheme.value)
+    );
   }
 }

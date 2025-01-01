@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hoode/app/data/services/authservice.dart';
 import '../../core/analytics/models/market_analytics.dart';
 import '../../data/services/db_helper.dart';
@@ -27,10 +28,28 @@ class DashboardController extends GetxController {
     loadUserDashboard();
   }
 
+  Future<RecordModel?> getCurrentUser() async {
+  if (!pb.authStore.isValid || pb.authStore.record == null) {
+    final token = GetStorage().read('authToken');
+    final userData = GetStorage().read('userData');
+    
+    if (token != null && userData != null) {
+      pb.authStore.save(token, RecordModel.fromJson(userData));
+      await pb.collection('users').authRefresh();
+      
+      if (!pb.authStore.isValid) {
+        Get.toNamed('/login');
+        return null;
+      }
+    }
+  }
+  return pb.authStore.record;
+}
+
   Future<void> loadUserDashboard() async {
   isLoading(true);
   try {
-    user.value = authService.getCurrentUser() as RecordModel?;
+    user.value = await getCurrentUser();
     if (user.value != null) {
       isAgent.value = await userService.isUserAgent(user.value!.id);
       

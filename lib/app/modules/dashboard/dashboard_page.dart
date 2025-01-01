@@ -61,10 +61,10 @@ class DashboardPage extends GetView<DashboardController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildStatCard('Properties', 
+                    _buildStatCard(context, 'Properties',
                         controller.listingsCount.toString()),
-                    _buildStatCard('Messages', '12'),
-                    _buildStatCard('Bookings', '5'),
+                    _buildStatCard(context, 'Messages', '12'),
+                    _buildStatCard(context, 'Bookings', '5'),
                   ],
                 ),
               ),
@@ -76,31 +76,37 @@ class DashboardPage extends GetView<DashboardController> {
                     revenue: controller.monthlyRevenue,
                   )),
               _buildActionButton(
+                context, 
                 'My Properties',
                 IconlyBold.home,
                 controller.navigateToMyListings,
               ),
               _buildActionButton(
+                context, 
                 'Add Property',
                 IconlyBold.plus,
                 controller.navigateToAddListing,
               ),
               _buildActionButton(
+                context, 
                 'Messages',
                 IconlyBold.chat,
                 controller.navigateToMessages,
               ),
               _buildActionButton(
+                context, 
                 'Analytics',
                 IconlyBold.chart,
                 controller.navigateToAnalytics,
               ),
               _buildActionButton(
+                context, 
                 'Bookings',
                 IconlyBold.calendar,
                 controller.navigateToBookings,
               ),
               _buildActionButton(
+                context, 
                 'Settings',
                 IconlyBold.setting,
                 controller.navigateToSettings,
@@ -137,11 +143,11 @@ class DashboardPage extends GetView<DashboardController> {
             style: TextStyle(fontSize: 16),
           ),
           const SizedBox(height: 24),
-          _buildFeatureItem('List and manage properties'),
-          _buildFeatureItem('Connect with potential buyers'),
-          _buildFeatureItem('Track property views and interests'),
-          _buildFeatureItem('Manage bookings and appointments'),
-          _buildFeatureItem('Access detailed analytics'),
+          _buildFeatureItem(context, 'List and manage properties'),
+          _buildFeatureItem(context, 'Connect with potential buyers'),
+          _buildFeatureItem(context, 'Track property views and interests'),
+          _buildFeatureItem(context, 'Manage bookings and appointments'),
+          _buildFeatureItem(context, 'Access detailed analytics'),
           const SizedBox(height: 32),
           SizedBox(
             width: double.infinity,
@@ -159,6 +165,7 @@ class DashboardPage extends GetView<DashboardController> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -168,28 +175,42 @@ class DashboardPage extends GetView<DashboardController> {
     );
   }
 
-  Widget _buildFeatureItem(String text) {
+  Widget _buildFeatureItem(BuildContext context, String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          const Icon(Icons.check_circle, color: AppColors.primary),
+          Icon(
+            Icons.check_circle,
+            color: Theme.of(context).colorScheme.primary,
+          ),
           const SizedBox(width: 12),
-          Text(text, style: const TextStyle(fontSize: 16)),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 16,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildStatCard(String title, String value) {
+  Widget _buildStatCard(BuildContext context, String title, String value) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Theme.of(context).shadowColor.withValues(
+                  red: 0,
+                  green: 0,
+                  blue: 0,
+                  alpha: 0.2,
+                ),
             spreadRadius: 1,
             blurRadius: 5,
           ),
@@ -199,16 +220,16 @@ class DashboardPage extends GetView<DashboardController> {
         children: [
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
           Text(
             title,
             style: TextStyle(
-              color: Colors.grey[600],
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 14,
             ),
           ),
@@ -217,11 +238,18 @@ class DashboardPage extends GetView<DashboardController> {
     );
   }
 
-  Widget _buildActionButton(String title, IconData icon, VoidCallback onTap) {
+  Widget _buildActionButton(
+      BuildContext context, String title, IconData icon, VoidCallback onTap) {
     return ListTile(
-      leading: Icon(icon, color: AppColors.primary),
-      title: Text(title),
-      trailing: const Icon(IconlyLight.arrowRight2),
+      leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
+      title: Text(
+        title,
+        style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+      ),
+      trailing: Icon(
+        IconlyLight.arrowRight2,
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
+      ),
       onTap: onTap,
     );
   }

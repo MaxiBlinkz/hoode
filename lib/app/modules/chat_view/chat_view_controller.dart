@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:chatview/chatview.dart';
+import 'package:hoode/app/data/services/authservice.dart';
 // import 'package:hoode/app/core/config/constants.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -13,34 +14,38 @@ class ChatViewController extends GetxController {
   final currentUser = Rxn<RecordModel>();
   final otherUser = Rxn<RecordModel>();
   late ChatController chatController;
+  final authService = Get.find<AuthService>();
   final logger = Logger();
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     final conversationData = Get.arguments as Map<String, dynamic>;
-    currentUser.value = pb.authStore.model;
+    currentUser.value = await authService.getCurrentUser();
     otherUser.value = conversationData['agent'];
     setupChatController();
     subscribeToMessages();
   }
 
   void setupChatController() {
-    chatController = ChatController(
-      initialMessageList: messages,
-      currentUser: ChatUser(
-        id: currentUser.value?.id ?? '',
-        name: currentUser.value?.data['name'] ?? '',
-      ),
-      otherUsers: [
-        ChatUser(
-          id: otherUser.value?.id ?? '',
-          name: otherUser.value?.data['name'] ?? '',
-        )
-      ],
-      scrollController: ScrollController(),
-    );
-  }
+  final currentChatUser = ChatUser(
+    id: currentUser.value?.id ?? '',
+    name: currentUser.value?.data['name'] ?? '',
+  );
+
+  final otherChatUser = ChatUser(
+    id: otherUser.value?.id ?? '',
+    name: otherUser.value?.data['name'] ?? '',
+  );
+
+  chatController = ChatController(
+    initialMessageList: messages,
+    currentUser: currentChatUser,
+    otherUsers: [otherChatUser],
+    scrollController: ScrollController(),
+  );
+}
+
 
 
 
@@ -50,7 +55,7 @@ class ChatViewController extends GetxController {
         final newMessage = Message(
           id: e.record!.id,
           message: e.record!.data['content'] ?? '',
-          createdAt: DateTime.parse(e.record!.created),
+          createdAt: DateTime.parse(e.record!.get<String>('created')),
           sentBy: e.record!.data['sender_id'] ?? '',
         );
         messages.add(newMessage);

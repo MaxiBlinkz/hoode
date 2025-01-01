@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../core/theme/theme_controller.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 
 class SettingsController extends GetxController {
   final isDarkMode = Get.isDarkMode.obs;
@@ -10,16 +11,21 @@ class SettingsController extends GetxController {
   final selectedCurrency = 'USD'.obs;
   final storage = GetStorage();
   final themeController = Get.find<ThemeController>();
+  final currentScheme = FlexScheme.material.obs;
 
   @override
   void onInit() {
     super.onInit();
-    isDarkMode.value = themeController.isDarkMode.value;
+    ever(themeController.isDarkMode, (_) => isDarkMode.value = themeController.isDarkMode.value);
+    ever(themeController.currentScheme, (_) => currentScheme.value = themeController.currentScheme.value);
   }
 
   void toggleTheme(bool value) {
     themeController.toggleTheme(value);
-    isDarkMode.value = value;
+  }
+
+  void changeColorScheme(FlexScheme scheme) {
+    themeController.changeScheme(scheme);
   }
 
   void toggleNotifications(bool value) {

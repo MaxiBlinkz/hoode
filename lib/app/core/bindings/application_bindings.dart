@@ -31,7 +31,8 @@ class ApplicationBindings extends Bindings {
     Get.put(DashboardController(), permanent: true);
     Get.lazyPut(() => DashboardController(), fenix: true);
     Get.lazyPut(() => BookmarksController(), fenix: true);
-
+    Get.lazyPut(() => UserPreferenceController(), fenix: true);
+    
     // Feature controllers - Created on demand
     Get.create(() => ListingDetailController());
     Get.create(() => ProfileSetupController());
@@ -42,6 +43,6 @@ class ApplicationBindings extends Bindings {
     Get.create(() => BecomeAgentController());
     Get.create(() => EditProfileController());
     Get.create(() => AddListingController());
-    Get.lazyPut(() => UserPreferenceController());
+    
   }
 }
