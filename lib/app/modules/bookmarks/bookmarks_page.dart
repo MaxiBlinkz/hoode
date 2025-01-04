@@ -64,8 +64,13 @@ class BookmarksPage extends GetView<BookmarksController> {
                   );
                 }
 
-                return ListView.builder(
-                  padding: const EdgeInsets.all(16),
+                return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 4,
+                    childAspectRatio: 0.6,
+                  ),
+                  padding: const EdgeInsets.all(2),
                   itemCount: controller.bookmarkedListings.length,
                   itemBuilder: (context, index) {
                     final listing = controller.bookmarkedListings[index];
@@ -81,7 +86,12 @@ class BookmarksPage extends GetView<BookmarksController> {
                       ),
                       onDismissed: (_) => 
                           controller.removeBookmark(listing.id),
-                      child: ListingCard(property: listing),
+                      child: ListingCard(
+                        property: listing,
+                        imageWidth: double.infinity,
+                        imageHeight: 120,
+                        cardHeight: 240,
+                      ),
                     );
                   },
                 );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hoode/app/modules/bookmarks/bookmarks_controller.dart';
 import 'authservice.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -9,6 +10,7 @@ import 'db_helper.dart';
 class BookmarkService extends GetxService {
   final pb = PocketBase(DbHelper.getPocketbaseUrl());
   final bookmarks = <String>[].obs;
+  final bookmarkedIds = <String>[].obs;
   final authService = Get.find<AuthService>();
   Logger logger = Logger();
 
@@ -37,11 +39,15 @@ class BookmarkService extends GetxService {
           'properties': properties,
         });
 
-        if (properties.contains(propertyId)) {
-          bookmarks.add(propertyId);
-        } else {
-          bookmarks.remove(propertyId);
-        }
+         bookmarks.value = List<String>.from(properties);
+
+        // if (properties.contains(propertyId)) {
+        //   bookmarks.add(propertyId);
+        // } else {
+        //   bookmarks.remove(propertyId);
+        // }
+
+        // bookmarkedIds.value = List<String>.from(properties);  // Update bookmarkedIds
         
       } catch (_) {
         // Create new bookmark record
@@ -49,8 +55,10 @@ class BookmarkService extends GetxService {
           'user': currentUser.id,
           'properties': [propertyId]
         });
+        // bookmarkedIds.add(propertyId); 
         bookmarks.add(propertyId);
       }
+      Get.find<BookmarksController>().loadBookmarks();
     } catch (e) {
       logger.e('Bookmark operation failed: $e');
     }
@@ -93,6 +101,8 @@ class BookmarkService extends GetxService {
           .getFirstListItem('user = "${currentUser?.id}"');
 
       List propertyIds = bookmarkRecords.data['properties'] ?? [];
+      if (propertyIds.isEmpty) return [];
+      
       return await pb.collection('properties').getFullList(
             filter: 'id ~ "${propertyIds.join('" || id ~ "')}"',
           );

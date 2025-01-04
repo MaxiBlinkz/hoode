@@ -14,6 +14,8 @@ class BookmarksController extends GetxController {
   void onInit() {
     super.onInit();
     loadBookmarks();
+    // Add listener for bookmark changes
+    ever(bookmarkService.bookmarks, (_) => loadBookmarks());
   }
 
   Future<void> loadBookmarks() async {
@@ -27,7 +29,9 @@ class BookmarksController extends GetxController {
   }
 
   void removeBookmark(String listingId) async {
-    loadBookmarks();
+    await bookmarkService.toggleBookmark(listingId);
+    // loadBookmarks();
+    bookmarkedListings.removeWhere((listing) => listing.id == listingId);
     Get.find<HomeController>().refreshAfterBookmarkChange();
 }
 

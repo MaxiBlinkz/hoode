@@ -43,7 +43,7 @@ class NavBarPage extends GetView<NavBarController> {
           destinations: [
             _buildNavDestination(IconlyLight.home, IconlyBold.home, 'Home'),
             _buildNavDestination(IconlyLight.category, IconlyBold.category, 'Dashboard'),
-            _buildNavDestination(IconlyLight.bookmark, IconlyBold.bookmark, 'Bookmarks'),
+            _buildNavDestination(IconlyLight.heart, IconlyBold.heart, 'Bookmarks'),
             _buildNavDestination(IconlyLight.setting, IconlyBold.setting, 'Settings'),
           ],
         )),
