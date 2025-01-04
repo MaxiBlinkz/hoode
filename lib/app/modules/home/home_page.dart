@@ -50,258 +50,283 @@ class HomePage extends GetView<HomeController> {
           ],
         ),
         body: SafeArea(
-          child: RefreshIndicator(
-            onRefresh: () => controller.loadProperties(),
-            child: Obx(
-              () => controller.hasError.value
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Lottie.asset(
-                            'assets/animations/oops.json',
-                            width: 200,
-                            height: 200,
-                          ),
-                          const Text(
-                            'Oops! Connection Error',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: controller.retryLoading,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context).colorScheme.primary,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 32,
-                                vertical: 12,
-                              ),
-                            ),
-                            child: const Text('Retry'),
-                          ),
-                        ],
-                      ),
-                    )
-                  : SingleChildScrollView(
-                      controller: controller.listController,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 8.0),
-                          // Horizontal category list
-                          SizedBox(
-                            height: 50,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            children: [
+              // Horizontal category list
+              const SizedBox(height: 8.0),
+              SizedBox(
+                height: 50,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  children: [
+                    buildFilterChip(
+                      context: context,
+                      label: "All",
+                      avatar: Icon(IconlyBold.category, size: 16),
+                      filterValue: '',
+                    ),
+                    buildFilterChip(
+                      context: context,
+                      label: "House",
+                      avatar: Icon(IconlyBold.home, size: 16),
+                      filterValue: 'house',
+                    ),
+                    buildFilterChip(
+                      context: context,
+                      label: "Apartment",
+                      avatar: Icon(FlutterRemix.building_2_fill, size: 16),
+                      filterValue: 'apartment',
+                    ),
+                    buildFilterChip(
+                      context: context,
+                      label: "Villa",
+                      avatar: Icon(FlutterRemix.building_4_fill, size: 16),
+                      filterValue: 'villa',
+                    ),
+                    buildFilterChip(
+                      context: context,
+                      label: "Condo",
+                      avatar: Icon(FlutterRemix.building_3_fill, size: 16),
+                      filterValue: 'condo',
+                    ),
+                    buildFilterChip(
+                      context: context,
+                      label: "Townhouse",
+                      avatar: Icon(FlutterRemix.home_4_fill, size: 16),
+                      filterValue: 'townhouse',
+                    ),
+                    buildFilterChip(
+                      context: context,
+                      label: "Studio",
+                      avatar: Icon(FlutterRemix.home_5_fill, size: 16),
+                      filterValue: 'studio',
+                    ),
+                    buildFilterChip(
+                      context: context,
+                      label: "Penthouse",
+                      avatar: Icon(FlutterRemix.building_fill, size: 16),
+                      filterValue: 'penthouse',
+                    ),
+                    buildFilterChip(
+                      context: context,
+                      label: "Loft",
+                      avatar: Icon(FlutterRemix.building_line, size: 16),
+                      filterValue: 'loft',
+                    ),
+                    buildFilterChip(
+                      context: context,
+                      label: "Hotel",
+                      avatar: Icon(FlutterRemix.building_fill, size: 16),
+                      filterValue: 'hotel',
+                    ),
+                    buildFilterChip(
+                      context: context,
+                      label: "Motel",
+                      avatar: Icon(FlutterRemix.building_line, size: 16),
+                      filterValue: 'motel',
+                    ),
+                    buildFilterChip(
+                      context: context,
+                      label: "Guesthouse",
+                      avatar: Icon(FlutterRemix.building_fill, size: 16),
+                      filterValue: 'guesthouse',
+                    ),
+                    buildFilterChip(
+                      context: context,
+                      label: "Cottage",
+                      avatar: Icon(FlutterRemix.building_line, size: 16),
+                      filterValue: 'cottage',
+                    ),
+                  ],
+                ),
+              ),
+              // Listings Section
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: () => controller.loadProperties(),
+                  child: Obx(
+                    () => controller.hasError.value
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                buildFilterChip(
-                                  context: context,
-                                  label: "All",
-                                  avatar: Icon(IconlyBold.category, size: 16),
-                                  filterValue: '',
+                                Lottie.asset(
+                                  'assets/animations/oops.json',
+                                  width: 200,
+                                  height: 200,
                                 ),
-                                buildFilterChip(
-                                  context: context,
-                                  label: "House",
-                                  avatar: Icon(IconlyBold.home, size: 16),
-                                  filterValue: 'house',
+                                const Text(
+                                  'Oops! Connection Error',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                                buildFilterChip(
-                                  context: context,
-                                  label: "Apartment",
-                                  avatar: Icon(FlutterRemix.building_2_fill,
-                                      size: 16),
-                                  filterValue: 'apartment',
-                                ),
-                                buildFilterChip(
-                                  context: context,
-                                  label: "Villa",
-                                  avatar: Icon(FlutterRemix.building_4_fill,
-                                      size: 16),
-                                  filterValue: 'villa',
-                                ),
-                                buildFilterChip(
-                                  context: context,
-                                  label: "Condo",
-                                  avatar: Icon(FlutterRemix.building_3_fill,
-                                      size: 16),
-                                  filterValue: 'condo',
-                                ),
-                                buildFilterChip(
-                                  context: context,
-                                  label: "Townhouse",
-                                  avatar:
-                                      Icon(FlutterRemix.home_4_fill, size: 16),
-                                  filterValue: 'townhouse',
-                                ),
-                                buildFilterChip(
-                                  context: context,
-                                  label: "Studio",
-                                  avatar:
-                                      Icon(FlutterRemix.home_5_fill, size: 16),
-                                  filterValue: 'studio',
-                                ),
-                                buildFilterChip(
-                                  context: context,
-                                  label: "Penthouse",
-                                  avatar: Icon(FlutterRemix.building_fill,
-                                      size: 16),
-                                  filterValue: 'penthouse',
-                                ),
-                                buildFilterChip(
-                                  context: context,
-                                  label: "Loft",
-                                  avatar: Icon(FlutterRemix.building_line,
-                                      size: 16),
-                                  filterValue: 'loft',
-                                ),
-                                buildFilterChip(
-                                  context: context,
-                                  label: "Hotel",
-                                  avatar: Icon(FlutterRemix.building_fill,
-                                      size: 16),
-                                  filterValue: 'hotel',
-                                ),
-                                buildFilterChip(
-                                  context: context,
-                                  label: "Motel",
-                                  avatar: Icon(FlutterRemix.building_line,
-                                      size: 16),
-                                  filterValue: 'motel',
-                                ),
-                                buildFilterChip(
-                                  context: context,
-                                  label: "Guesthouse",
-                                  avatar: Icon(FlutterRemix.building_fill,
-                                      size: 16),
-                                  filterValue: 'guesthouse',
-                                ),
-                                buildFilterChip(
-                                  context: context,
-                                  label: "Cottage",
-                                  avatar: Icon(FlutterRemix.building_line,
-                                      size: 16),
-                                  filterValue: 'cottage',
+                                const SizedBox(height: 16),
+                                ElevatedButton(
+                                  onPressed: controller.retryLoading,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.primary,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 32,
+                                      vertical: 12,
+                                    ),
+                                  ),
+                                  child: const Text('Retry'),
                                 ),
                               ],
                             ),
-                          ),
+                          )
+                        : ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: MediaQuery.of(context).size.height,
+                            ),
+                            child: SingleChildScrollView(
+                              controller: controller.listController,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
                           const SizedBox(height: 16.0),
-                          controller.recommendedProperties.isNotEmpty
-                              ? Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0),
-                                  child: Text(
-                                    "Recommended for You",
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                )
-                              : const SizedBox.shrink(),
-                          controller.recommendedProperties.isNotEmpty
-                              ? SizedBox(
-                                  height: 280,
-                                  child: Obx(() => ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0),
-                                        itemCount: controller
-                                            .recommendedProperties.length,
-                                        itemBuilder: (context, index) {
-                                          final property = controller
-                                              .recommendedProperties[index];
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 16.0),
-                                            child: ListingCard(
-                                              property: property,
-                                              imageWidth: 220,
-                                              imageHeight: 160,
-                                              cardHeight: 260,
-                                            ),
-                                          );
-                                        },
-                                      )))
-                              : const SizedBox.shrink(),
+                                  controller.recommendedProperties.isNotEmpty
+                                      ? Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16.0),
+                                          child: Text(
+                                            "Recommended for You",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        )
+                                      : const SizedBox.shrink(),
+                                  controller.recommendedProperties.isNotEmpty
+                                      ? SizedBox(
+                                          height: 280,
+                                          child: Obx(() => ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 16.0),
+                                                itemCount: controller
+                                                    .recommendedProperties
+                                                    .length,
+                                                itemBuilder: (context, index) {
+                                                  final property = controller
+                                                          .recommendedProperties[
+                                                      index];
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 16.0),
+                                                    child: ListingCard(
+                                                      property: property,
+                                                      imageWidth: 220,
+                                                      imageHeight: 160,
+                                                      cardHeight: 260,
+                                                    ),
+                                                  );
+                                                },
+                                              )))
+                                      : const SizedBox.shrink(),
 
-                          const SizedBox(height: 16.0),
-                          Text("All Properties",
-                                  style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold))
-                              .paddingOnly(left: 16),
-                          const SizedBox(height: 8.0),
-                          Obx(() => ListView.builder(
-                                primary: false,
-                                shrinkWrap: true,
-                                itemCount: controller
-                                        .filteredProperties.length +
-                                    (controller.isLoadingMore.value ? 3 : 0),
-                                itemBuilder: (context, index) {
-                                  if (index <
-                                      controller.filteredProperties.length) {
-                                    final property =
-                                        controller.filteredProperties[index];
-                                    return ListingCard(
-                                      property: property,
-                                      imageWidth: double.infinity,
-                                      imageHeight: 180,
-                                      cardHeight: 300,
-                                    );
-                                  } else {
-                                    return Skeletonizer(
-                                      enabled: true,
-                                      child: ListingCard(
-                                        property: RecordModel(),
-                                        imageWidth: double.infinity,
-                                        imageHeight: 180,
-                                        cardHeight: 300,
-                                      ),
-                                    );
-                                  }
-                                },
-                              )),
-                          // Loading indicator at bottom
-                          Obx(() => controller.isLoadingMore.value
-                              ? SizedBox(
-                                  height: 100,
-                                  child: Center(
-                                    child: Lottie.asset(
-                                      'assets/animations/loading_more.json',
-                                      height: 50,
-                                      width: 50,
+                                  const SizedBox(height: 16.0),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0),
+                                    child: Text(
+                                      "All Properties",
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
-                                )
-                              : const SizedBox()),
-
-                          // No more data message
-                          Obx(() => !controller.isLoadingMore.value &&
-                                  !controller.hasMoreData.value
-                              ? const Padding(
-                                  padding: EdgeInsets.all(16.0),
-                                  child: Text(
-                                    "No more properties to load",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
+                                  const SizedBox(height: 16.0),
+                                  SizedBox(
+                                    child: Obx(() => ListView.builder(
+                                          primary: false,
+                                          shrinkWrap: true,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemCount: controller
+                                                  .filteredProperties.length +
+                                              (controller.isLoadingMore.value
+                                                  ? 3
+                                                  : 0),
+                                          itemBuilder: (context, index) {
+                                            if (index <
+                                                controller.filteredProperties
+                                                    .length) {
+                                              final property = controller
+                                                  .filteredProperties[index];
+                                              return ListingCard(
+                                                property: property,
+                                                imageWidth: double.infinity,
+                                                imageHeight: 180,
+                                                cardHeight: 300,
+                                              );
+                                            } else {
+                                              return Skeletonizer(
+                                                enabled: true,
+                                                child: ListingCard(
+                                                  property: RecordModel(),
+                                                  imageWidth: double.infinity,
+                                                  imageHeight: 180,
+                                                  cardHeight: 300,
+                                                ),
+                                              );
+                                            }
+                                          },
+                                        )),
                                   ),
-                                )
-                              : const SizedBox()),
+                                  // Loading indicator at bottom
+                                  Obx(() => controller.isLoadingMore.value
+                                      ? SizedBox(
+                                          height: 100,
+                                          child: Center(
+                                            child: Lottie.asset(
+                                              'assets/animations/loading_more.json',
+                                              height: 50,
+                                              width: 50,
+                                            ),
+                                          ),
+                                        )
+                                      : const SizedBox()),
 
-                          // Banner ad at the bottom
-                          AdWidget(ad: AdService.to.createUniqueBannerAd()),
-                          const SizedBox(height: 16.0),
-                        ],
-                      ),
-                    ),
-            ),
+                                  // No more data message
+                                  Obx(() => !controller.isLoadingMore.value &&
+                                          !controller.hasMoreData.value
+                                      ? const Padding(
+                                          padding: EdgeInsets.all(16.0),
+                                          child: Text(
+                                            "No more properties to load",
+                                            textAlign: TextAlign.center,
+                                            style:
+                                                TextStyle(color: Colors.grey),
+                                          ),
+                                        )
+                                      : const SizedBox()),
+
+                                  // Banner ad at the bottom
+                                  SizedBox(
+                                    height: 50, // Adjust height as needed
+                                    child: AdWidget(
+                                        ad: AdService.to
+                                            .createUniqueBannerAd()),
+                                  ),
+
+                                  const SizedBox(height: 16.0),
+                                ],
+                              ),
+                            ),
+                          ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ));
   }
@@ -315,6 +340,7 @@ class HomePage extends GetView<HomeController> {
     return Obx(() => Padding(
           padding: const EdgeInsets.only(right: 8.0),
           child: FilterChip(
+            showCheckmark: false,
             label: Text(label),
             avatar: avatar,
             selected: controller.selectedFilter.value == filterValue,
