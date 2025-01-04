@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:osm_search_and_pick/open_street_map_search_and_pick.dart';
-import '../../core/theme/colors.dart';
 import '../nav_bar/nav_bar_page.dart';
-import 'package:latlong2/latlong.dart';
 
 class UserPreferenceController extends GetxController {
   final priceRange = RangeValues(0.0, 500000.0).obs;
@@ -75,7 +72,7 @@ class UserPreferenceController extends GetxController {
         Dialog(
           child: SizedBox(
             height: MediaQuery.of(Get.context!).size.height * 0.8,
-            width: MediaQuery.of(Get.context!).size.width * 0.8,
+            width: MediaQuery.of(Get.context!).size.width,
             child: OpenStreetMapSearchAndPick(
                 // center: LatLong(23, 89),
                 buttonColor: Colors.blue,

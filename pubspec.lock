@@ -270,6 +270,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  circle_flags:
+    dependency: transitive
+    description:
+      name: circle_flags
+      sha256: d83ec86d7a24633b633af5f11a9c49ea4aa5ef97c435a0739b5d72de27f9c20d
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   cli_util:
     dependency: transitive
     description:
@@ -462,6 +470,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.1"
+  dart_countries:
+    dependency: transitive
+    description:
+      name: dart_countries
+      sha256: "9bfc266284bfedd88226a32903781ab237020c7d9bf0089da288c6d677b192bc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   dart_earcut:
     dependency: transitive
     description:
@@ -558,6 +574,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.2"
+  easy_stepper:
+    dependency: "direct main"
+    description:
+      name: easy_stepper
+      sha256: "63f66314a509ec690c8152a41288961fd96ba9e92ef184299f068a5e78bd16ad"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.8.5+1"
   emoji_picker_flutter:
     dependency: transitive
     description:
@@ -590,6 +614,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.7"
+  extended_image:
+    dependency: "direct main"
+    description:
+      name: extended_image
+      sha256: "93890a88d89ce017789f6c031c32ad8d2c685f1a5c25c169550746d973ca5e44"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.0.9"
+  extended_image_library:
+    dependency: transitive
+    description:
+      name: extended_image_library
+      sha256: "9a94ec9314aa206cfa35f16145c3cd6e2c924badcc670eaaca8a3a8063a68cd7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.5"
   fake_async:
     dependency: "direct dev"
     description:
@@ -699,6 +739,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
+  flutter_fast_forms:
+    dependency: "direct main"
+    description:
+      name: flutter_fast_forms
+      sha256: "3ae025611d06499a5500e4ef43c5d0bf993eba9fde387ae6be18d7a9032c6ab5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "18.0.0"
   flutter_flavor:
     dependency: "direct main"
     description:
@@ -715,6 +763,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.3"
+  flutter_form_builder:
+    dependency: "direct main"
+    description:
+      name: flutter_form_builder
+      sha256: c862299694de16459d26029b958ff8036b8928409d477b827943568a4560a1ff
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.0-alpha.3"
   flutter_gen_core:
     dependency: transitive
     description:
@@ -1133,6 +1189,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.2"
+  http_client_helper:
+    dependency: transitive
+    description:
+      name: http_client_helper
+      sha256: "8a9127650734da86b5c73760de2b404494c968a3fd55602045ffec789dac3cb1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -1301,6 +1365,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
+  internet_connection_checker_plus:
+    dependency: "direct main"
+    description:
+      name: internet_connection_checker_plus
+      sha256: "11e7ff6cbab22dbd2af4b21618dc0ffa77a345de3fdd2a138b05d17075f84ffa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.7.0"
   intl:
     dependency: transitive
     description:
@@ -1457,10 +1529,10 @@ packages:
     dependency: "direct main"
     description:
       name: lottie
-      sha256: a93542cc2d60a7057255405f62252533f8e8956e7e06754955669fd32fb4b216
+      sha256: "377d87b8dcef640c04717e93afb86a510f0e1117a399ab94dc4b3f39c85eaa87"
       url: "https://pub.dev"
     source: hosted
-    version: "2.7.0"
+    version: "3.3.0"
   macros:
     dependency: transitive
     description:
@@ -1709,6 +1781,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.2"
+  phone_form_field:
+    dependency: "direct main"
+    description:
+      name: phone_form_field
+      sha256: "666cd7669822870b44fb4dd53c27608d6cf602bc32493886a90fee7f084b44ff"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
+  phone_number_metadata:
+    dependency: transitive
+    description:
+      name: phone_number_metadata
+      sha256: "5a20627c3e824704028612593f09cdcdc761574cf422b4d70754da1494c47bd3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
+  phone_numbers_parser:
+    dependency: transitive
+    description:
+      name: phone_numbers_parser
+      sha256: a4508a1ac37c8fcf2be2c6672012721de5ae39be959ef1c7641532502a532a46
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   pixel_perfect:
     dependency: "direct main"
     description:
@@ -1885,6 +1981,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  rules:
+    dependency: "direct main"
+    description:
+      name: rules
+      sha256: "79bec737b396c18fc4ced12b42292182df73a042b8217bb8c7e8217696f7f15d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   rxdart:
     dependency: transitive
     description:
@@ -2138,6 +2242,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.12.0"
+  step_progress_indicator:
+    dependency: "direct main"
+    description:
+      name: step_progress_indicator
+      sha256: b51bb1fcfc78454359f0658c5a2c21548c3825ebf76e826308e9ca10f383bbb8
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   stream_channel:
     dependency: transitive
     description:

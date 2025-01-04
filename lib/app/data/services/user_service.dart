@@ -12,12 +12,6 @@ class UserService extends GetxService {
 
   Future<void> upgradeUserToAgent(String userId, Map<String, dynamic> agentDetails) async {
     try {
-      // First update the user record to mark them as an agent
-      await pb.collection('users').update(userId, body: {
-        'is_agent': true,
-        'agent_status': 'active'
-      });
-
       // Create corresponding agent record
       await pb.collection('agents').create(body: {
         'user': userId,  // Reference to user
@@ -28,6 +22,12 @@ class UserService extends GetxService {
         'license': agentDetails['license'],
         'contact': agentDetails['contact'],
         'avatar': agentDetails['avatar']
+      });
+
+      // First update the user record to mark them as an agent
+      await pb.collection('users').update(userId, body: {
+        'is_agent': true,
+        'agent_status': 'active'
       });
     } catch (e) {
       throw 'Failed to upgrade user to agent: $e';

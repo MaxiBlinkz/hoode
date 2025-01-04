@@ -1,7 +1,11 @@
 import 'dart:io';
 
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:hoode/app/core/theme/colors.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:latlong2/latlong.dart';
 import '../../data/enums/enums.dart';
@@ -14,37 +18,66 @@ class EditProfileController extends GetxController {
   final stateController = TextEditingController();
   final cityController = TextEditingController();
   final locationController = TextEditingController();
+  final bioController = TextEditingController();
   
   final selectedImage = Rxn<File>();
   final selectedLocation = Rxn<LatLng>();
   final status = Status.initial.obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-    loadCurrentProfile();
-  }
-
-  Future<void> loadCurrentProfile() async {
-    // Load current user profile data and populate controllers
-  }
+  final formKey = GlobalKey<FormState>();
+  final isLoading = false.obs;
 
   Future<void> getImage() async {
-    // Image picker implementation
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    
+    if (image != null) {
+      final croppedFile = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Crop Profile Photo',
+            toolbarColor: AppColors.primary,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+          ),
+        ],
+      );
+
+      if (croppedFile != null) {
+        selectedImage.value = File(croppedFile.path);
+      }
+    }
   }
 
   Future<void> getCurrentLocation() async {
-    // Location picker implementation
+    final position = await Geolocator.getCurrentPosition();
+    selectedLocation.value = LatLng(position.latitude, position.longitude);
+    locationController.text = 'Location Updated';
   }
 
   Future<void> updateProfile() async {
-    status(Status.loading);
+    if (!formKey.currentState!.validate()) return;
+    
+    isLoading(true);
     try {
-      // Update profile logic
-      status(Status.success);
+      // Profile update logic
       Get.back();
+      Get.snackbar(
+        'Success',
+        'Profile updated successfully',
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
     } catch (e) {
-      status(Status.error);
+      Get.snackbar(
+        'Error',
+        'Failed to update profile',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } finally {
+      isLoading(false);
     }
   }
 }

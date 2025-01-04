@@ -3,16 +3,17 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hoode/app/core/theme/colors.dart';
 import 'package:hoode/app/data/enums/enums.dart';
+import 'package:hoode/app/modules/image_cropper/image_cropper_page.dart';
 import 'package:hoode/app/modules/register/register_controller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:osm_search_and_pick/open_street_map_search_and_pick.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:hoode/app/core/config/constants.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_cropper/image_cropper.dart';
+import 'dart:math';
+import 'package:path_provider/path_provider.dart';
+//import 'package:image_cropper/image_cropper.dart';
 import 'dart:typed_data';
 import 'package:image/image.dart' as img;
 import 'package:geolocator/geolocator.dart';
@@ -26,7 +27,7 @@ class ProfileSetupController extends GetxController {
   TextEditingController countryController = TextEditingController();
   TextEditingController stateController = TextEditingController();
   TextEditingController cityController = TextEditingController();
-  
+  final regController = RegisterController();
 
   var firstname = "".obs;
   var lastname = "".obs;
@@ -39,24 +40,54 @@ class ProfileSetupController extends GetxController {
   final latitude = 0.0.obs;
   final longitude = 0.0.obs;
   final address = "".obs;
-
   final Rx<LatLng?> selectedLocation = Rx<LatLng?>(null);
 
   var status = Status.initial.obs;
   final Logger logger = Logger(printer: PrettyPrinter());
   final storage = GetStorage();
-
+  final pb = PocketBase(DbHelper.getPocketbaseUrl());
   Rx<Object> err = "".obs;
 
-  // final pb = PocketBase(POCKETBASE_URL);
-  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  final personalInfoFormKey = GlobalKey<FormState>();
+  final locationFormKey = GlobalKey<FormState>();
 
   RecordModel user = RecordModel();
 
-  final regController = RegisterController();
+  
   final ImagePicker _picker = ImagePicker();
   Rx<File?> selectedImage = Rx<File?>(null);
   var imagePath = "";
+
+  final currentStep = 0.obs;
+  final steps = ['Personal Info', 'Location', 'Profile Photo', 'Review'].obs;
+
+  
+
+  void nextStep() {
+    if (currentStep.value < steps.length - 1) {
+      if (validateCurrentStep()) {
+        currentStep.value++;
+      }
+    }
+  }
+
+  void previousStep() {
+    if (currentStep.value > 0) {
+      currentStep.value--;
+    }
+  }
+
+  bool validateCurrentStep() {
+    switch (currentStep.value) {
+      case 0:
+        return personalInfoFormKey.currentState?.validate() ?? false;
+      case 1:
+        return locationFormKey.currentState?.validate() ?? false;
+      default:
+        return true;
+    }
+  }
+
 
   void setCountry(String? value) {
     if (value != null) {
@@ -77,53 +108,25 @@ class ProfileSetupController extends GetxController {
   }
 
   Future<void> getImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (!Platform.isWindows) {
-      if (image != null) {
-        final croppedFile = await ImageCropper().cropImage(
-          sourcePath: image.path,
-          aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-          uiSettings: [
-            AndroidUiSettings(
-              toolbarTitle: 'Crop Image',
-              toolbarColor: AppColors.primary,
-              toolbarWidgetColor: Colors.white,
-              initAspectRatio: CropAspectRatioPreset.square,
-              lockAspectRatio: false,
-            ),
-            IOSUiSettings(
-              title: 'Crop Image',
-            ),
-            WebUiSettings(
-              context: Get.context!,
-              presentStyle: WebPresentStyle.dialog,
-              size: const CropperSize(width: 300, height: 300),
-            ),
-          ],
-        );
-
-        if (croppedFile != null) {
-          final bytes = await croppedFile.readAsBytes();
-          final png = await convertImageToPng(bytes);
-          selectedImage.value = File(croppedFile.path)..writeAsBytesSync(png);
-          Get.snackbar(
-              "Image Selected", "Image successfully cropped and selected",
-              snackPosition: SnackPosition.BOTTOM,
-              snackStyle: SnackStyle.FLOATING);
-        }
-      }
-    } else {
-      if (image != null) {
-        final bytes = await image.readAsBytes();
-        final png = await convertImageToPng(bytes);
-        selectedImage.value = File(image.path)..writeAsBytesSync(png);
-        Get.snackbar(
-            "Image Selected", "Image successfully cropped and selected",
-            snackPosition: SnackPosition.BOTTOM,
-            snackStyle: SnackStyle.FLOATING);
-      }
+  final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  if (image != null) {
+    final cropResult = await Get.to(() => ImageCropperPage(
+      imagePath: image.path,
+      aspectRatio: 1.0,
+    ));
+    
+    if (cropResult != null) {
+      selectedImage.value = File(cropResult);
+      Get.snackbar(
+        "Image Selected", 
+        "Image successfully cropped and selected",
+        snackPosition: SnackPosition.BOTTOM,
+        snackStyle: SnackStyle.FLOATING
+      );
     }
   }
+}
+
 
   Future<Uint8List> convertImageToPng(Uint8List imageBytes) async {
     final img.Image? image = img.decodeImage(imageBytes);
@@ -156,13 +159,6 @@ class ProfileSetupController extends GetxController {
           filename: 'avatar.png',
         );
 
-        logger.i(
-            'Avatar Filename: ${avatarFile.filename}, \nAvatar File:${selectedImage.value!.readAsBytes().toString()}'); // Debug logging
-        logger.i('User ID: ${id.value}'); // Add this before the update call
-
-        // LETS CHECK IF THE TOKEN IS ACTIVE ELSE WE AUTHENTICATE
-        logger.i('IS TOKEN ACTIVE: ${pb.authStore.isValid}');
-
         user = await pb.collection('users').update(
           id.value,
           body: body,
@@ -178,7 +174,7 @@ class ProfileSetupController extends GetxController {
       if (pb.authStore.isValid) {
         status(Status.success);
       } else {
-        status(Status.initial);
+        status(Status.error);
       }
     } catch (e) {
       status(Status.error);
@@ -217,7 +213,7 @@ class ProfileSetupController extends GetxController {
         Dialog(
           child: SizedBox(
             height: MediaQuery.of(Get.context!).size.height * 0.8,
-            width: MediaQuery.of(Get.context!).size.width * 0.8,
+            width: MediaQuery.of(Get.context!).size.width,
             child: OpenStreetMapSearchAndPick(
                 // center: LatLong(23, 89),
                 buttonColor: Colors.blue,

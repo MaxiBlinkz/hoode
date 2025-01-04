@@ -69,12 +69,12 @@ class DashboardPage extends GetView<DashboardController> {
                 ),
               ),
               // Add Market Trends Dashboard
-              Obx(() => MarketTrendsDashboard(
+              MarketTrendsDashboard(
                     priceTrend: controller.marketPriceTrend,
                     demandTrend: controller.marketDemandTrend,
                     propertyTypes: controller.propertyTypeTrends,
                     revenue: controller.monthlyRevenue,
-                  )),
+                  ),
               _buildActionButton(
                 context, 
                 'My Properties',

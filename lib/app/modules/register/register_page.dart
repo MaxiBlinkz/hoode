@@ -6,7 +6,6 @@ import '../profile_setup/profile_setup_page.dart';
 import 'package:iconly/iconly.dart';
 import '../../core/theme/colors.dart';
 import 'register_controller.dart';
-import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 
 class RegisterPage extends GetView<RegisterController> {
   RegisterPage({super.key});
@@ -116,82 +115,79 @@ class RegisterPage extends GetView<RegisterController> {
                             },
                           ),
                           const SizedBox(height: 20),
-                          Obx(() => TextFormField(
-                                controller: controller.passwordController,
-                                obscureText: controller.hidePassword.value,
-                                decoration: InputDecoration(
-                                  hintText: "Password",
-                                  prefixIcon: const Icon(IconlyLight.lock,
-                                      color: AppColors.primary),
-                                  suffixIcon: IconButton(
-                                    icon: Icon(
-                                      controller.hidePassword.value
-                                          ? IconlyLight.hide
-                                          : IconlyLight.show,
-                                      color: AppColors.primary,
-                                    ),
-                                    onPressed:
-                                        controller.togglePasswordVisibility,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.grey[200],
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  contentPadding:
-                                      const EdgeInsets.symmetric(vertical: 15),
+                          TextFormField(
+                            controller: controller.passwordController,
+                            obscureText: !controller.hidePassword.value,
+                            decoration: InputDecoration(
+                              hintText: "Password",
+                              prefixIcon: const Icon(IconlyLight.lock,
+                                  color: AppColors.primary),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  controller.hidePassword.value
+                                      ? IconlyLight.hide
+                                      : IconlyLight.show,
+                                  color: AppColors.primary,
                                 ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter a password';
-                                  }
-                                  if (value.length < 8) {
-                                    return 'Password must be at least 8 characters';
-                                  }
-                                  return null;
-                                },
-                              )),
+                                onPressed: controller.togglePasswordVisibility,
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey[200],
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding:
+                                  EdgeInsets.symmetric(vertical: 15),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a password';
+                              }
+                              if (value.length < 6) {
+                                return 'Password must be at least 6 characters';
+                              }
+                              return null;
+                            },
+                          ),
                           const SizedBox(height: 20),
-                          Obx(() => TextFormField(
-                                controller:
-                                    controller.confirmPasswordController,
-                                obscureText:
-                                    controller.hideConfirmPassword.value,
-                                decoration: InputDecoration(
-                                  hintText: "Confirm Password",
-                                  prefixIcon: const Icon(IconlyLight.lock,
-                                      color: AppColors.primary),
-                                  suffixIcon: IconButton(
-                                    icon: Icon(
-                                      controller.hideConfirmPassword.value
-                                          ? IconlyLight.hide
-                                          : IconlyLight.show,
-                                      color: AppColors.primary,
-                                    ),
-                                    onPressed: controller
-                                        .toggleConfirmPasswordVisibility,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.grey[200],
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  contentPadding:
-                                      const EdgeInsets.symmetric(vertical: 15),
+                          TextFormField(
+                            controller: controller.confirmPasswordController,
+                            obscureText:
+                                  !controller.hideConfirmPassword.value,
+                            decoration: InputDecoration(
+                              hintText: "Confirm Password",
+                              prefixIcon: const Icon(IconlyLight.lock,
+                                  color: AppColors.primary),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  controller.hideConfirmPassword.value
+                                      ? IconlyLight.hide
+                                      : IconlyLight.show,
+                                  color: AppColors.primary,
                                 ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please confirm your password';
-                                  }
-                                  if (value !=
-                                      controller.passwordController.text) {
-                                    return 'Passwords do not match';
-                                  }
-                                  return null;
-                                },
-                              )),    
+                                onPressed:
+                                    controller.toggleConfirmPasswordVisibility,
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey[200],
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding:
+                                  EdgeInsets.symmetric(vertical: 15),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please confirm your password";
+                              }
+                              if (value != controller.passwordController.text) {
+                                return "Password mismatch";
+                              }
+                              return null;
+                            },
+                          ),
                           const SizedBox(height: 30),
                           EasyButton(
                             buttonColor: AppColors.primary,

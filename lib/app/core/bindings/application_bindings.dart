@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hoode/app/modules/image_cropper/image_cropper_controller.dart';
 import '../theme/theme_controller.dart';
 import '../../data/services/adservice.dart';
 import '../../data/services/bookmarkservice.dart';
@@ -32,7 +33,8 @@ class ApplicationBindings extends Bindings {
     Get.lazyPut(() => DashboardController(), fenix: true);
     Get.lazyPut(() => BookmarksController(), fenix: true);
     Get.lazyPut(() => UserPreferenceController(), fenix: true);
-    
+    Get.lazyPut(() => ImageCropperController(), fenix: true);
+
     // Feature controllers - Created on demand
     Get.create(() => ListingDetailController());
     Get.create(() => ProfileSetupController());

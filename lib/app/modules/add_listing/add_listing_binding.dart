@@ -5,8 +5,6 @@ import 'add_listing_controller.dart';
 class AddListingBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<AddListingController>(
-      AddListingController.new,
-    );
+    Get.put<AddListingController>(AddListingController());  // Use Get.put instead of lazyPut
   }
 }

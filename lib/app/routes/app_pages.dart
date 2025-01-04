@@ -23,6 +23,7 @@ import 'messages_routes.dart';
 import 'chat_view_routes.dart';
 import 'become_agent_routes.dart';
 import 'user_preference_routes.dart';
+import 'change_password_routes.dart';
 
 class AppPages {
   AppPages._();
@@ -61,5 +62,6 @@ class AppPages {
 		...ChatViewRoutes.routes,
 		...BecomeAgentRoutes.routes,
 		...UserPreferenceRoutes.routes,
+		...ChangePasswordRoutes.routes,
   ];
 }

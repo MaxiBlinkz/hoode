@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:hoode/app/data/exceptions/dublicate_widget_exception.dart';
 import 'package:logger/logger.dart';
 
 class AdService extends GetxService {
@@ -19,23 +20,27 @@ class AdService extends GetxService {
     return 'ca-app-pub-3940256099942544/1033173712'; // Test ad unit ID
   }
 
-  void loadBannerAd() {
-    bannerAd = BannerAd(
-      adUnitId: bannerAdUnitId,
-      size: AdSize.banner,
-      request: const AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          isAdLoaded.value = true;
-          log.i('Banner Ad loaded successfully');
-        },
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-          isAdLoaded.value = false;
-          log.e('Banner Ad failed to load: $error');
-        },
-      ),
-    )..load();
+  BannerAd createUniqueBannerAd() {
+    try {
+      return BannerAd(
+        adUnitId: bannerAdUnitId,
+        size: AdSize.banner,
+        request: const AdRequest(),
+        listener: BannerAdListener(
+          onAdLoaded: (ad) {
+            isAdLoaded.value = true;
+            log.i('Banner Ad loaded successfully');
+          },
+          onAdFailedToLoad: (ad, error) {
+            ad.dispose();
+            isAdLoaded.value = false;
+            log.e('Banner Ad failed to load: $error');
+          },
+        ),
+      )..load();
+    } catch (e) {
+      throw DuplicateAdWidgetException('Failed to create unique banner ad instance');
+    }
   }
 
   void loadInterstitialAd() {
@@ -57,7 +62,7 @@ class AdService extends GetxService {
   @override
   void onInit() {
     super.onInit();
-    loadBannerAd();
+    createUniqueBannerAd();
     loadInterstitialAd();
   }
 

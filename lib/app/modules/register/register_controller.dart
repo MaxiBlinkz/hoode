@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import '../../core/config/constants.dart';
 import '../../data/enums/enums.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:flutter/widgets.dart';
 import 'package:toastification/toastification.dart';
+import 'package:hoode/app/data/services/db_helper.dart';
 
 
 class RegisterController extends GetxController {
@@ -23,8 +23,8 @@ class RegisterController extends GetxController {
   var password = "".obs;
   var confirmPassword = "".obs;
   var isRegistered = false.obs;
-  var hidePassword = true.obs;
-  var hideConfirmPassword = true.obs;
+  var hidePassword = false.obs;
+  var hideConfirmPassword = false.obs;
 
   var id = "".obs;
   var status = Status.initial.obs;
@@ -32,8 +32,7 @@ class RegisterController extends GetxController {
 
   final storage = GetStorage();
 
-  final pb = PocketBase(POCKETBASE_URL);
-  //final pb = POCKETBASE;
+  final pb = PocketBase(DbHelper.getPocketbaseUrl());
 
   Future<void> register() async {
     status(Status.loading);
@@ -52,33 +51,28 @@ class RegisterController extends GetxController {
     } catch (e) {
       status(Status.error);
       err.value = e.toString();
-      notify.show(
-          type: ToastificationType.error,
-          description: Text(e.toString()),
-          title: const Text('error'),
-          autoCloseDuration: const Duration(microseconds: 500));
-      logger.i('${status.value}');
+      Get.snackbar("Error", '$e', backgroundColor: Colors.red);
       logger.e('$e');
       // await bugnag.bugsnag.notify(e, stack);
-    } finally{
-      if(status == Status.success){
+    } finally {
+      if (status == Status.success) {
         final authData = await pb.collection('users').authWithPassword(
-            email.value,
-            password.value,
-          );
-      storage.write('token', authData.token);
+              email.value,
+              password.value,
+            );
+        storage.write('token', authData.token);
       }
     }
     update();
   }
 
   void togglePasswordVisibility() {
-    hidePassword.value = !hidePassword.value;
+    hidePassword.toggle();
     update();
   }
 
   void toggleConfirmPasswordVisibility() {
-    hideConfirmPassword.value = !hideConfirmPassword.value;
+    hideConfirmPassword.toggle();
     update();
   }
 

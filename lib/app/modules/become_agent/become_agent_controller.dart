@@ -7,30 +7,59 @@ import '../../data/services/user_service.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class BecomeAgentController extends GetxController {
-  //final agentFormKey = GlobalKey<FormState>().obs;
+  final currentStep = 0.obs;
+  final steps = ['Basic Info', 'Professional Details', 'Specializations', 'Review'].obs;
+  final agentFormKey = GlobalKey<FormState>();
+  final isLoading = false.obs;
+
   final userService = Get.find<UserService>();
   final authService = Get.find<AuthService>();
   final pb = PocketBase(DbHelper.getPocketbaseUrl());
-  final isLoading = false.obs;
 
+  // Form Controllers
   final nameController = TextEditingController();
   final titleController = TextEditingController();
   final bioController = TextEditingController();
   final licenseController = TextEditingController();
   final contactController = TextEditingController();
+  final experienceController = TextEditingController();
+  final websiteController = TextEditingController();
 
   final selectedSpecializations = <String>[].obs;
   final specializations = [
     'Residential',
     'Commercial',
-    'Luxury',
+    'Luxury Properties',
     'Industrial',
-    'Land',
+    'Land Development',
+    'Property Management',
+    'Investment Properties',
+    'New Construction',
+    'Vacation Homes',
+    'International',
   ];
+
+  final certifications = <String>[].obs;
 
   @override
   void onInit() {
     super.onInit();
+  }
+
+  void nextStep() {
+    if (currentStep.value < steps.length - 1 && validateCurrentStep()) {
+      currentStep.value++;
+    }
+  }
+
+  void previousStep() {
+    if (currentStep.value > 0) {
+      currentStep.value--;
+    }
+  }
+
+  bool validateCurrentStep() {
+    return agentFormKey.currentState?.validate() ?? false;
   }
 
   void toggleSpecialization(String spec) {
@@ -39,7 +68,10 @@ class BecomeAgentController extends GetxController {
     } else {
       selectedSpecializations.add(spec);
     }
-    update();
+  }
+
+  void addCertification(String cert) {
+    certifications.add(cert);
   }
 
   Future<void> submitAgentApplication() async {

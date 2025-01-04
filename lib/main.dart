@@ -25,7 +25,17 @@ Future<void> main() async {
   );
 
   final authService = Get.put(AuthService());
-  await authService.checkLoginStatus();
+  try {
+    await authService.checkLoginStatus();
+  } catch (e) {
+    Get.snackbar(
+      'Offline Mode',
+      'You are currently offline. Some features may be limited.',
+      backgroundColor: Colors.orange,
+      colorText: Colors.white,
+      duration: const Duration(seconds: 5),
+    );
+  }
   Get.put(BookmarkService());
   await MobileAds.instance.initialize();
 

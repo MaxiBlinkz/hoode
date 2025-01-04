@@ -16,23 +16,27 @@ class AuthService extends GetxService {
   }
 
   Future<void> checkLoginStatus() async {
-    try {
-      final token = storage.read('authToken');
-      final userData = storage.read('userData');
+  try {
+    final token = storage.read('authToken');
+    final userData = storage.read('userData');
 
-      if (token != null && userData != null) {
-        pb.authStore.save(token, RecordModel.fromJson(userData));
-        await pb.collection('users').authRefresh();
-        
-        // Update storage with fresh token
-        storage.write('authToken', pb.authStore.token);
-        storage.write('userData', pb.authStore.record?.toJson());
-        isAuthenticated(pb.authStore.isValid);
-      }
-    } catch (e) {
-      logout();
+    if (token != null && userData != null) {
+      pb.authStore.save(token, RecordModel.fromJson(userData));
+      await pb.collection('users').authRefresh();
+      
+      storage.write('authToken', pb.authStore.token);
+      storage.write('userData', pb.authStore.record?.toJson());
+      isAuthenticated(pb.authStore.isValid);
+    }
+  } catch (e) {
+    // Keep user logged in offline if they were previously authenticated
+    final wasLoggedIn = storage.read('isLoggedIn') ?? false;
+    if (wasLoggedIn) {
+      isAuthenticated(true);
     }
   }
+}
+
 
   Future<void> refreshSession() async {
     await pb.collection('users').authRefresh();
@@ -88,11 +92,16 @@ class AuthService extends GetxService {
   bool get isLoggedIn => isAuthenticated.value;
 
   void logout() {
-    pb.authStore.clear();
-    storage.write('isLoggedIn', false);
-    storage.remove('authToken');
-    storage.remove('userData');
-    isAuthenticated(false);
+  pb.authStore.clear();
+  storage.write('isLoggedIn', false);
+  storage.remove('authToken');
+  storage.remove('userData');
+  isAuthenticated(false);
+  
+  // Only navigate if GetX is properly initialized
+  if (Get.isRegistered<GetMaterialApp>()) {
     Get.offAllNamed('/login');
   }
+}
+
 }

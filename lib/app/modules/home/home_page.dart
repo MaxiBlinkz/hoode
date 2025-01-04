@@ -3,18 +3,12 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-// import 'package:hoode/app/core/widgets/category_item.dart';
 import 'package:hoode/app/data/services/adservice.dart';
 import 'package:hoode/app/modules/listing_search/listing_search_page.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:lottie/lottie.dart';
-// import 'package:loading_animation_widget/loading_animation_widget.dart';
-// import 'package:loading_indicator/loading_indicator.dart';
-// import 'package:lottie/lottie.dart';
 import 'package:pocketbase/pocketbase.dart';
-// import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-
 import '../../core/theme/colors.dart';
 import '../../core/widgets/avatar.dart';
 import '../../core/widgets/listing_card.dart';
@@ -80,7 +74,7 @@ class HomePage extends GetView<HomeController> {
                           ElevatedButton(
                             onPressed: controller.retryLoading,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primary,
+                              backgroundColor: Theme.of(context).colorScheme.primary,
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 32,
                                 vertical: 12,
@@ -302,14 +296,7 @@ class HomePage extends GetView<HomeController> {
                               : const SizedBox()),
 
                           // Banner ad at the bottom
-                          if (adService.isAdLoaded.value)
-                            SizedBox(
-                              key: UniqueKey(),
-                              width: adService.bannerAd!.size.width.toDouble(),
-                              height:
-                                  adService.bannerAd!.size.height.toDouble(),
-                              child: AdWidget(ad: adService.bannerAd!),
-                            ),
+                          AdWidget(ad: AdService.to.createUniqueBannerAd()),
                           const SizedBox(height: 16.0),
                         ],
                       ),
