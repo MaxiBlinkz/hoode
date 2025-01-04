@@ -1,0 +1,1723 @@
+{
+  "properties": [
+    {
+      "id": "560c8347-3a97-443d-88fc-38dec57aaf54",
+      "title": "Customer-focused tertiary challenge",
+      "type": "townhouse",
+      "price": 944503.19,
+      "location": "New Christopherside",
+      "geopoint": {
+        "latitude": 32.3739565,
+        "longitude": 7.314919
+      },
+      "features": [
+        "heating",
+        "covered_parking",
+        "furnished",
+        "elevator"
+      ],
+      "square_feet": 2807,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "year_built": 2012,
+      "description": "Every customer how college factor. Kitchen land Democrat perhaps instead expect day. Hour magazine question relationship front decision social.",
+      "created_at": "2025-01-02T16:06:44"
+    },
+    {
+      "id": "6c93f8e0-a4cf-4a3c-a704-4b5e35c9254b",
+      "title": "Multi-lateral didactic Internet solution",
+      "type": "townhouse",
+      "price": 234268.9,
+      "location": "North Dustin",
+      "geopoint": {
+        "latitude": -12.971823,
+        "longitude": -27.956383
+      },
+      "features": [
+        "garden",
+        "furnished",
+        "balcony",
+        "covered_parking",
+        "pool",
+        "heating"
+      ],
+      "square_feet": 3863,
+      "bedrooms": 5,
+      "bathrooms": 3,
+      "year_built": 2022,
+      "description": "Table later discuss program public. Scientist baby bit smile rich kid computer score.\nStrategy area your force especially.\nAsk product condition. Than common town which would.",
+      "created_at": "2025-01-02T01:32:01"
+    },
+    {
+      "id": "100aeacb-7c6f-45f6-b005-600bc4584d29",
+      "title": "Grass-roots interactive parallelism",
+      "type": "house",
+      "price": 549822.19,
+      "location": "Melissaside",
+      "geopoint": {
+        "latitude": 51.009846,
+        "longitude": 88.722319
+      },
+      "features": [
+        "covered_parking",
+        "garden",
+        "gym",
+        "heating"
+      ],
+      "square_feet": 2097,
+      "bedrooms": 4,
+      "bathrooms": 2,
+      "year_built": 1990,
+      "description": "Behavior fear once exactly successful mean attorney.\nWorry certainly morning step. Single medical perhaps page wonder full.",
+      "created_at": "2025-01-04T06:33:19"
+    },
+    {
+      "id": "f09690f2-9fe1-457f-9ace-b2459d627e95",
+      "title": "Function-based asymmetric frame",
+      "type": "condo",
+      "price": 891742.39,
+      "location": "New Tinashire",
+      "geopoint": {
+        "latitude": 57.2907095,
+        "longitude": 53.307084
+      },
+      "features": [
+        "security",
+        "balcony",
+        "furnished"
+      ],
+      "square_feet": 1790,
+      "bedrooms": 2,
+      "bathrooms": 3,
+      "year_built": 2015,
+      "description": "Back decade space listen enjoy green very happen. White treat large actually decide.",
+      "created_at": "2025-01-01T11:49:42"
+    },
+    {
+      "id": "37b8004a-dd55-4f17-98d3-faff14c8ef08",
+      "title": "Monitored well-modulated installation",
+      "type": "villa",
+      "price": 516356.68,
+      "location": "Meghanfort",
+      "geopoint": {
+        "latitude": -80.9890325,
+        "longitude": 146.9576
+      },
+      "features": [
+        "gym",
+        "security",
+        "pool",
+        "furnished"
+      ],
+      "square_feet": 3181,
+      "bedrooms": 3,
+      "bathrooms": 3,
+      "year_built": 1998,
+      "description": "The expect better school they raise. Manage letter issue push theory. Without arm scientist week.",
+      "created_at": "2025-01-03T07:48:15"
+    },
+    {
+      "id": "71f4fcff-2e00-43b5-8a8b-00999752a4a1",
+      "title": "Implemented modular approach",
+      "type": "condo",
+      "price": 201812.08,
+      "location": "Elizabethton",
+      "geopoint": {
+        "latitude": 67.9572215,
+        "longitude": 154.73612
+      },
+      "features": [
+        "pool",
+        "parking",
+        "security",
+        "heating",
+        "elevator",
+        "gym"
+      ],
+      "square_feet": 3744,
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "year_built": 2007,
+      "description": "Process nearly commercial its. Customer player ask.\nField hot color president road. Fall black attack live bank. Adult have alone generation still huge.",
+      "created_at": "2025-01-03T20:03:22"
+    },
+    {
+      "id": "85e343f3-6848-421a-a41f-edfb07cf605a",
+      "title": "Total fresh-thinking knowledgebase",
+      "type": "villa",
+      "price": 389356.03,
+      "location": "Margarethaven",
+      "geopoint": {
+        "latitude": -10.575082,
+        "longitude": 163.238756
+      },
+      "features": [
+        "elevator",
+        "security",
+        "covered_parking",
+        "heating",
+        "balcony",
+        "pool",
+        "furnished"
+      ],
+      "square_feet": 1380,
+      "bedrooms": 2,
+      "bathrooms": 1,
+      "year_built": 2017,
+      "description": "With quite type couple official address.",
+      "created_at": "2025-01-04T16:14:41"
+    },
+    {
+      "id": "a99774da-dea8-4fa2-83a0-346e3fbd06a9",
+      "title": "Distributed exuding architecture",
+      "type": "apartment",
+      "price": 669081.69,
+      "location": "Hannahshire",
+      "geopoint": {
+        "latitude": 70.0781,
+        "longitude": 4.921396
+      },
+      "features": [
+        "heating",
+        "covered_parking",
+        "parking",
+        "gym",
+        "garden",
+        "security",
+        "furnished"
+      ],
+      "square_feet": 1569,
+      "bedrooms": 3,
+      "bathrooms": 3,
+      "year_built": 2009,
+      "description": "Medical hot center chair who reach. Her since policy firm growth child. Order how figure key third. Already task stuff really guess.",
+      "created_at": "2025-01-03T07:31:33"
+    },
+    {
+      "id": "8a038935-14fc-4ad9-afe5-b67366a129c5",
+      "title": "Focused mobile framework",
+      "type": "house",
+      "price": 241849.4,
+      "location": "West Jamesstad",
+      "geopoint": {
+        "latitude": 10.772878,
+        "longitude": -138.437054
+      },
+      "features": [
+        "garden",
+        "elevator",
+        "gym",
+        "security",
+        "balcony",
+        "heating",
+        "parking"
+      ],
+      "square_feet": 3929,
+      "bedrooms": 2,
+      "bathrooms": 3,
+      "year_built": 2009,
+      "description": "Affect either factor base southern military.\nOpen material thought give this will. Next maybe either help cut dream. Such section left he responsibility already season.",
+      "created_at": "2025-01-04T09:26:37"
+    },
+    {
+      "id": "fef8119d-4188-4f46-8fdd-78e3108ed90d",
+      "title": "Open-source interactive system engine",
+      "type": "townhouse",
+      "price": 402075.6,
+      "location": "Jenniferstad",
+      "geopoint": {
+        "latitude": 39.77127,
+        "longitude": -61.805612
+      },
+      "features": [
+        "elevator",
+        "pool",
+        "gym",
+        "covered_parking",
+        "furnished"
+      ],
+      "square_feet": 1722,
+      "bedrooms": 5,
+      "bathrooms": 1,
+      "year_built": 2001,
+      "description": "Discuss one hair option agreement. Training everything morning feel blood figure similar. Term national fight later development. Have situation main check after.",
+      "created_at": "2025-01-02T23:40:56"
+    },
+    {
+      "id": "7bbbbede-2a2a-4def-8565-2b6fb802abb1",
+      "title": "Polarized grid-enabled implementation",
+      "type": "apartment",
+      "price": 887896.58,
+      "location": "Kyleview",
+      "geopoint": {
+        "latitude": -63.20255,
+        "longitude": -32.151398
+      },
+      "features": [
+        "garden",
+        "elevator",
+        "pool"
+      ],
+      "square_feet": 3178,
+      "bedrooms": 4,
+      "bathrooms": 4,
+      "year_built": 2021,
+      "description": "Market month keep employee place just. Security join continue growth score speak. Wall democratic star spring five data can.",
+      "created_at": "2025-01-03T15:11:53"
+    },
+    {
+      "id": "f54f62bd-3caf-46fa-9a90-1285d91a655e",
+      "title": "Total regional artificial intelligence",
+      "type": "house",
+      "price": 235855.45,
+      "location": "North Jessica",
+      "geopoint": {
+        "latitude": 4.867321,
+        "longitude": -42.715696
+      },
+      "features": [
+        "pool",
+        "security",
+        "furnished",
+        "covered_parking",
+        "garden"
+      ],
+      "square_feet": 3859,
+      "bedrooms": 5,
+      "bathrooms": 1,
+      "year_built": 1996,
+      "description": "Question hair result interest summer main war.\nTraining tonight child until. North special economic in. Really executive customer manager meeting them.",
+      "created_at": "2025-01-01T20:56:10"
+    },
+    {
+      "id": "8ea83f9a-ed8d-4ecf-ad3e-8e0823d78e26",
+      "title": "Persistent responsive challenge",
+      "type": "townhouse",
+      "price": 404247.09,
+      "location": "Terriburgh",
+      "geopoint": {
+        "latitude": 65.8293755,
+        "longitude": -146.663483
+      },
+      "features": [
+        "pool",
+        "gym",
+        "furnished",
+        "garden",
+        "heating"
+      ],
+      "square_feet": 2918,
+      "bedrooms": 3,
+      "bathrooms": 4,
+      "year_built": 2016,
+      "description": "Later thus general particular yeah address produce. That sound song brother loss employee. Personal whether particularly most do determine simply third.",
+      "created_at": "2025-01-03T03:40:43"
+    },
+    {
+      "id": "d79cad53-b86c-4785-85b6-64f7d8a3c6e8",
+      "title": "Implemented human-resource frame",
+      "type": "apartment",
+      "price": 512231.46,
+      "location": "Port Yolandahaven",
+      "geopoint": {
+        "latitude": 73.3308025,
+        "longitude": 20.470302
+      },
+      "features": [
+        "heating",
+        "garden",
+        "balcony",
+        "furnished",
+        "covered_parking"
+      ],
+      "square_feet": 3352,
+      "bedrooms": 2,
+      "bathrooms": 4,
+      "year_built": 2017,
+      "description": "Bit material easy receive. National down past training season.\nMr time trip will you our culture. Talk check decision election worry building. Of mind course cold model.",
+      "created_at": "2025-01-01T15:13:46"
+    },
+    {
+      "id": "0f3e5ecd-30a2-4811-8486-580c5fa0c89f",
+      "title": "Optional bifurcated policy",
+      "type": "townhouse",
+      "price": 286955.87,
+      "location": "Kellyland",
+      "geopoint": {
+        "latitude": -2.0674285,
+        "longitude": 53.727928
+      },
+      "features": [
+        "balcony",
+        "furnished",
+        "security",
+        "parking",
+        "elevator",
+        "gym"
+      ],
+      "square_feet": 2252,
+      "bedrooms": 1,
+      "bathrooms": 4,
+      "year_built": 1997,
+      "description": "Break article than partner bring reduce involve. Like agree respond return think stage full.",
+      "created_at": "2025-01-02T05:17:13"
+    },
+    {
+      "id": "555b1180-7773-4a29-85df-06a72d3bac56",
+      "title": "Monitored maximized groupware",
+      "type": "villa",
+      "price": 100351.51,
+      "location": "Kochton",
+      "geopoint": {
+        "latitude": -81.763768,
+        "longitude": -140.346826
+      },
+      "features": [
+        "pool",
+        "security",
+        "garden",
+        "balcony"
+      ],
+      "square_feet": 1480,
+      "bedrooms": 4,
+      "bathrooms": 1,
+      "year_built": 2007,
+      "description": "Sister traditional even peace cell state ok. Fish technology structure whether car partner.\nWhat remain each majority. Station myself film whole.",
+      "created_at": "2025-01-02T17:36:13"
+    },
+    {
+      "id": "6993d77a-5947-4d00-a992-4d1ac9c9bac7",
+      "title": "Inverse radical Internet solution",
+      "type": "apartment",
+      "price": 505152.87,
+      "location": "Hannahmouth",
+      "geopoint": {
+        "latitude": -58.792355,
+        "longitude": 145.091964
+      },
+      "features": [
+        "gym",
+        "elevator",
+        "pool",
+        "heating"
+      ],
+      "square_feet": 1658,
+      "bedrooms": 5,
+      "bathrooms": 1,
+      "year_built": 2009,
+      "description": "Truth either it material floor respond bill once. Off different popular life speech fear son. Road school newspaper act area.\nAgo also always close type evidence gun.",
+      "created_at": "2025-01-01T09:31:05"
+    },
+    {
+      "id": "97552f9e-a3c2-46cb-8d15-884ac03b56f2",
+      "title": "Seamless multimedia frame",
+      "type": "apartment",
+      "price": 962977.79,
+      "location": "North Joshua",
+      "geopoint": {
+        "latitude": 11.3991685,
+        "longitude": -139.617173
+      },
+      "features": [
+        "parking",
+        "heating",
+        "pool",
+        "security",
+        "furnished",
+        "elevator",
+        "covered_parking"
+      ],
+      "square_feet": 3354,
+      "bedrooms": 3,
+      "bathrooms": 3,
+      "year_built": 2018,
+      "description": "Party choose oil mission speech. Arm face require yeah foot pattern born imagine. Now of partner program rule account measure.",
+      "created_at": "2025-01-01T05:58:29"
+    },
+    {
+      "id": "fdb302b0-b72e-4806-85ec-69c20bd96932",
+      "title": "Exclusive mission-critical leverage",
+      "type": "apartment",
+      "price": 850949.96,
+      "location": "South John",
+      "geopoint": {
+        "latitude": 12.410356,
+        "longitude": -18.771787
+      },
+      "features": [
+        "furnished",
+        "heating",
+        "garden",
+        "parking"
+      ],
+      "square_feet": 3231,
+      "bedrooms": 4,
+      "bathrooms": 2,
+      "year_built": 2023,
+      "description": "Itself imagine across everybody fill various hear.\nSuccessful agreement what summer American. Computer herself early. Letter live establish together lead near here.",
+      "created_at": "2025-01-04T03:18:52"
+    },
+    {
+      "id": "8952767a-8025-4495-9c18-4d916bfabde3",
+      "title": "Optional tangible portal",
+      "type": "apartment",
+      "price": 654605.87,
+      "location": "Lindaton",
+      "geopoint": {
+        "latitude": 58.538801,
+        "longitude": -4.354314
+      },
+      "features": [
+        "elevator",
+        "heating",
+        "pool"
+      ],
+      "square_feet": 1541,
+      "bedrooms": 5,
+      "bathrooms": 3,
+      "year_built": 2008,
+      "description": "National commercial upon natural anything fish. Whose reveal second call music forget today matter. Office young next.\nPerhaps politics best contain mission. Mr scientist special if save Mr.",
+      "created_at": "2025-01-02T20:32:03"
+    },
+    {
+      "id": "788dfd94-617c-46d5-a1de-096dfcbc1aea",
+      "title": "Universal bottom-line framework",
+      "type": "villa",
+      "price": 114058.13,
+      "location": "West Thomasmouth",
+      "geopoint": {
+        "latitude": -58.7823105,
+        "longitude": 75.853724
+      },
+      "features": [
+        "pool",
+        "heating",
+        "elevator"
+      ],
+      "square_feet": 929,
+      "bedrooms": 5,
+      "bathrooms": 3,
+      "year_built": 2020,
+      "description": "Have run something figure. Move special impact about meeting. Kid station once property draw even be.\nArt offer me. Recognize education very international campaign heart.",
+      "created_at": "2025-01-03T19:47:08"
+    },
+    {
+      "id": "209e2270-4c03-4afd-a44c-7cfc87dfcbe2",
+      "title": "Business-focused holistic extranet",
+      "type": "apartment",
+      "price": 488374.89,
+      "location": "Port Michael",
+      "geopoint": {
+        "latitude": 31.7123695,
+        "longitude": 82.027424
+      },
+      "features": [
+        "pool",
+        "elevator",
+        "parking"
+      ],
+      "square_feet": 3949,
+      "bedrooms": 4,
+      "bathrooms": 3,
+      "year_built": 1998,
+      "description": "So game high hand almost market. How blood month concern west. Model son behavior home.\nSimply floor authority. Season scene would arrive art. And yet management trade court show avoid.",
+      "created_at": "2025-01-04T00:36:36"
+    },
+    {
+      "id": "761b4c5f-18c5-46d0-ac50-ad0cf97de3e5",
+      "title": "Re-contextualized leadingedge parallelism",
+      "type": "villa",
+      "price": 591408.71,
+      "location": "South Joseph",
+      "geopoint": {
+        "latitude": 28.294469,
+        "longitude": -21.873721
+      },
+      "features": [
+        "elevator",
+        "heating",
+        "balcony",
+        "furnished",
+        "pool",
+        "garden"
+      ],
+      "square_feet": 3468,
+      "bedrooms": 4,
+      "bathrooms": 4,
+      "year_built": 2020,
+      "description": "Turn seek player represent American budget morning always. Radio ten page structure college opportunity always.\nBoy phone fill their beautiful run laugh.",
+      "created_at": "2025-01-04T14:17:36"
+    },
+    {
+      "id": "219f940c-15ad-4850-affe-4f1fea495674",
+      "title": "Profit-focused solution-oriented Internet solution",
+      "type": "townhouse",
+      "price": 972973.33,
+      "location": "Herringhaven",
+      "geopoint": {
+        "latitude": 8.7470985,
+        "longitude": -71.063305
+      },
+      "features": [
+        "heating",
+        "parking",
+        "gym",
+        "balcony",
+        "security"
+      ],
+      "square_feet": 1665,
+      "bedrooms": 1,
+      "bathrooms": 3,
+      "year_built": 2009,
+      "description": "Design attorney what action international. Hard about half hold recent. Deal phone offer probably garden art focus.",
+      "created_at": "2025-01-01T05:58:28"
+    },
+    {
+      "id": "6a02f96f-1fbe-4ff5-a750-83e408931c17",
+      "title": "Extended heuristic solution",
+      "type": "apartment",
+      "price": 643445.11,
+      "location": "North Codyberg",
+      "geopoint": {
+        "latitude": -71.872073,
+        "longitude": -54.973842
+      },
+      "features": [
+        "garden",
+        "elevator",
+        "parking"
+      ],
+      "square_feet": 862,
+      "bedrooms": 3,
+      "bathrooms": 1,
+      "year_built": 1997,
+      "description": "South there probably into. Rule financial avoid improve ago actually listen focus. Its by station care shake inside week.",
+      "created_at": "2025-01-01T23:51:00"
+    },
+    {
+      "id": "d1028564-3e22-456d-ac9c-675178c5bc10",
+      "title": "Triple-buffered full-range archive",
+      "type": "condo",
+      "price": 265790.47,
+      "location": "Stephanieshire",
+      "geopoint": {
+        "latitude": 16.2969275,
+        "longitude": -44.157718
+      },
+      "features": [
+        "covered_parking",
+        "gym",
+        "garden",
+        "security",
+        "parking",
+        "furnished"
+      ],
+      "square_feet": 1785,
+      "bedrooms": 5,
+      "bathrooms": 3,
+      "year_built": 2000,
+      "description": "Serve compare environmental sure each thank. What baby rich debate. Candidate others create accept action yes.",
+      "created_at": "2025-01-03T05:45:07"
+    },
+    {
+      "id": "c22bbd6f-74d1-407f-ba44-859f50d4bf30",
+      "title": "Total regional time-frame",
+      "type": "townhouse",
+      "price": 692016.01,
+      "location": "Lake Daniellebury",
+      "geopoint": {
+        "latitude": 4.949342,
+        "longitude": -32.39673
+      },
+      "features": [
+        "heating",
+        "elevator",
+        "garden",
+        "furnished",
+        "gym"
+      ],
+      "square_feet": 3066,
+      "bedrooms": 3,
+      "bathrooms": 3,
+      "year_built": 2018,
+      "description": "Increase offer hour list surface. White organization ball already tree.",
+      "created_at": "2025-01-03T07:31:50"
+    },
+    {
+      "id": "035d00ac-eec5-473a-a4b7-4294c754b0a7",
+      "title": "Re-contextualized executive paradigm",
+      "type": "villa",
+      "price": 447117.46,
+      "location": "Marychester",
+      "geopoint": {
+        "latitude": -16.1630045,
+        "longitude": 120.793583
+      },
+      "features": [
+        "security",
+        "furnished",
+        "heating"
+      ],
+      "square_feet": 3111,
+      "bedrooms": 4,
+      "bathrooms": 1,
+      "year_built": 2005,
+      "description": "Together whole act anyone physical. Fact tree white suggest reality little PM.\nFace grow single politics our management generation.",
+      "created_at": "2025-01-02T10:47:15"
+    },
+    {
+      "id": "b5c56e8c-91e1-44d1-9ab6-4749114f75e8",
+      "title": "Assimilated executive hierarchy",
+      "type": "house",
+      "price": 253580.37,
+      "location": "Sosaberg",
+      "geopoint": {
+        "latitude": -8.4636835,
+        "longitude": 5.974731
+      },
+      "features": [
+        "gym",
+        "elevator",
+        "balcony",
+        "heating",
+        "security"
+      ],
+      "square_feet": 3052,
+      "bedrooms": 4,
+      "bathrooms": 3,
+      "year_built": 2015,
+      "description": "Current economic affect. Security response would project add. To company home throughout among hit month.",
+      "created_at": "2025-01-01T20:22:56"
+    },
+    {
+      "id": "990142f5-6efa-4051-aa21-cf36960fa7e6",
+      "title": "Digitized even-keeled archive",
+      "type": "apartment",
+      "price": 871885.83,
+      "location": "New Anthonyburgh",
+      "geopoint": {
+        "latitude": 81.556046,
+        "longitude": 37.845371
+      },
+      "features": [
+        "balcony",
+        "security",
+        "pool"
+      ],
+      "square_feet": 2276,
+      "bedrooms": 2,
+      "bathrooms": 1,
+      "year_built": 2004,
+      "description": "Half occur family physical impact. Five movie go crime series simply present only. Science hair establish heavy reality.",
+      "created_at": "2025-01-02T03:32:07"
+    },
+    {
+      "id": "1fd0fb02-a41c-4c9e-b8fe-263b65ff7043",
+      "title": "Assimilated value-added help-desk",
+      "type": "villa",
+      "price": 774844.78,
+      "location": "East Kathyland",
+      "geopoint": {
+        "latitude": 88.8355255,
+        "longitude": 137.289723
+      },
+      "features": [
+        "elevator",
+        "garden",
+        "balcony",
+        "pool",
+        "heating"
+      ],
+      "square_feet": 1820,
+      "bedrooms": 4,
+      "bathrooms": 4,
+      "year_built": 2023,
+      "description": "Board positive up condition real think contain much. Until development against. Letter them picture fight account next shoulder.",
+      "created_at": "2025-01-01T08:21:22"
+    },
+    {
+      "id": "44e944d4-d2d3-431a-9273-d60f272e694c",
+      "title": "Horizontal bandwidth-monitored solution",
+      "type": "townhouse",
+      "price": 619948.18,
+      "location": "Lake Benjaminburgh",
+      "geopoint": {
+        "latitude": -23.3163155,
+        "longitude": 173.760814
+      },
+      "features": [
+        "heating",
+        "balcony",
+        "pool"
+      ],
+      "square_feet": 1331,
+      "bedrooms": 5,
+      "bathrooms": 4,
+      "year_built": 2004,
+      "description": "Today stand world though room people. Ask ever him notice ten cut fine. Hope whom audience.\nStand parent boy scene. Line concern yes imagine reveal head.",
+      "created_at": "2025-01-01T02:11:08"
+    },
+    {
+      "id": "2eee5753-4177-422b-b16c-9d95f7a0d7ab",
+      "title": "Reverse-engineered neutral Internet solution",
+      "type": "apartment",
+      "price": 801984.61,
+      "location": "Lake Brycemouth",
+      "geopoint": {
+        "latitude": 75.5326305,
+        "longitude": -127.863732
+      },
+      "features": [
+        "elevator",
+        "gym",
+        "pool",
+        "security",
+        "balcony",
+        "heating",
+        "furnished"
+      ],
+      "square_feet": 3034,
+      "bedrooms": 3,
+      "bathrooms": 4,
+      "year_built": 1991,
+      "description": "Effect nation medical defense phone floor. Spring end step five per.\nMatter sell customer minute. Bag available eight impact various Mr.",
+      "created_at": "2025-01-01T20:07:13"
+    },
+    {
+      "id": "ae9c6adc-95a1-4f98-90be-8163e5a6dcc3",
+      "title": "Intuitive mission-critical focus group",
+      "type": "house",
+      "price": 183826.92,
+      "location": "Mcleanfort",
+      "geopoint": {
+        "latitude": 34.825293,
+        "longitude": 65.768638
+      },
+      "features": [
+        "elevator",
+        "balcony",
+        "covered_parking",
+        "security"
+      ],
+      "square_feet": 3374,
+      "bedrooms": 1,
+      "bathrooms": 3,
+      "year_built": 1990,
+      "description": "Anyone it evening show according. Able sign computer while source thus authority.",
+      "created_at": "2025-01-01T18:05:21"
+    },
+    {
+      "id": "a212a564-78d6-4839-9bdc-f55659e6129d",
+      "title": "Right-sized zero administration approach",
+      "type": "condo",
+      "price": 661314.52,
+      "location": "East Vanessa",
+      "geopoint": {
+        "latitude": 40.0150555,
+        "longitude": -126.788962
+      },
+      "features": [
+        "pool",
+        "heating",
+        "security",
+        "parking",
+        "covered_parking"
+      ],
+      "square_feet": 2150,
+      "bedrooms": 4,
+      "bathrooms": 2,
+      "year_built": 2022,
+      "description": "Face beyond choose live dog another president clear.\nSecurity day ability worry. Road resource environment as everybody same.",
+      "created_at": "2025-01-02T16:20:27"
+    },
+    {
+      "id": "857ab6c3-976a-46eb-8288-e021d2005fe9",
+      "title": "Horizontal systemic hub",
+      "type": "townhouse",
+      "price": 814688.29,
+      "location": "South James",
+      "geopoint": {
+        "latitude": 4.0760175,
+        "longitude": 124.141364
+      },
+      "features": [
+        "garden",
+        "gym",
+        "furnished",
+        "pool"
+      ],
+      "square_feet": 3018,
+      "bedrooms": 3,
+      "bathrooms": 4,
+      "year_built": 1995,
+      "description": "Resource why key late. Past budget third without.\nSave test case right official adult city course.",
+      "created_at": "2025-01-03T15:58:31"
+    },
+    {
+      "id": "5ff326d6-fa11-466f-8f63-5c917950a8ec",
+      "title": "Synergistic context-sensitive productivity",
+      "type": "house",
+      "price": 662655.59,
+      "location": "Michaelland",
+      "geopoint": {
+        "latitude": -47.8609845,
+        "longitude": 163.499627
+      },
+      "features": [
+        "gym",
+        "pool",
+        "parking",
+        "garden"
+      ],
+      "square_feet": 3323,
+      "bedrooms": 1,
+      "bathrooms": 2,
+      "year_built": 1991,
+      "description": "Such TV ok drop.\nHeart budget plan piece agency father. Job difference around family eat military same. Interesting professor position.\nMust simply eight hard. Institution speech thus company.",
+      "created_at": "2025-01-04T04:46:04"
+    },
+    {
+      "id": "ed6051f7-8bd1-4d02-9fc8-82c7c718069a",
+      "title": "Optimized uniform monitoring",
+      "type": "condo",
+      "price": 342306.76,
+      "location": "Johnport",
+      "geopoint": {
+        "latitude": 21.94955,
+        "longitude": 111.252088
+      },
+      "features": [
+        "gym",
+        "furnished",
+        "elevator"
+      ],
+      "square_feet": 2268,
+      "bedrooms": 5,
+      "bathrooms": 3,
+      "year_built": 2021,
+      "description": "Reveal do bag authority indicate charge. Example or lawyer law. Try raise instead crime oil service surface. Do stock realize tax leg.",
+      "created_at": "2025-01-02T21:33:40"
+    },
+    {
+      "id": "7acf3668-6877-4347-af21-1a4eed0495f3",
+      "title": "Ergonomic intangible methodology",
+      "type": "townhouse",
+      "price": 326136.11,
+      "location": "Port Rebecca",
+      "geopoint": {
+        "latitude": -50.3563855,
+        "longitude": -166.034703
+      },
+      "features": [
+        "furnished",
+        "elevator",
+        "garden",
+        "parking",
+        "heating",
+        "covered_parking",
+        "gym"
+      ],
+      "square_feet": 2723,
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "year_built": 2022,
+      "description": "Receive sit expert culture. Determine everything about.\nSon itself third easy garden. Service her notice former. Environment language method floor relate.",
+      "created_at": "2025-01-04T14:36:31"
+    },
+    {
+      "id": "4ead5ed2-f617-43d8-96b8-8efaf5b4e427",
+      "title": "Multi-tiered composite portal",
+      "type": "apartment",
+      "price": 646537.62,
+      "location": "Hallland",
+      "geopoint": {
+        "latitude": 11.0460305,
+        "longitude": 159.457749
+      },
+      "features": [
+        "balcony",
+        "security",
+        "gym",
+        "furnished",
+        "garden",
+        "pool"
+      ],
+      "square_feet": 2303,
+      "bedrooms": 5,
+      "bathrooms": 1,
+      "year_built": 1993,
+      "description": "Imagine before sure. Soldier situation two ball close method. Little best threat short society cold produce.\nDebate stop do away happy blue anything still. Citizen peace bad through.",
+      "created_at": "2025-01-04T13:32:44"
+    },
+    {
+      "id": "ec116836-1ec5-47fb-b9d5-c67731eb830d",
+      "title": "Cross-group static middleware",
+      "type": "villa",
+      "price": 147522.42,
+      "location": "Emilybury",
+      "geopoint": {
+        "latitude": -14.685001,
+        "longitude": -133.30646
+      },
+      "features": [
+        "gym",
+        "parking",
+        "garden"
+      ],
+      "square_feet": 2349,
+      "bedrooms": 1,
+      "bathrooms": 4,
+      "year_built": 2017,
+      "description": "Protect sign if almost increase. Set suggest keep sure leave.\nRequire speak hundred want religious where. Look green standard administration.",
+      "created_at": "2025-01-04T10:28:34"
+    },
+    {
+      "id": "f60d0101-cafd-486e-a8d4-6ab1347cd21e",
+      "title": "Face-to-face analyzing initiative",
+      "type": "apartment",
+      "price": 941280.58,
+      "location": "Cunninghamtown",
+      "geopoint": {
+        "latitude": -68.771454,
+        "longitude": -147.993782
+      },
+      "features": [
+        "security",
+        "elevator",
+        "parking",
+        "heating"
+      ],
+      "square_feet": 3950,
+      "bedrooms": 1,
+      "bathrooms": 2,
+      "year_built": 2000,
+      "description": "Pull popular significant only. Contain war work over pattern fire.\nMemory practice present agreement. Military factor purpose participant indicate. More amount save guess entire central.",
+      "created_at": "2025-01-02T04:42:07"
+    },
+    {
+      "id": "4ebe3cab-44ff-4d98-b3b8-76c86a4ed67f",
+      "title": "Reduced intermediate attitude",
+      "type": "apartment",
+      "price": 456337.81,
+      "location": "Conleyburgh",
+      "geopoint": {
+        "latitude": 70.897513,
+        "longitude": 79.076191
+      },
+      "features": [
+        "pool",
+        "balcony",
+        "furnished",
+        "heating",
+        "parking",
+        "security",
+        "garden"
+      ],
+      "square_feet": 3716,
+      "bedrooms": 1,
+      "bathrooms": 2,
+      "year_built": 2004,
+      "description": "Decision out war person concern cause. Wonder red mission after speak. Local memory still easy our prevent.\nGreat tax kid I. Security myself push sport. As today gun play chance building.",
+      "created_at": "2025-01-04T08:43:15"
+    },
+    {
+      "id": "b5272ce2-5222-4334-935b-0b8d9b8b10a6",
+      "title": "Ergonomic stable functionalities",
+      "type": "apartment",
+      "price": 264370.99,
+      "location": "Mcfarlandfort",
+      "geopoint": {
+        "latitude": 18.35492,
+        "longitude": 20.555765
+      },
+      "features": [
+        "covered_parking",
+        "elevator",
+        "gym",
+        "heating",
+        "security",
+        "garden",
+        "furnished"
+      ],
+      "square_feet": 949,
+      "bedrooms": 4,
+      "bathrooms": 3,
+      "year_built": 2016,
+      "description": "Can chair us both white. Carry wrong appear apply.\nJoin notice take. Sound test whom remember resource energy establish.",
+      "created_at": "2025-01-04T10:36:36"
+    },
+    {
+      "id": "e0d0eb5c-977e-4a4a-ac90-3bfc5cf7f2f7",
+      "title": "Monitored context-sensitive open architecture",
+      "type": "villa",
+      "price": 881182.29,
+      "location": "Melvinview",
+      "geopoint": {
+        "latitude": -88.8735775,
+        "longitude": 33.527906
+      },
+      "features": [
+        "balcony",
+        "furnished",
+        "parking",
+        "elevator",
+        "security",
+        "pool",
+        "heating"
+      ],
+      "square_feet": 3574,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "year_built": 2023,
+      "description": "Security why environmental help.\nNew partner box from couple investment. Few hold real human.\nControl wife real grow face sit.\nSuggest forget garden.",
+      "created_at": "2025-01-04T10:06:04"
+    },
+    {
+      "id": "8ac11ec5-1df1-48bd-886c-c99ae68fcaaa",
+      "title": "Grass-roots background flexibility",
+      "type": "townhouse",
+      "price": 431616.31,
+      "location": "Lake Jessicaville",
+      "geopoint": {
+        "latitude": 9.54186,
+        "longitude": 46.689298
+      },
+      "features": [
+        "elevator",
+        "heating",
+        "garden",
+        "gym",
+        "balcony"
+      ],
+      "square_feet": 898,
+      "bedrooms": 3,
+      "bathrooms": 4,
+      "year_built": 1990,
+      "description": "Hot Republican system mission worker front situation rather.\nOfficial without page need without idea. Need figure weight wish beyond tell.\nEnergy might speak. Kid her get. Win task society line wide.",
+      "created_at": "2025-01-04T19:04:10"
+    },
+    {
+      "id": "b7635551-106b-4601-816a-d07a1dd32681",
+      "title": "Reduced leadingedge contingency",
+      "type": "apartment",
+      "price": 824745.27,
+      "location": "West Dustinport",
+      "geopoint": {
+        "latitude": 2.8883105,
+        "longitude": -6.201994
+      },
+      "features": [
+        "pool",
+        "gym",
+        "parking"
+      ],
+      "square_feet": 3156,
+      "bedrooms": 5,
+      "bathrooms": 1,
+      "year_built": 1998,
+      "description": "Painting play no culture. Concern apply star successful miss. Book relate name art.",
+      "created_at": "2025-01-03T13:02:34"
+    },
+    {
+      "id": "eeb62bc0-2763-4c05-9c3b-f4810b9db629",
+      "title": "Ameliorated dynamic instruction set",
+      "type": "condo",
+      "price": 769671.88,
+      "location": "East Tiffanystad",
+      "geopoint": {
+        "latitude": -10.021132,
+        "longitude": 129.872564
+      },
+      "features": [
+        "balcony",
+        "garden",
+        "heating",
+        "gym",
+        "parking",
+        "pool"
+      ],
+      "square_feet": 3662,
+      "bedrooms": 1,
+      "bathrooms": 3,
+      "year_built": 2001,
+      "description": "Nation item local marriage. Building room push administration already all necessary evening.",
+      "created_at": "2025-01-04T08:50:40"
+    },
+    {
+      "id": "319912d4-5a2b-4f11-8e16-2cdfbee6d498",
+      "title": "Seamless asymmetric knowledgebase",
+      "type": "house",
+      "price": 920897.16,
+      "location": "Mistyberg",
+      "geopoint": {
+        "latitude": 27.5095145,
+        "longitude": -104.763135
+      },
+      "features": [
+        "parking",
+        "covered_parking",
+        "elevator",
+        "balcony",
+        "security",
+        "furnished",
+        "heating"
+      ],
+      "square_feet": 3393,
+      "bedrooms": 3,
+      "bathrooms": 3,
+      "year_built": 2003,
+      "description": "Director much rate near evidence. Rest build attention worry factor house town. Grow PM book well situation. Sort dark career candidate where.",
+      "created_at": "2025-01-01T17:12:35"
+    },
+    {
+      "id": "3231893f-0ba0-4a62-b934-7567c7a8c6da",
+      "title": "Phased disintermediate synergy",
+      "type": "condo",
+      "price": 442037.04,
+      "location": "Jennifermouth",
+      "geopoint": {
+        "latitude": 69.2351715,
+        "longitude": 178.400549
+      },
+      "features": [
+        "gym",
+        "covered_parking",
+        "pool",
+        "elevator",
+        "furnished",
+        "security"
+      ],
+      "square_feet": 2879,
+      "bedrooms": 4,
+      "bathrooms": 3,
+      "year_built": 1998,
+      "description": "Here argue arm close society. Ok whether reflect low tell forget fast. Sometimes move skill election soldier case each.\nSeveral candidate bring compare.",
+      "created_at": "2025-01-02T14:08:23"
+    }
+  ],
+  "user_preferences": {
+    "target_price": 345354.9,
+    "preferred_location": {
+      "latitude": -55.078367,
+      "longitude": -76.695242
+    },
+    "preferred_amenities": [
+      "pool",
+      "parking"
+    ],
+    "preferred_type": "house"
+  },
+  "interaction_history": {
+    "view_counts": {
+      "6c93f8e0-a4cf-4a3c-a704-4b5e35c9254b": 12,
+      "100aeacb-7c6f-45f6-b005-600bc4584d29": 16,
+      "f09690f2-9fe1-457f-9ace-b2459d627e95": 2,
+      "37b8004a-dd55-4f17-98d3-faff14c8ef08": 12,
+      "71f4fcff-2e00-43b5-8a8b-00999752a4a1": 19,
+      "85e343f3-6848-421a-a41f-edfb07cf605a": 16,
+      "a99774da-dea8-4fa2-83a0-346e3fbd06a9": 4,
+      "8a038935-14fc-4ad9-afe5-b67366a129c5": 11,
+      "fef8119d-4188-4f46-8fdd-78e3108ed90d": 18,
+      "8ea83f9a-ed8d-4ecf-ad3e-8e0823d78e26": 2,
+      "d79cad53-b86c-4785-85b6-64f7d8a3c6e8": 4,
+      "555b1180-7773-4a29-85df-06a72d3bac56": 5,
+      "6993d77a-5947-4d00-a992-4d1ac9c9bac7": 1,
+      "97552f9e-a3c2-46cb-8d15-884ac03b56f2": 1,
+      "fdb302b0-b72e-4806-85ec-69c20bd96932": 20,
+      "8952767a-8025-4495-9c18-4d916bfabde3": 10,
+      "209e2270-4c03-4afd-a44c-7cfc87dfcbe2": 20,
+      "761b4c5f-18c5-46d0-ac50-ad0cf97de3e5": 20,
+      "219f940c-15ad-4850-affe-4f1fea495674": 7,
+      "035d00ac-eec5-473a-a4b7-4294c754b0a7": 20,
+      "b5c56e8c-91e1-44d1-9ab6-4749114f75e8": 6,
+      "990142f5-6efa-4051-aa21-cf36960fa7e6": 11,
+      "44e944d4-d2d3-431a-9273-d60f272e694c": 4,
+      "a212a564-78d6-4839-9bdc-f55659e6129d": 18,
+      "ed6051f7-8bd1-4d02-9fc8-82c7c718069a": 9,
+      "7acf3668-6877-4347-af21-1a4eed0495f3": 16,
+      "4ead5ed2-f617-43d8-96b8-8efaf5b4e427": 5,
+      "ec116836-1ec5-47fb-b9d5-c67731eb830d": 6,
+      "f60d0101-cafd-486e-a8d4-6ab1347cd21e": 6,
+      "b5272ce2-5222-4334-935b-0b8d9b8b10a6": 3,
+      "e0d0eb5c-977e-4a4a-ac90-3bfc5cf7f2f7": 1,
+      "8ac11ec5-1df1-48bd-886c-c99ae68fcaaa": 18,
+      "b7635551-106b-4601-816a-d07a1dd32681": 13,
+      "319912d4-5a2b-4f11-8e16-2cdfbee6d498": 2
+    },
+    "favorites": [
+      "560c8347-3a97-443d-88fc-38dec57aaf54",
+      "6c93f8e0-a4cf-4a3c-a704-4b5e35c9254b",
+      "f09690f2-9fe1-457f-9ace-b2459d627e95",
+      "a99774da-dea8-4fa2-83a0-346e3fbd06a9",
+      "7bbbbede-2a2a-4def-8565-2b6fb802abb1",
+      "0f3e5ecd-30a2-4811-8486-580c5fa0c89f",
+      "fdb302b0-b72e-4806-85ec-69c20bd96932",
+      "6a02f96f-1fbe-4ff5-a750-83e408931c17",
+      "ae9c6adc-95a1-4f98-90be-8163e5a6dcc3",
+      "eeb62bc0-2763-4c05-9c3b-f4810b9db629",
+      "319912d4-5a2b-4f11-8e16-2cdfbee6d498"
+    ],
+    "clicks": {
+      "560c8347-3a97-443d-88fc-38dec57aaf54": [
+        "2024-12-29T19:27:05.086954",
+        "2025-01-04T19:27:05.086954",
+        "2024-12-30T19:27:05.086954",
+        "2024-12-23T19:27:05.086954",
+        "2024-12-22T19:27:05.086954",
+        "2024-12-21T19:27:05.086954",
+        "2025-01-04T19:27:05.086954",
+        "2025-01-03T19:27:05.086954"
+      ],
+      "100aeacb-7c6f-45f6-b005-600bc4584d29": [
+        "2024-12-28T19:27:05.086954",
+        "2025-01-01T19:27:05.086954",
+        "2024-12-22T19:27:05.086954",
+        "2024-12-26T19:27:05.086954",
+        "2024-12-30T19:27:05.086954",
+        "2024-12-23T19:27:05.086954"
+      ],
+      "85e343f3-6848-421a-a41f-edfb07cf605a": [
+        "2025-01-01T19:27:05.086954",
+        "2024-12-31T19:27:05.086954",
+        "2024-12-29T19:27:05.086954",
+        "2024-12-26T19:27:05.086954",
+        "2025-01-04T19:27:05.086954",
+        "2024-12-31T19:27:05.086954"
+      ],
+      "f54f62bd-3caf-46fa-9a90-1285d91a655e": [
+        "2025-01-02T19:27:05.086954",
+        "2024-12-27T19:27:05.086954",
+        "2025-01-03T19:27:05.086954",
+        "2024-12-28T19:27:05.086954",
+        "2024-12-26T19:27:05.086954",
+        "2024-12-29T19:27:05.086954"
+      ],
+      "8ea83f9a-ed8d-4ecf-ad3e-8e0823d78e26": [
+        "2024-12-21T19:27:05.086954",
+        "2024-12-31T19:27:05.086954",
+        "2024-12-28T19:27:05.086954",
+        "2024-12-30T19:27:05.086954",
+        "2024-12-26T19:27:05.086954"
+      ],
+      "d79cad53-b86c-4785-85b6-64f7d8a3c6e8": [
+        "2025-01-01T19:27:05.086954",
+        "2024-12-26T19:27:05.086954",
+        "2025-01-04T19:27:05.086954",
+        "2024-12-26T19:27:05.086954",
+        "2024-12-31T19:27:05.086954",
+        "2025-01-02T19:27:05.086954"
+      ],
+      "0f3e5ecd-30a2-4811-8486-580c5fa0c89f": [
+        "2024-12-26T19:27:05.086954",
+        "2024-12-28T19:27:05.086954",
+        "2025-01-03T19:27:05.086954",
+        "2025-01-03T19:27:05.086954"
+      ],
+      "97552f9e-a3c2-46cb-8d15-884ac03b56f2": [
+        "2024-12-25T19:27:05.086954",
+        "2024-12-31T19:27:05.086954",
+        "2024-12-28T19:27:05.086954",
+        "2024-12-24T19:27:05.086954",
+        "2024-12-24T19:27:05.086954"
+      ],
+      "8952767a-8025-4495-9c18-4d916bfabde3": [
+        "2024-12-24T19:27:05.086954",
+        "2024-12-26T19:27:05.086954",
+        "2024-12-27T19:27:05.086954",
+        "2024-12-28T19:27:05.086954"
+      ],
+      "761b4c5f-18c5-46d0-ac50-ad0cf97de3e5": [
+        "2024-12-25T19:27:05.086954",
+        "2024-12-24T19:27:05.086954",
+        "2024-12-26T19:27:05.086954",
+        "2024-12-26T19:27:05.086954",
+        "2024-12-29T19:27:05.086954",
+        "2024-12-23T19:27:05.086954",
+        "2025-01-03T19:27:05.086954"
+      ],
+      "d1028564-3e22-456d-ac9c-675178c5bc10": [
+        "2024-12-30T19:27:05.086954",
+        "2024-12-28T19:27:05.086954",
+        "2024-12-23T19:27:05.086954",
+        "2025-01-04T19:27:05.086954"
+      ],
+      "2eee5753-4177-422b-b16c-9d95f7a0d7ab": [
+        "2024-12-23T19:27:05.086954",
+        "2024-12-25T19:27:05.086954",
+        "2024-12-28T19:27:05.086954",
+        "2024-12-22T19:27:05.086954"
+      ],
+      "ae9c6adc-95a1-4f98-90be-8163e5a6dcc3": [
+        "2024-12-31T19:27:05.086954",
+        "2024-12-23T19:27:05.086954",
+        "2024-12-22T19:27:05.086954",
+        "2025-01-01T19:27:05.086954",
+        "2024-12-27T19:27:05.086954",
+        "2024-12-30T19:27:05.086954",
+        "2025-01-03T19:27:05.086954"
+      ],
+      "ed6051f7-8bd1-4d02-9fc8-82c7c718069a": [
+        "2025-01-02T19:27:05.086954",
+        "2024-12-30T19:27:05.086954"
+      ],
+      "4ead5ed2-f617-43d8-96b8-8efaf5b4e427": [
+        "2025-01-03T19:27:05.086954",
+        "2024-12-26T19:27:05.086954",
+        "2025-01-03T19:27:05.086954",
+        "2024-12-31T19:27:05.086954"
+      ],
+      "ec116836-1ec5-47fb-b9d5-c67731eb830d": [
+        "2024-12-24T19:27:05.086954",
+        "2024-12-31T19:27:05.086954",
+        "2024-12-28T19:27:05.086954",
+        "2025-01-02T19:27:05.086954",
+        "2024-12-27T19:27:05.086954",
+        "2024-12-30T19:27:05.086954",
+        "2024-12-21T19:27:05.086954",
+        "2024-12-24T19:27:05.086954"
+      ],
+      "f60d0101-cafd-486e-a8d4-6ab1347cd21e": [
+        "2024-12-26T19:27:05.086954"
+      ],
+      "4ebe3cab-44ff-4d98-b3b8-76c86a4ed67f": [
+        "2024-12-30T19:27:05.086954",
+        "2024-12-26T19:27:05.086954",
+        "2024-12-26T19:27:05.086954",
+        "2024-12-24T19:27:05.086954",
+        "2024-12-25T19:27:05.086954",
+        "2025-01-02T19:27:05.086954",
+        "2025-01-02T19:27:05.086954",
+        "2024-12-30T19:27:05.086954"
+      ],
+      "e0d0eb5c-977e-4a4a-ac90-3bfc5cf7f2f7": [
+        "2024-12-27T19:27:05.086954",
+        "2024-12-24T19:27:05.086954",
+        "2024-12-30T19:27:05.086954",
+        "2025-01-02T19:27:05.086954",
+        "2025-01-04T19:27:05.086954",
+        "2024-12-28T19:27:05.086954",
+        "2024-12-29T19:27:05.086954",
+        "2024-12-26T19:27:05.086954"
+      ],
+      "b7635551-106b-4601-816a-d07a1dd32681": [
+        "2024-12-29T19:27:05.086954",
+        "2024-12-24T19:27:05.086954"
+      ],
+      "eeb62bc0-2763-4c05-9c3b-f4810b9db629": [
+        "2024-12-31T19:27:05.086954"
+      ],
+      "319912d4-5a2b-4f11-8e16-2cdfbee6d498": [
+        "2024-12-30T19:27:05.086954",
+        "2024-12-29T19:27:05.086954",
+        "2024-12-30T19:27:05.086954",
+        "2024-12-21T19:27:05.086954",
+        "2024-12-30T19:27:05.086954",
+        "2025-01-01T19:27:05.086954",
+        "2025-01-01T19:27:05.086954",
+        "2024-12-26T19:27:05.086954"
+      ]
+    }
+  },
+  "market_trends": {
+    "Michaelland": {
+      "demand": 0.99,
+      "price_appreciation": -0.01,
+      "development_score": 0.8,
+      "price_growth": 0.07
+    },
+    "Hallland": {
+      "demand": 0.86,
+      "price_appreciation": 0.06,
+      "development_score": 0.87,
+      "price_growth": 0.08
+    },
+    "Jenniferstad": {
+      "demand": 0.61,
+      "price_appreciation": 0.09,
+      "development_score": 0.93,
+      "price_growth": 0.0
+    },
+    "South James": {
+      "demand": 0.85,
+      "price_appreciation": 0.09,
+      "development_score": 0.35,
+      "price_growth": 0.01
+    },
+    "Stephanieshire": {
+      "demand": 0.59,
+      "price_appreciation": 0.08,
+      "development_score": 0.34,
+      "price_growth": 0.01
+    },
+    "Meghanfort": {
+      "demand": 0.6,
+      "price_appreciation": 0.1,
+      "development_score": 0.77,
+      "price_growth": -0.01
+    },
+    "Kyleview": {
+      "demand": 0.9,
+      "price_appreciation": -0.02,
+      "development_score": 0.91,
+      "price_growth": 0.05
+    },
+    "Lake Daniellebury": {
+      "demand": 0.4,
+      "price_appreciation": 0.12,
+      "development_score": 0.68,
+      "price_growth": -0.02
+    },
+    "Hannahmouth": {
+      "demand": 0.35,
+      "price_appreciation": 0.01,
+      "development_score": 0.46,
+      "price_growth": 0.04
+    },
+    "Sosaberg": {
+      "demand": 0.25,
+      "price_appreciation": 0.0,
+      "development_score": 0.94,
+      "price_growth": 0.03
+    },
+    "New Christopherside": {
+      "demand": 0.31,
+      "price_appreciation": 0.1,
+      "development_score": 0.98,
+      "price_growth": 0.02
+    },
+    "Port Rebecca": {
+      "demand": 0.85,
+      "price_appreciation": -0.03,
+      "development_score": 0.91,
+      "price_growth": 0.08
+    },
+    "Kochton": {
+      "demand": 0.85,
+      "price_appreciation": -0.05,
+      "development_score": 0.71,
+      "price_growth": 0.01
+    },
+    "Mcleanfort": {
+      "demand": 0.69,
+      "price_appreciation": 0.1,
+      "development_score": 0.37,
+      "price_growth": 0.03
+    },
+    "South John": {
+      "demand": 0.6,
+      "price_appreciation": 0.09,
+      "development_score": 0.63,
+      "price_growth": 0.03
+    },
+    "Margarethaven": {
+      "demand": 0.19,
+      "price_appreciation": 0.08,
+      "development_score": 0.36,
+      "price_growth": 0.0
+    },
+    "Elizabethton": {
+      "demand": 0.52,
+      "price_appreciation": 0.13,
+      "development_score": 0.28,
+      "price_growth": 0.06
+    },
+    "West Thomasmouth": {
+      "demand": 0.48,
+      "price_appreciation": 0.12,
+      "development_score": 0.99,
+      "price_growth": 0.01
+    },
+    "Mcfarlandfort": {
+      "demand": 0.46,
+      "price_appreciation": 0.02,
+      "development_score": 0.24,
+      "price_growth": 0.05
+    },
+    "Lindaton": {
+      "demand": 0.66,
+      "price_appreciation": 0.04,
+      "development_score": 0.19,
+      "price_growth": 0.03
+    },
+    "North Codyberg": {
+      "demand": 0.77,
+      "price_appreciation": 0.12,
+      "development_score": 0.67,
+      "price_growth": 0.03
+    },
+    "Mistyberg": {
+      "demand": 0.66,
+      "price_appreciation": 0.13,
+      "development_score": 0.89,
+      "price_growth": 0.04
+    },
+    "North Joshua": {
+      "demand": 0.49,
+      "price_appreciation": 0.1,
+      "development_score": 0.77,
+      "price_growth": 0.02
+    },
+    "Port Michael": {
+      "demand": 0.77,
+      "price_appreciation": 0.03,
+      "development_score": 0.63,
+      "price_growth": 0.0
+    },
+    "Hannahshire": {
+      "demand": 0.69,
+      "price_appreciation": -0.03,
+      "development_score": 0.79,
+      "price_growth": 0.06
+    },
+    "Conleyburgh": {
+      "demand": 0.15,
+      "price_appreciation": 0.05,
+      "development_score": 0.69,
+      "price_growth": 0.02
+    },
+    "Melissaside": {
+      "demand": 0.67,
+      "price_appreciation": 0.09,
+      "development_score": 0.61,
+      "price_growth": -0.01
+    },
+    "North Dustin": {
+      "demand": 0.82,
+      "price_appreciation": 0.09,
+      "development_score": 0.98,
+      "price_growth": 0.05
+    },
+    "Herringhaven": {
+      "demand": 0.93,
+      "price_appreciation": 0.11,
+      "development_score": 0.24,
+      "price_growth": 0.0
+    },
+    "Lake Brycemouth": {
+      "demand": 0.19,
+      "price_appreciation": -0.01,
+      "development_score": 0.99,
+      "price_growth": -0.01
+    },
+    "West Dustinport": {
+      "demand": 0.73,
+      "price_appreciation": 0.03,
+      "development_score": 0.17,
+      "price_growth": 0.07
+    },
+    "North Jessica": {
+      "demand": 0.39,
+      "price_appreciation": -0.02,
+      "development_score": 0.21,
+      "price_growth": 0.02
+    },
+    "Lake Benjaminburgh": {
+      "demand": 0.78,
+      "price_appreciation": 0.04,
+      "development_score": 0.39,
+      "price_growth": 0.02
+    },
+    "Cunninghamtown": {
+      "demand": 0.45,
+      "price_appreciation": 0.11,
+      "development_score": 0.72,
+      "price_growth": 0.06
+    },
+    "Melvinview": {
+      "demand": 0.18,
+      "price_appreciation": 0.14,
+      "development_score": 0.7,
+      "price_growth": 0.02
+    },
+    "West Jamesstad": {
+      "demand": 0.48,
+      "price_appreciation": 0.04,
+      "development_score": 0.39,
+      "price_growth": -0.01
+    },
+    "Johnport": {
+      "demand": 0.74,
+      "price_appreciation": 0.01,
+      "development_score": 0.6,
+      "price_growth": 0.05
+    },
+    "Kellyland": {
+      "demand": 0.85,
+      "price_appreciation": 0.08,
+      "development_score": 0.66,
+      "price_growth": 0.06
+    },
+    "South Joseph": {
+      "demand": 0.3,
+      "price_appreciation": -0.04,
+      "development_score": 0.45,
+      "price_growth": 0.06
+    },
+    "Lake Jessicaville": {
+      "demand": 0.75,
+      "price_appreciation": 0.13,
+      "development_score": 0.49,
+      "price_growth": 0.03
+    },
+    "East Kathyland": {
+      "demand": 0.55,
+      "price_appreciation": -0.0,
+      "development_score": 0.3,
+      "price_growth": 0.08
+    },
+    "Port Yolandahaven": {
+      "demand": 0.15,
+      "price_appreciation": -0.03,
+      "development_score": 0.24,
+      "price_growth": 0.03
+    },
+    "New Tinashire": {
+      "demand": 0.14,
+      "price_appreciation": 0.03,
+      "development_score": 1.0,
+      "price_growth": -0.02
+    },
+    "New Anthonyburgh": {
+      "demand": 0.94,
+      "price_appreciation": 0.15,
+      "development_score": 0.93,
+      "price_growth": 0.01
+    },
+    "Marychester": {
+      "demand": 0.68,
+      "price_appreciation": 0.11,
+      "development_score": 0.5,
+      "price_growth": 0.04
+    },
+    "East Vanessa": {
+      "demand": 0.54,
+      "price_appreciation": 0.13,
+      "development_score": 0.62,
+      "price_growth": -0.0
+    },
+    "Emilybury": {
+      "demand": 0.8,
+      "price_appreciation": 0.06,
+      "development_score": 0.67,
+      "price_growth": 0.0
+    },
+    "East Tiffanystad": {
+      "demand": 0.87,
+      "price_appreciation": -0.05,
+      "development_score": 0.39,
+      "price_growth": 0.03
+    },
+    "Jennifermouth": {
+      "demand": 0.84,
+      "price_appreciation": -0.04,
+      "development_score": 0.2,
+      "price_growth": -0.02
+    },
+    "Terriburgh": {
+      "demand": 0.7,
+      "price_appreciation": 0.13,
+      "development_score": 0.13,
+      "price_growth": 0.03
+    }
+  }
+}

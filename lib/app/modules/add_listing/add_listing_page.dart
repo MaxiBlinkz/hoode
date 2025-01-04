@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:easy_stepper/easy_stepper.dart';
+import 'package:logger/logger.dart';
 import 'add_listing_controller.dart';
 
 class AddListingPage extends GetView<AddListingController> {
@@ -10,15 +11,15 @@ class AddListingPage extends GetView<AddListingController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
           title: const Text('Create New Listing'),
-        leading: IconButton(
-          icon: const Icon(IconlyLight.arrowLeft2),
-          onPressed: () => Get.back(),
+          leading: IconButton(
+            icon: const Icon(IconlyLight.arrowLeft2),
+            onPressed: () => Get.back(),
+          ),
         ),
-      ),
-      body: Form(
-        key: controller.formKey,
+        body: Form(
+          key: controller.formKey,
           child: Column(
             children: [
               Obx(() => EasyStepper(
@@ -128,78 +129,82 @@ class AddListingPage extends GetView<AddListingController> {
   }
 
   Widget _buildBasicInfoStep() {
-    return Column(
-      children: [
-        TextFormField(
-          decoration: const InputDecoration(
-            labelText: 'Title',
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(IconlyLight.paper),
-          ),
-          onChanged: (value) => controller.title.value = value,
-          validator: (value) =>
-              value?.isEmpty ?? true ? 'Title required' : null,
-        ),
-        const SizedBox(height: 16),
-        DropdownButtonFormField<String>(
-          decoration: const InputDecoration(
-            labelText: 'Category',
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(IconlyLight.category),
-          ),
-          items: controller.categories.map((String category) {
-            return DropdownMenuItem(
-              value: category,
-              child: Text(category),
-            );
-          }).toList(),
-          onChanged: (value) => controller.category.value = value!,
-        ),
-      ],
-    );
-  }
+  return Column(
+    children: [
+      Obx(() => TextFormField(
+        decoration: const InputDecoration(labelText: 'Title'),
+        // key is crucial for reactive form
+        key: const ValueKey('title'),
+        initialValue: controller.title.value,
+        onChanged: (value) => controller.title.value = value,
+        validator: (value) => value?.isEmpty ?? true ? 'Title required' : null,
+      )),
+      const SizedBox(height: 16),
+      Obx(() => DropdownButtonFormField<String>(
+            decoration: const InputDecoration(labelText: 'Category'),
+            key: const ValueKey('category'),
+            value: controller.category.value.isNotEmpty ? controller.category.value : null, // Key change here
+            items: controller.categories.map((category) => DropdownMenuItem(
+                  value: category, // Ensure unique values here
+                  child: Text(category),
+                )).toList(),
+            onChanged: (value) {
+              controller.category.value = value ?? ''; //Maintain this for convenience
+            },
+            validator: (value) => value == null ? 'Category required' : null,
+          )),
+    ],
+  );
+}
+
 
   Widget _buildDetailsStep() {
     return Column(
       children: [
-        TextFormField(
-          decoration: const InputDecoration(
-            labelText: 'Price',
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(IconlyLight.wallet),
-            prefixText: '\$',
-          ),
-          keyboardType: TextInputType.number,
-          onChanged: (value) =>
-              controller.price.value = double.tryParse(value) ?? 0,
-        ),
+        Obx(() {
+          return TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Price',
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(IconlyLight.wallet),
+              prefixText: '\$',
+            ),
+            keyboardType: TextInputType.number,
+            onChanged: (value) =>
+                controller.price.value = double.tryParse(value) ?? 0,
+          );
+        }),
         const SizedBox(height: 16),
         Row(
           children: [
-            Expanded(
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Bedrooms',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(IconlyLight.home),
+            Obx(() {
+              return Expanded(
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Bedrooms',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(IconlyLight.home),
+                  ),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) =>
+                      controller.bedrooms.value = int.tryParse(value) ?? 0,
                 ),
-                keyboardType: TextInputType.number,
-                onChanged: (value) =>
-                    controller.bedrooms.value = int.tryParse(value) ?? 0,
-              ),
-            ),
+              );
+            }),
             const SizedBox(width: 16),
             Expanded(
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Bathrooms',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.bathtub),
-                ),
-                keyboardType: TextInputType.number,
-                onChanged: (value) =>
-                    controller.bathrooms.value = int.tryParse(value) ?? 0,
-              ),
+              child: Obx(() {
+                return TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Bathrooms',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.bathtub),
+                  ),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) =>
+                      controller.bathrooms.value = int.tryParse(value) ?? 0,
+                );
+              }),
             ),
           ],
         ),
@@ -208,70 +213,75 @@ class AddListingPage extends GetView<AddListingController> {
   }
 
   Widget _buildAmenitiesStep() {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: controller.availableAmenities.map((amenity) {
-        return FilterChip(
-          label: Text(amenity),
-          selected: controller.amenities.contains(amenity),
-          onSelected: (_) => controller.toggleAmenity(amenity),
-          selectedColor: Theme.of(Get.context!).colorScheme.primaryContainer,
-        );
-      }).toList(),
-    );
+    return Obx(() {
+      return Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: controller.availableAmenities.map((amenity) {
+          return FilterChip(
+            label: Text(amenity),
+            selected: controller.amenities.contains(amenity),
+            onSelected: (_) => controller.toggleAmenity(amenity),
+            selectedColor: Theme.of(Get.context!).colorScheme.primaryContainer,
+          );
+        }).toList(),
+      );
+    });
   }
 
   Widget _buildImagesStep() {
     return Column(
       children: [
-        ElevatedButton.icon(
-          onPressed: controller.addImage,
-          icon: const Icon(IconlyBold.image),
-          label: const Text('Add Photos'),
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24,
-              vertical: 12,
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
-        Obx(() => GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
+        Obx(() {
+          return ElevatedButton.icon(
+            onPressed: controller.addImage,
+            icon: const Icon(IconlyBold.image),
+            label: const Text('Add Photos'),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24,
+                vertical: 12,
               ),
-              itemCount: controller.images.length,
-              itemBuilder: (context, index) {
-                return Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.file(
-                        controller.images[index],
-                        fit: BoxFit.cover,
+            ),
+          );
+        }),
+        const SizedBox(height: 16),
+        Obx(() => Obx(() {
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                ),
+                itemCount: controller.images.length,
+                itemBuilder: (context, index) {
+                  return Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.file(
+                          controller.images[index],
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                    Positioned(
-                      top: 4,
-                      right: 4,
-                      child: IconButton(
-                        icon: const Icon(Icons.remove_circle),
-                        color: Colors.red,
-                        onPressed: () => controller.removeImage(index),
+                      Positioned(
+                        top: 4,
+                        right: 4,
+                        child: IconButton(
+                          icon: const Icon(Icons.remove_circle),
+                          color: Colors.red,
+                          onPressed: () => controller.removeImage(index),
+                        ),
                       ),
-                    ),
-                  ],
-                );
-              },
-            )),
+                    ],
+                  );
+                },
+              );
+            })),
       ],
     );
   }
 }
-

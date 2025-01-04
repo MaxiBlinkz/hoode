@@ -88,7 +88,6 @@ class RegisterController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // initDeepLinks();
     initControllers();
   }
 

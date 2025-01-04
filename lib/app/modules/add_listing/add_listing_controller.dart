@@ -27,6 +27,8 @@ class AddListingController extends GetxController {
   final pb = PocketBase(DbHelper.getPocketbaseUrl());
   var status = Status.initial.obs;
 
+  // final titleController = TextEditingController();
+
   final availableAmenities = [
     'Parking',
     'Pool',
@@ -59,18 +61,20 @@ class AddListingController extends GetxController {
   }
 
   void nextStep() {
-    if (validateStep(currentStep.value)) {
-      if (currentStep < 3) {
-        currentStep.value++;
-      }
-    } else {
-      Get.snackbar(
-        'Required Fields',
-        'Please fill in all required fields before proceeding',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+  if (formKey.currentState!.validate()) { // GetX validation
+    if (currentStep.value < 3) {
+      currentStep.value++;
     }
+  } else {
+    // Show error message as before
+    Get.snackbar(
+      'Required Fields',
+      'Please fill in all required fields before proceeding',
+      snackPosition: SnackPosition.BOTTOM,
+    );
   }
+}
+
 
   void previousStep() {
     if (currentStep.value > 0) {
@@ -176,4 +180,33 @@ class AddListingController extends GetxController {
         return false;
     }
   }
+
+  // void initControllers() {
+  //   titleController.addListener(() => title.value = titleController.text);
+  //   // emailController.addListener(() => email.value = emailController.text);
+  //   // passwordController
+  //   //     .addListener(() => password.value = passwordController.text);
+  //   // confirmPasswordController.addListener(
+  //   //     () => confirmPassword.value = confirmPasswordController.text);
+  // }
+
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   initControllers();
+  // }
+
+  // @override
+  // void onReady() {
+  //   super.onReady();
+  // }
+
+  // @override
+  // void onClose() {
+  //   titleController.dispose();
+  //   // emailController.dispose();
+  //   // passwordController.dispose();
+  //   // confirmPasswordController.dispose();
+  //   super.onClose();
+  // }
 }
