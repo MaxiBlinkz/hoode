@@ -1,0 +1,14 @@
+{
+  "provider_generator": false,
+  "router_generator": false,
+  "sl_generator": false,
+  "sl_local_data_source": false,
+  "sl_remote_data_source": false,
+  "sl_service": false,
+  "sl_repository": false,
+  "sl_use_case": false,
+  "sl_cubit": false,
+  "sl_controller": false,
+  "model_detail_generator": false,
+  "ca_analyzer": false
+}
