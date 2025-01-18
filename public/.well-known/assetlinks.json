@@ -1,0 +1,9 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "hoode",
+      "package_name": "com.codax.hoode",
+      "sha256_cert_fingerprints":
+      ["33:FC:51:63:52:66:18:F7:2F:2B:43:AD:AE:1B:E8:23:7E:61:36:81:3B:82:66:3D:8F:87:35:13:7B:09:CD:ED"]
+    }
+  }]

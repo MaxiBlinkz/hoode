@@ -1,0 +1,285 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:get/get.dart';
+import '../../core/theme/colors.dart';
+import '../user_preference/user_preference_page.dart';
+import 'settings_controller.dart';
+
+class SettingsPage extends GetView<SettingsController> {
+  const SettingsPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Settings'),
+        leading: IconButton(
+          icon: const Icon(IconlyLight.arrowLeft2),
+          onPressed: () => Get.back(),
+        ),
+      ),
+      body: ListView(
+        children: [
+          _buildSection(
+            'Appearance',
+            [
+              Obx(() => SwitchListTile(
+                    title: const Text('Dark Mode'),
+                    secondary: const Icon(IconlyLight.show),
+                    value: controller.themeController.isDarkMode.value,
+                    onChanged: controller.toggleTheme,
+                  )),
+              ListTile(
+                leading: Icon(Icons.color_lens),
+                title: const Text('Color Scheme'),
+                trailing: Obx(() => Text(controller.currentScheme.value.name)),
+                onTap: () => _showColorSchemeDialog(context),
+              ),
+              Obx(() => SwitchListTile(
+                    title: const Text('Neobrutalism Style'),
+                    secondary: const Icon(Icons.architecture),
+                    value:
+                        controller.themeController.isNeoBrutalismEnabled.value,
+                    onChanged: controller.toggleNeoBrutalism,
+                  )),
+              ListTile(
+                leading: const Icon(Icons.palette),
+                title: const Text('Accent Color'),
+                trailing: Obx(() => Container(
+                      width: 24,
+                      height: 24,
+                      decoration: BoxDecoration(
+                        color: controller.themeController.accentColor.value,
+                        border: Border.all(color: Colors.black, width: 2),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    )),
+                onTap: () => _showAccentColorPicker(context),
+              ),
+            ],
+          ),
+          _buildSection(
+            'Preferences',
+            [
+              ListTile(
+                leading: const Icon(IconlyLight.message),
+                title: const Text('Language'),
+                trailing: Obx(() => Text(controller.selectedLanguage.value)),
+                onTap: () => _showLanguageDialog(context),
+              ),
+              ListTile(
+                leading: const Icon(IconlyLight.wallet),
+                title: const Text('Currency'),
+                trailing: Obx(() => Text(controller.selectedCurrency.value)),
+                onTap: () => _showCurrencyDialog(context),
+              ),
+              Obx(() => SwitchListTile(
+                    title: const Text('Notifications'),
+                    secondary: const Icon(IconlyLight.notification),
+                    value: controller.isNotificationsEnabled.value,
+                    onChanged: controller.toggleNotifications,
+                  )),
+              ListTile(
+                leading: const Icon(IconlyLight.filter),
+                title: const Text('Update Preferences'),
+                onTap: () => Get.to(() => UserPreferencePage()),
+              ),
+
+            ],
+          ),
+          _buildSection(
+            'Account',
+            [
+              ListTile(
+                leading: const Icon(IconlyLight.profile),
+                title: const Text('Edit Profile'),
+                onTap: () => Get.toNamed('/edit-profile'),
+              ),
+              ListTile(
+                leading: const Icon(IconlyLight.lock),
+                title: const Text('Change Password'),
+                onTap: () => Get.toNamed('/change-password'),
+              ),
+              ListTile(
+                leading: const Icon(IconlyLight.shieldDone),
+                title: const Text('Privacy Policy'),
+                onTap: () => Get.toNamed('/privacy-policy'),
+              ),
+              ListTile(
+                leading: const Icon(IconlyLight.document),
+                title: const Text('Terms of Service'),
+                onTap: () => Get.toNamed('/terms-of-service'),
+              ),
+            ],
+          ),
+          _buildSection(
+            'Danger Zone',
+            [
+              ListTile(
+                leading: const Icon(IconlyLight.logout, color: Colors.red),
+                title: const Text('Logout', style: TextStyle(color: Colors.red)),
+                onTap: () => _showLogoutDialog(context),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSection(String title, List<Widget> children) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primary,
+            ),
+          ),
+        ),
+        ...children,
+        const Divider(),
+      ],
+    );
+  }
+
+  void _showLanguageDialog(BuildContext context) {
+    final languages = ['English', 'Spanish', 'French', 'German'];
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Select Language'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: languages
+              .map((lang) => ListTile(
+                    title: Text(lang),
+                    onTap: () {
+                      controller.setLanguage(lang);
+                      Get.back();
+                    },
+                  ))
+              .toList(),
+        ),
+      ),
+    );
+  }
+
+  void _showCurrencyDialog(BuildContext context) {
+    final currencies = ['USD', 'EUR', 'GBP', 'JPY'];
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Select Currency'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: currencies
+              .map((currency) => ListTile(
+                    title: Text(currency),
+                    onTap: () {
+                      controller.setCurrency(currency);
+                      Get.back();
+                    },
+                  ))
+              .toList(),
+        ),
+      ),
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Logout'),
+        content: const Text('Are you sure you want to logout?'),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: controller.logout,
+            child: const Text('Logout', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+  }
+  void _showColorSchemeDialog(BuildContext context) {
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Select Color Scheme'),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: FlexScheme.values.length,
+            itemBuilder: (context, index) {
+              final scheme = FlexScheme.values[index];
+              return ListTile(
+                title: Text(scheme.name),
+                onTap: () {
+                  controller.changeColorScheme(scheme);
+                  Get.back();
+                },
+                trailing: Container(
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: FlexThemeData.light(scheme: scheme).primaryColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showAccentColorPicker(BuildContext context) {
+    final materialColors = <MaterialColor>[
+      Colors.yellow,
+      Colors.orange,
+      Colors.pink,
+      Colors.blue,
+      Colors.green,
+      Colors.purple,
+      Colors.red,
+      Colors.teal,
+    ];
+
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Select Accent Color'),
+        content: Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: materialColors
+              .map((MaterialColor color) => InkWell(
+                    onTap: () {
+                      controller.setAccentColor(color);
+                      Get.back();
+                    },
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      margin: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: color,
+                        border: Border.all(color: Colors.black, width: 3),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                  ))
+              .toList(),
+        ),
+      ),
+    );
+  }
+}

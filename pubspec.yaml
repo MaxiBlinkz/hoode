@@ -28,73 +28,136 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  admob_easy: any
+  app_links:
+  blobs:
+  chatview: ^2.4.0
+  contained_tab_bar_view:
+  country_code_picker:
+  country_state_city_picker_2: ^1.0.5
+  country_state_city_pro:
+  cropperx:
+  crystal_navigation_bar:
+  csc_picker: # The following adds the Cupertino Icons font to your application.
+  csc_picker_plus:
+
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.6
+  currency_textfield: ^4.12.0
+  custom_text_form_field_plus: ^0.0.5
+  customisable_stepper:
+  diamond_node_slider:
+  dio: ^5.7.0
+  double_back_to_exit:
+  drift:
+  easy_loading_button:
+  easy_stepper: ^0.8.5+1
+  enefty_icons:
+  envied:
+  extended_image: ^9.0.9
+  fl_chart: ^0.70.0
+  flex_color_scheme:
   flutter:
     sdk: flutter
-
+  flutter_fast_forms: ^18.0.0
+  flutter_flavor:
+  flutter_form_builder: ^7.0.0-alpha.3
+  flutter_iconly:
+  flutter_intro:
+  flutter_map:
+  flutter_map_marker_cluster:
+  flutter_map_marker_popup:
+  flutter_native_splash:
+  flutter_pw_validator: ^1.6.0
+  flutter_remix: ^0.0.1
   flutter_svg:
+  free_map:
+  geocoding:
+  geolocator:
   get:
   get_it:
   get_storage:
+  glassmorphism:
+  go_router:
   google_fonts:
-  hexcolor:
+  google_maps_flutter: ^2.10.0
+  google_mobile_ads:
+  google_sign_in:
+  http:
+  hugeicons:
+  iconly:
   icons_launcher:
+  icons_plus:
   iconsax:
+  image: ^4.3.0
+  image_cropper: ^8.0.2
+  image_picker: ^1.1.2
+  internet_connection_checker_plus:
+  json_annotation:
+  latlong2:
+  loading_animation_widget:
+  loading_indicator: ^3.1.1
+  loading_transition_button:
+  location:
+  logger:
   lottie:
+  maps_toolkit: ^3.0.0
+  mix: ^1.4.6
   objectbox:
+  osm_search_and_pick:
+  password_strength_checker: ^1.2.4
   path:
   path_provider:
   paystack: any
+  phone_form_field: ^3.0.1
   pixel_perfect:
+  pocketbase:
+  pocketbase_server_flutter:
+  pocketbase_utils:
   quickalert:
+  r_nav_n_sheet:
   redacted:
-  showcaseview:
-  sqlite3_flutter_libs:
-  stack_appodeal_flutter:
-  supabase_flutter:
-  drift:
-  flex_color_scheme:
-  dio: 5.5.0+1
-  retrofit:
   responsive_builder:
-  wordpress_api:
-  icons_plus: 
-  flutter_settings_ui:
-  blobs: 
-  json_annotation: ^4.8.1
-  pocketbase: 
-  google_maps_flutter: 2.7.1
+  retrofit:
+  rounded_loading_button:
+  rounded_loading_button_plus:
+  rules: ^2.0.0
+  sentry_flutter: ^8.9.0
+  share_plus:
+  showcaseview:
   skeletonizer: ^1.4.2
-  flutter_remix: ^0.0.1
-  hugeicons: 
-  contained_tab_bar_view: 
-  golden_ratio:
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.6
-  mix: ^1.4.6
-
+  sqlite3_flutter_libs:
+  step_progress_indicator: ^1.0.2
+  stylish_bottom_bar:
+  toastification:
+  url_launcher:
+  whatsapp_unilink:
+  wordpress_api:
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  build_runner:
-  drift_dev:
-  mockito:
-  retrofit_generator:
-  flutter_gen_runner:
-  json_serializable: ^6.7.1
   analyzer: any
+  build_runner:
+  clock:
+  drift_dev:
+  fake_async:
+  flutter_flavorizr:
+  flutter_gen_runner:
+  flutter_launcher_icons:
+
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
+  flutter_test:
+    sdk: flutter
+    # For information on the generic Dart part of this file, see the
+    # following page: https://dart.dev/tools/pub/pubspec
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter packages.
+    # The following section is specific to Flutter packages.
+  json_serializable: ^6.7.1
+  mockito:
+  retrofit_generator:
 flutter:
 
   # The following line ensures that the Material Icons font is
@@ -106,6 +169,8 @@ flutter:
   assets:
     - assets/fonts/Poppins/
     - assets/images/
+    - assets/icons/
+    - assets/animations/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -133,3 +198,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+pocketbase_utils:
+  enabled: true # Required. Must be set to true to activate the package. Default: false
+  pb_schema_path: pb_schema.json # Optional. Sets the path of your collection schema file. Default: pb_schema.json
+  output_dir: lib/generated/pocketbase # Optional. Sets the directory of generated model files. If the directory doesn't exist — it'll be created. Default: lib/generated/pocketbase
+  line_length: 80 # Optional. Sets the length of line for dart formatter of generated code. Default: 80

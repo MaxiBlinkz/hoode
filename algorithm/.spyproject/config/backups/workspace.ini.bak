@@ -1,0 +1,12 @@
+[workspace]
+restore_data_on_startup = True
+save_data_on_exit = True
+save_history = True
+save_non_project_files = False
+project_type = 'empty-project-type'
+recent_files = ['..\\..\\..\\.spyder-py3\\temp.py', 'services\\property_recommender.py', 'models\\models.py', 'main.py', 'test\\generate_mock.py', 'test\\test_property_recommender.py', 'test\\mock_data.json']
+
+[main]
+version = 0.2.0
+recent_files = []
+

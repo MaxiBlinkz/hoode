@@ -9,11 +9,72 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsAnimationsGen {
+  const $AssetsAnimationsGen();
+
+  /// File path: assets/animations/agent.json
+  String get agent => 'assets/animations/agent.json';
+
+  /// File path: assets/animations/ai_recommendations.json
+  String get aiRecommendations => 'assets/animations/ai_recommendations.json';
+
+  /// File path: assets/animations/chat_agent.json
+  String get chatAgent => 'assets/animations/chat_agent.json';
+
+  /// File path: assets/animations/house_search.json
+  String get houseSearch => 'assets/animations/house_search.json';
+
+  /// File path: assets/animations/load_more.json
+  String get loadMore => 'assets/animations/load_more.json';
+
+  /// File path: assets/animations/loading_more.json
+  String get loadingMore => 'assets/animations/loading_more.json';
+
+  /// File path: assets/animations/market_trends.json
+  String get marketTrends => 'assets/animations/market_trends.json';
+
+  /// File path: assets/animations/property_filter.json
+  String get propertyFilter => 'assets/animations/property_filter.json';
+
+  /// File path: assets/animations/property_insights.json
+  String get propertyInsights => 'assets/animations/property_insights.json';
+
+  /// List of all assets
+  List<String> get values => [
+        agent,
+        aiRecommendations,
+        chatAgent,
+        houseSearch,
+        loadMore,
+        loadingMore,
+        marketTrends,
+        propertyFilter,
+        propertyInsights
+      ];
+}
+
 class $AssetsFontsGen {
   const $AssetsFontsGen();
 
   /// Directory path: assets/fonts/Poppins
   $AssetsFontsPoppinsGen get poppins => const $AssetsFontsPoppinsGen();
+}
+
+class $AssetsIconsGen {
+  const $AssetsIconsGen();
+
+  /// File path: assets/icons/apple.png
+  AssetGenImage get apple => const AssetGenImage('assets/icons/apple.png');
+
+  /// File path: assets/icons/facebook.png
+  AssetGenImage get facebook =>
+      const AssetGenImage('assets/icons/facebook.png');
+
+  /// File path: assets/icons/google.png
+  AssetGenImage get google => const AssetGenImage('assets/icons/google.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [apple, facebook, google];
 }
 
 class $AssetsImagesGen {
@@ -26,57 +87,17 @@ class $AssetsImagesGen {
   /// File path: assets/images/avatar.jpg
   AssetGenImage get avatar => const AssetGenImage('assets/images/avatar.jpg');
 
-  /// File path: assets/images/house1.jpg
-  AssetGenImage get house1 => const AssetGenImage('assets/images/house1.jpg');
+  /// File path: assets/images/background.jpg
+  AssetGenImage get background =>
+      const AssetGenImage('assets/images/background.jpg');
 
-  /// File path: assets/images/house10.jpeg
-  AssetGenImage get house10 =>
-      const AssetGenImage('assets/images/house10.jpeg');
-
-  /// File path: assets/images/house11.jpeg
-  AssetGenImage get house11 =>
-      const AssetGenImage('assets/images/house11.jpeg');
-
-  /// File path: assets/images/house2.jpg
-  AssetGenImage get house2 => const AssetGenImage('assets/images/house2.jpg');
-
-  /// File path: assets/images/house3.jpg
-  AssetGenImage get house3 => const AssetGenImage('assets/images/house3.jpg');
-
-  /// File path: assets/images/house4.jpg
-  AssetGenImage get house4 => const AssetGenImage('assets/images/house4.jpg');
-
-  /// File path: assets/images/house5.jpeg
-  AssetGenImage get house5 => const AssetGenImage('assets/images/house5.jpeg');
-
-  /// File path: assets/images/house6.jpeg
-  AssetGenImage get house6 => const AssetGenImage('assets/images/house6.jpeg');
-
-  /// File path: assets/images/house7.jpeg
-  AssetGenImage get house7 => const AssetGenImage('assets/images/house7.jpeg');
-
-  /// File path: assets/images/house8.jpeg
-  AssetGenImage get house8 => const AssetGenImage('assets/images/house8.jpeg');
-
-  /// File path: assets/images/house9.jpeg
-  AssetGenImage get house9 => const AssetGenImage('assets/images/house9.jpeg');
+  /// File path: assets/images/house_placeholder.jpg
+  AssetGenImage get housePlaceholder =>
+      const AssetGenImage('assets/images/house_placeholder.jpg');
 
   /// List of all assets
-  List<AssetGenImage> get values => [
-        homeClient1,
-        avatar,
-        house1,
-        house10,
-        house11,
-        house2,
-        house3,
-        house4,
-        house5,
-        house6,
-        house7,
-        house8,
-        house9
-      ];
+  List<AssetGenImage> get values =>
+      [homeClient1, avatar, background, housePlaceholder];
 }
 
 class $AssetsFontsPoppinsGen {
@@ -172,7 +193,9 @@ class $AssetsFontsPoppinsGen {
 class Assets {
   Assets._();
 
+  static const $AssetsAnimationsGen animations = $AssetsAnimationsGen();
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
+  static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 
@@ -206,7 +229,7 @@ class AssetGenImage {
     ImageRepeat repeat = ImageRepeat.noRepeat,
     Rect? centerSlice,
     bool matchTextDirection = false,
-    bool gaplessPlayback = false,
+    bool gaplessPlayback = true,
     bool isAntiAlias = false,
     String? package,
     FilterQuality filterQuality = FilterQuality.low,

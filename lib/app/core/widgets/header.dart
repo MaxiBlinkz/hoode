@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-//import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 
-//import '../../../gen/assets.gen.dart';
 import '../../core/theme/colors.dart';
-//import '../../core/widgets/featured_card.dart';
-
 
 class Header extends StatelessWidget {
   const Header({
@@ -61,11 +57,9 @@ class Header extends StatelessWidget {
           height: 40,
           width: 280,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(6)),
+              color: Colors.white, borderRadius: BorderRadius.circular(6)),
         )
       ]),
     );
   }
 }
-

@@ -1,29 +1,216 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:hoode/app/data/services/bookmarkservice.dart';
+import '../../core/algorithms/models/geo_point.dart';
+import '../../core/algorithms/models/market_trends.dart';
+import '../../core/algorithms/models/seasonal_data.dart';
+import '../../core/algorithms/models/user_interaction_history.dart';
+import '../../core/algorithms/models/user_preferences.dart';
+import '../../core/algorithms/property_recommender.dart';
+// import 'package:hoode/app/core/config/constants.dart';
+import 'package:hoode/app/data/enums/enums.dart';
+import 'package:hoode/core.dart';
+import 'package:logger/logger.dart';
+import 'package:pocketbase/pocketbase.dart';
+import 'package:hoode/app/data/services/db_helper.dart';
 
 class HomeController extends GetxController {
-  var properties = [].obs;
+  final properties = [].obs;
   var isLoading = true.obs;
+  int currentPage = 1;
+  int totalListing = 20;
+  var status = Status.initial.obs;
+  final hasMoreData = true.obs;
+  final totalItems = 0.obs;
+  final isLoadingMore = false.obs;
+  final hasError = false.obs;
 
-  Future<void> getProperties() async {
+  final selectedFilter = RxString('');
+  final filteredProperties = <RecordModel>[].obs;
+
+  late final UserPreferences userPrefs;
+  late final UserInteractionHistory interactions;
+  late final MarketTrends trends;
+  late final SeasonalData seasonal;
+  final recommendedProperties = <RecordModel>[].obs;
+  RxMap<String, double> pricePredictions = <String, double>{}.obs;
+
+  Logger logger = Logger();
+  final listController = ScrollController();
+  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadProperties();
+    _initializeRecommendationSystem();
+    loadRecommendations();
+    // testWithMockData();
+    loadMore();
+  }
+
+  Stream<List<RecordModel>> getProperties(int page) async* {
+    status(Status.loading);
     isLoading(true);
+    hasError(false);
     try {
-      properties.value =
-          await Supabase.instance.client.from('properties')
-          .select()
-          .limit(1);
+      final currentUser = pb.authStore.record;
+      final userCountry = currentUser?.data['country'];
+      final userState = currentUser?.data['state'];
+      final userCity = currentUser?.data['city'];
+
+      final response = await pb.collection('properties').getList(
+            page: page,
+            perPage: totalListing,
+          );
+  
+      totalItems(response.totalItems);
+      hasMoreData(properties.length < totalItems.value);
+
+      final sortedItems = response.items;
+
+      // Enhanced location-based sorting
+      sortedItems.sort((a, b) {
+        // Country match comparison
+        final aCountryMatch = a.data['country'] == userCountry;
+        final bCountryMatch = b.data['country'] == userCountry;
+        if (aCountryMatch != bCountryMatch) {
+          return aCountryMatch ? -1 : 1;
+        }
+
+        // If same country match status, check state
+        if (aCountryMatch && bCountryMatch) {
+          final aStateMatch = a.data['state'] == userState;
+          final bStateMatch = b.data['state'] == userState;
+          if (aStateMatch != bStateMatch) {
+            return aStateMatch ? -1 : 1;
+          }
+
+          // If same state match status, check city
+          if (aStateMatch && bStateMatch) {
+            final aCityMatch = a.data['city'] == userCity;
+            final bCityMatch = b.data['city'] == userCity;
+            if (aCityMatch != bCityMatch) {
+              return aCityMatch ? -1 : 1;
+            }
+          }
+        }
+
+        // If all location matches are equal, sort by created date
+        return b.get<String>('created').compareTo(a.get<String>('created'));
+      });
+
+      yield sortedItems;
+
+      if (sortedItems.isNotEmpty) {
+        status(Status.success);
+        isLoading(false);
+      }
+      update();
+
     } catch (e) {
-      print('Error fetching properties: $e');
-    } finally {
-      isLoading(false);
+      status(Status.error);
+      hasError(true);
+      logger.e('Error fetching properties: $e');
     }
   }
 
-  @override
-  void onInit() async {
-    super.onInit();
-    getProperties();
+  Future<void> loadProperties() async {
+    properties.clear();
+    filteredProperties.clear();
+    currentPage = 1;
+    final bookmarkService = Get.find<BookmarkService>();
+    await bookmarkService.loadBookmarks();
+    getProperties(currentPage).listen((data) {
+      properties(data);
+      filterProperties(selectedFilter.value);
+    });
   }
+
+  void refreshAfterBookmarkChange() {
+  loadProperties();
+  update();
+}
+
+void retryLoading() {
+  loadProperties();
+  update();
+}
+
+
+  void loadMore() {
+    listController.addListener(() {
+      if (!listController.hasClients) return;
+
+      final maxScroll = listController.position.maxScrollExtent;
+      final currentScroll = listController.position.pixels;
+      const threshold = 200;
+
+      if ((maxScroll - currentScroll) <= threshold &&
+          !isLoadingMore.value &&
+          hasMoreData.value) {
+        isLoadingMore(true);
+        currentPage++;
+        getProperties(currentPage).listen((data) {
+          if (data.isEmpty) {
+            hasMoreData(false);
+          } else {
+            // Preserve existing items and add new ones
+            properties.addAll(data);
+          }
+          isLoadingMore(false);
+        }, onError: (error) {
+          isLoadingMore(false);
+          logger.e('Error loading more properties: $error');
+        });
+      }
+    });
+  }
+
+
+  void _initializeRecommendationSystem() {
+    // Initialize with user data from your auth system
+    userPrefs = UserPreferences(
+      targetPrice: 250000.0,
+      preferredLocation: GeoPoint(latitude: 0, longitude: 0),
+      preferredAmenities: ['parking', 'pool'],
+      preferredType: 'apartment',
+    );
+
+    interactions = UserInteractionHistory(
+      viewCounts: {},
+      favorites: {},
+      clicks: {},
+    );
+
+    trends = MarketTrends();
+    seasonal = SeasonalData();
+  }
+
+  Future<void> loadRecommendations() async {
+    if (properties.isNotEmpty) {
+      recommendedProperties.value = PropertyRecommender.getRecommendations(
+        properties.cast<RecordModel>().toList(),
+        userPrefs,
+        interactions,
+        trends,
+        seasonal,
+      );
+    }
+  }
+
+  void filterProperties(String category) {
+  selectedFilter.value = category;
+  
+  if (category.isEmpty) {
+    filteredProperties.value = properties.cast<RecordModel>().toList();
+    return;
+  }
+
+  filteredProperties.value = properties.cast<RecordModel>().where((property) {
+    return property.data['category']?.toString().toLowerCase() == category.toLowerCase();
+  }).toList();
+}
 
   @override
   void onReady() {
@@ -32,6 +219,7 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
+    listController.dispose();
     super.onClose();
   }
 }

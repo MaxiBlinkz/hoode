@@ -1,36 +1,51 @@
-import 'dart:io';
-
-import 'package:flutter/foundation.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/core/config/constants.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:hoode/app/core/config/app_config.dart';
+import 'package:hoode/app/core/theme/theme_controller.dart';
+import 'package:hoode/app/data/services/authservice.dart';
+import 'package:hoode/app/data/services/bookmarkservice.dart';
+import 'package:pocketbase_server_flutter/pocketbase_server_flutter.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'app.dart';
 
-import 'app/core/bindings/application_bindings.dart';
-import 'app/routes/app_pages.dart';
-
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
+  Get.put(ThemeController(), permanent: true);
+  await AppConfig.initialize();
 
-  //await Supabase.initialize(url: SUPABASE_URL, anonKey: SUPABASE_ANNON_KEY);
-  if (Platform.isAndroid) {
-    await Supabase.initialize(url: SUPABASE_URL_ANDROID, anonKey: SUPABASE_ANNON_KEY);
-  } else {
-    await Supabase.initialize(url: SUPABASE_URL, anonKey: SUPABASE_ANNON_KEY);
+  PocketbaseServerFlutter.start(
+    hostName: await PocketbaseServerFlutter.localIpAddress,
+    port: "8080",
+    dataPath: null,
+    enablePocketbaseApiLogs: true,
+  );
+
+  final authService = Get.put(AuthService());
+  try {
+    await authService.checkLoginStatus();
+  } catch (e) {
+    Get.snackbar(
+      'Offline Mode',
+      'You are currently offline. Some features may be limited.',
+      backgroundColor: Colors.orange,
+      colorText: Colors.white,
+      duration: const Duration(seconds: 5),
+    );
   }
-  LicenseRegistry.addLicense(() async* {
-    final license = await rootBundle.loadString('assets/fonts/OFL.txt');
-    yield LicenseEntryWithLineBreaks(['assets/fonts/'], license);
-  });
+  Get.put(BookmarkService());
+  await MobileAds.instance.initialize();
 
-  runApp(
-    GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Your App Title',
-      initialBinding: ApplicationBindings(),
-      initialRoute: AppPages.INITIAL,
-      getPages: AppPages.routes,
-    ),
+  await SentryFlutter.init(
+    (options) {
+      options.dsn =
+          'https://6685056ca34cce279f6104225aeb1145@o4508202731634688.ingest.us.sentry.io/4508202734321664';
+      options.tracesSampleRate = 1.0;
+      options.profilesSampleRate = 1.0;
+    },
+    appRunner: () => runApp(const App()),
   );
 }

@@ -1,150 +1,203 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/modules/listing_detail/listing_detail_page.dart';
+import '../config/constants.dart';
+import '../../data/services/adservice.dart';
+import '../../data/services/bookmarkservice.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class ListingCard extends StatelessWidget {
-  final int id;
-  final String? title;
-  final int? price;
-  final String? location;
-  final String? status;
-  final String? image_url;
-  final String description;
-  //final bool featured;
+  final RecordModel property;
+  final double? imageWidth;
+  final double? imageHeight;
+  final double? cardHeight;
+  final bookmarkService = Get.find<BookmarkService>();
+  final adService = AdService.to;
+  final VoidCallback? onTap;
 
   ListingCard({
     super.key,
-    required this.id,
-    required this.title,
-    required this.price,
-    required this.location,
-    required this.status,
-    required this.image_url,
-    required this.description,
-    //required this.featured,
+    required this.property,
+    this.imageWidth,
+    this.imageHeight,
+    this.cardHeight,
+    this.onTap,
   });
-
 
   @override
   Widget build(BuildContext context) {
-    final property = <String, dynamic>{
-      'id': id,
-      'title': title,
-      'price' : price,
-      'location' : location,
-      'status': status,
-      'image_url' : image_url,
-      'description': description
-    };
+    final String? imageUrl = property.data['image'] != null &&
+            property.data['image'] is List &&
+            property.data['image'].isNotEmpty
+        ? "$POCKETBASE_URL/api/files/properties/${property.id}/${property.data['image'][0].toString()}"
+        : null;
 
+    final String title = property.data['title']?.toString() ?? "No Title";
+    final String location = property.data['location']?.toString() ?? "No Location";
+    final String price = property.data['price']?.toString() ?? "0";
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       child: GestureDetector(
+        onTap: onTap ?? _defaultOnTap,
         child: Container(
-          height: 220,
-          width: 180,
+          height: cardHeight ?? 240,
           decoration: BoxDecoration(
-            color: const Color(0xFFFFFFFF),
+            color:Theme.of(context).colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(16),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Color.fromARGB(66, 169, 173, 189),
-                offset: Offset(0, 2),
-                blurRadius: 2,
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 8,
+                offset: const Offset(0, 2),
               ),
             ],
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(12)),
-                      // Listing Image
-                      child: Image.asset(
-                        "assets/images/$image_url",
-                        fit: BoxFit.cover,
-                        height: 115,
-                        width: 180,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                    child: imageUrl != null
+                        ? Image.network(
+                            imageUrl,
+                            fit: BoxFit.cover,
+                            height: imageHeight ?? 140,
+                            width: double.infinity,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Image.asset(
+                              'assets/images/house_placeholder.jpg',
+                              fit: BoxFit.cover,
+                              height: imageHeight ?? 140,
+                              width: double.infinity,
+                            ),
+                          )
+                        : Image.asset(
+                            'assets/images/house_placeholder.jpg',
+                            fit: BoxFit.cover,
+                            height: imageHeight ?? 140,
+                            width: double.infinity,
+                          ),
+                  ),
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(18),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            spreadRadius: 1,
+                            blurRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: Obx(() => Icon(
+                          bookmarkService.bookmarks.contains(property.id)
+                              ? IconlyBold.heart
+                              : IconlyLight.heart,
+                          color: Colors.red,
+                          size: 20,
+                        )),
+                        onPressed: () => bookmarkService.toggleBookmark(property.id),
                       ),
                     ),
-                    Positioned(
-                      top: 8,
-                      left: 130,
-                      child: Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 229, 234, 240),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: IconButton(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(0),
-                          icon: const Icon(Icons.favorite_border),
-                          color: Colors.red,
-                          iconSize: 20.0,
-                          onPressed: () {},
-                        ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
-                    )
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        const Icon(
+                          IconlyLight.location,
+                          size: 16,
+                          color: Colors.grey,
+                        ),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            location,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "\$$price",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            _buildFeatureIcon(IconlyLight.home, "${property.data['bedrooms'] ?? 0}"),
+                            const SizedBox(width: 12),
+                            _buildFeatureIcon(IconlyLight.discovery, "${property.data['bathrooms'] ?? 0}"),
+                          ],
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-                const Row(),
-                const Spacer(flex: 1),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    title!,
-                    overflow: TextOverflow.clip,
-                    maxLines: 2,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-                Row(children: [
-                  Icon(
-                    Icons.location_city_rounded,
-                    size: 16.0,
-                    color: Colors.grey,
-                  ),
-                  Text(
-                    location!,
-                    overflow: TextOverflow.clip,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                      color: Colors.grey,
-                    ),
-                  )
-                ]),
-                const Spacer(flex: 2),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "\$$price",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      color: Color(0xFF0744BC),
-                    ),
-                  ),
-                )
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-        onTap: () {
-          //listingDetailController.id = id;
-          Get.to(() => ListingDetailPage(), arguments: property);
-        },
       ),
     );
+  }
+
+  Widget _buildFeatureIcon(IconData icon, String count) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: Colors.grey),
+        const SizedBox(width: 4),
+        Text(
+          count,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Colors.grey,
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _defaultOnTap() {
+    Get.toNamed('/listing-detail', arguments: property);
   }
 }
