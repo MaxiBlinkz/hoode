@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '../../core/config/constants.dart';
 import '../../data/enums/enums.dart';
 import '../../data/services/authservice.dart';
 // import 'package:hoode/app/data/services/adservice.dart';

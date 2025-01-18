@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import '../../core/theme/colors.dart';
 import '../../core/widgets/listing_card.dart';
 import 'listing_search_controller.dart';
 import 'dart:math' as math;

@@ -11,8 +11,6 @@ import 'package:logger/logger.dart';
 import 'package:osm_search_and_pick/open_street_map_search_and_pick.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:http/http.dart' as http;
-import 'dart:math';
-import 'package:path_provider/path_provider.dart';
 //import 'package:image_cropper/image_cropper.dart';
 import 'dart:typed_data';
 import 'package:image/image.dart' as img;

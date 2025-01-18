@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
-import 'package:logger/logger.dart';
-import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../core/theme/colors.dart';
 
 import 'become_agent_controller.dart';

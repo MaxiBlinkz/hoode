@@ -1,14 +1,8 @@
-import 'package:country_state_city_pro/country_state_city_pro.dart';
 // import 'package:csc_picker/csc_picker.dart';
-import 'package:country_state_city_picker_2/country_state_city_picker.dart';
 import 'package:csc_picker_plus/csc_picker_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/data/enums/enums.dart';
-import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../core/theme/colors.dart';
 import 'profile_setup_controller.dart';
 

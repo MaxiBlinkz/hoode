@@ -28,111 +28,50 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  admob_easy: any
-  app_links:
-  blobs:
   chatview: ^2.4.0
-  contained_tab_bar_view:
-  country_code_picker:
   country_state_city_picker_2: ^1.0.5
   country_state_city_pro:
-  cropperx:
-  crystal_navigation_bar:
   csc_picker: # The following adds the Cupertino Icons font to your application.
   csc_picker_plus:
-
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.6
-  currency_textfield: ^4.12.0
-  custom_text_form_field_plus: ^0.0.5
-  customisable_stepper:
-  diamond_node_slider:
-  dio: ^5.7.0
-  double_back_to_exit:
-  drift:
   easy_loading_button:
   easy_stepper: ^0.8.5+1
-  enefty_icons:
-  envied:
   extended_image: ^9.0.9
   fl_chart: ^0.70.0
   flex_color_scheme:
   flutter:
     sdk: flutter
-  flutter_fast_forms: ^18.0.0
-  flutter_flavor:
-  flutter_form_builder: ^7.0.0-alpha.3
   flutter_iconly:
-  flutter_intro:
   flutter_map:
-  flutter_map_marker_cluster:
-  flutter_map_marker_popup:
-  flutter_native_splash:
-  flutter_pw_validator: ^1.6.0
   flutter_remix: ^0.0.1
-  flutter_svg:
-  free_map:
   geocoding:
   geolocator:
   get:
-  get_it:
   get_storage:
-  glassmorphism:
-  go_router:
-  google_fonts:
-  google_maps_flutter: ^2.10.0
   google_mobile_ads:
   google_sign_in:
   http:
-  hugeicons:
   iconly:
-  icons_launcher:
-  icons_plus:
-  iconsax:
   image: ^4.3.0
   image_cropper: ^8.0.2
   image_picker: ^1.1.2
-  internet_connection_checker_plus:
   json_annotation:
   latlong2:
-  loading_animation_widget:
-  loading_indicator: ^3.1.1
-  loading_transition_button:
-  location:
   logger:
   lottie:
-  maps_toolkit: ^3.0.0
-  mix: ^1.4.6
-  objectbox:
   osm_search_and_pick:
   password_strength_checker: ^1.2.4
-  path:
   path_provider:
-  paystack: any
-  phone_form_field: ^3.0.1
-  pixel_perfect:
   pocketbase:
   pocketbase_server_flutter:
-  pocketbase_utils:
-  quickalert:
-  r_nav_n_sheet:
-  redacted:
-  responsive_builder:
-  retrofit:
-  rounded_loading_button:
   rounded_loading_button_plus:
-  rules: ^2.0.0
   sentry_flutter: ^8.9.0
-  share_plus:
-  showcaseview:
   skeletonizer: ^1.4.2
-  sqlite3_flutter_libs:
   step_progress_indicator: ^1.0.2
-  stylish_bottom_bar:
   toastification:
   url_launcher:
-  whatsapp_unilink:
-  wordpress_api:
+  intl: any
+  collection: any
+  equatable: any
 dev_dependencies:
   analyzer: any
   build_runner:

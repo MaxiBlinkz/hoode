@@ -1,11 +1,8 @@
-import 'package:country_state_city_pro/country_state_city_pro.dart';
 import 'package:csc_picker_plus/csc_picker_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import '../../core/theme/colors.dart';
-import 'package:latlong2/latlong.dart';
 import 'edit_profile_controller.dart';
 
 class EditProfilePage extends GetView<EditProfileController> {

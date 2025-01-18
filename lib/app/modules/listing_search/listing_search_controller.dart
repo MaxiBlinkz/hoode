@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../data/services/db_helper.dart';
 import 'package:pocketbase/pocketbase.dart';
-import '../../core/config/constants.dart';
 import 'package:logger/logger.dart';
 
 class ListingSearchController extends GetxController {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import '../../core/theme/colors.dart';
 import '../../core/widgets/listing_card.dart';
 import 'my_listings_controller.dart';
 

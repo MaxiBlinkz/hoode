@@ -1,10 +1,8 @@
-import 'dart:async';
 import 'package:easy_loading_button/easy_loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import '../../core/widgets/social_button.dart';
-import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 import '../../core/theme/colors.dart';
 import 'login_controller.dart';
 

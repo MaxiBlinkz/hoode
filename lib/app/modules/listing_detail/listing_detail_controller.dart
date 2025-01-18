@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
-import '../../core/config/constants.dart';
 import '../../data/services/bookmarkservice.dart';
 import '../../data/services/db_helper.dart';
 

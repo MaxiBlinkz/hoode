@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:hoode/app/core/theme/colors.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pocketbase/pocketbase.dart';
 import 'package:latlong2/latlong.dart';
 import '../../data/enums/enums.dart';
 

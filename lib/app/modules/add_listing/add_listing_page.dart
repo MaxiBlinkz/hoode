@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:easy_stepper/easy_stepper.dart';
-import 'package:logger/logger.dart';
 import 'add_listing_controller.dart';
 
 class AddListingPage extends GetView<AddListingController> {
