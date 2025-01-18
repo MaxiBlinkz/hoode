@@ -12,16 +12,43 @@ class SettingsController extends GetxController {
   final storage = GetStorage();
   final themeController = Get.find<ThemeController>();
   final currentScheme = FlexScheme.material.obs;
+  final accentColor = MaterialColor(0xFFFFEB3B, {
+  50: Color(0xFFFFFDE7),
+  100: Color(0xFFFFF9C4),
+  200: Color(0xFFFFF59D),
+  300: Color(0xFFFFF176),
+  400: Color(0xFFFFEE58),
+  500: Color(0xFFFFEB3B),
+  600: Color(0xFFFDD835),
+  700: Color(0xFFFBC02D),
+  800: Color(0xFFF9A825),
+  900: Color(0xFFF57F17),
+}).obs;
 
   @override
-  void onInit() {
-    super.onInit();
-    ever(themeController.isDarkMode, (_) => isDarkMode.value = themeController.isDarkMode.value);
-    ever(themeController.currentScheme, (_) => currentScheme.value = themeController.currentScheme.value);
-  }
+void onInit() {
+  super.onInit();
+  isDarkMode.value = themeController.isDarkMode.value;
+  currentScheme.value = themeController.currentScheme.value;
+  accentColor.value = themeController.accentColor.value;
+  
+  ever(themeController.isDarkMode, (_) => isDarkMode.value = themeController.isDarkMode.value);
+  ever(themeController.currentScheme, (_) => currentScheme.value = themeController.currentScheme.value);
+  ever(themeController.accentColor, (_) => accentColor.value = themeController.accentColor.value);
+}
+
 
   void toggleTheme(bool value) {
     themeController.toggleTheme(value);
+  }
+
+  void toggleNeoBrutalism(bool value) {
+    themeController.toggleNeoBrutalism(value);
+  }
+
+  void setAccentColor(MaterialColor color) {
+    accentColor.value = color;
+    themeController.updateAccentColor(color);
   }
 
   void changeColorScheme(FlexScheme scheme) {

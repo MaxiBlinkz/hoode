@@ -44,3 +44,5 @@ app.*.map.json
 
 secret.env
 pb_schema.json
+
+.vscode/templates
