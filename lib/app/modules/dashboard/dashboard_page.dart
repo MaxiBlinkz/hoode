@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import '../../core/theme/colors.dart';
 import '../../core/widgets/market_trends_dashboard.dart';
 import 'package:lottie/lottie.dart';
 import 'dashboard_controller.dart';
@@ -31,7 +30,7 @@ class DashboardPage extends GetView<DashboardController> {
           pinned: true,
           flexibleSpace: FlexibleSpaceBar(
             background: Container(
-              color: AppColors.primary,
+              color: Theme.of(context).primaryColor,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -153,7 +152,7 @@ class DashboardPage extends GetView<DashboardController> {
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
+                backgroundColor: Theme.of(context).primaryColor,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),

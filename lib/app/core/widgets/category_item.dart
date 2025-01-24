@@ -1,6 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:hoode/app/core/theme/colors.dart';
 
 class CategoryItem extends StatelessWidget {
   final String title;
@@ -28,7 +26,7 @@ class CategoryItem extends StatelessWidget {
               child: Icon(
                 icon,
                 size: 24,
-                color: AppColors.primary,
+                color: Theme.of(context).primaryColor,
               ),
             ),
           ),

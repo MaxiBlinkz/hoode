@@ -8,7 +8,6 @@ import 'package:hoode/app/modules/listing_search/listing_search_page.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import '../../core/theme/colors.dart';
 import '../../core/widgets/avatar.dart';
 import '../../core/widgets/listing_card.dart';
 import 'home_controller.dart';
@@ -21,44 +20,56 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          foregroundColor: Theme.of(context).colorScheme.onSurface,
-          title: const Avatar(
-            initials: "MK",
-            image_url: "assets/images/avatar.jpg",
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
+        title: const Avatar(
+          initials: "MK",
+          image_url: "assets/images/avatar.jpg",
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(IconlyLight.search),
+            onPressed: () => Get.to(() => const ListingSearchPage()),
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(IconlyLight.search),
-              onPressed: () => Get.to(() => const ListingSearchPage()),
+          Badge(
+            label: const Text("2"),
+            child: IconButton(
+              icon: const Icon(IconlyLight.notification),
+              onPressed: () => Get.toNamed("/messages"),
             ),
-            Badge(
-              label: const Text("2"),
-              child: IconButton(
-                icon: const Icon(
-                  IconlyLight.notification,
-                  color: AppColors.primary,
+          ),
+        ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10)
+              ),
+              child: const TextField(
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.search),
+                  hintText: "Search by location, property type...",
+                  border: InputBorder.none
                 ),
-                iconSize: 20.0,
-                onPressed: () {
-                  Get.toNamed("/messages");
-                },
               ),
             ),
-          ],
+          ),
         ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              // Horizontal category list
-              const SizedBox(height: 8.0),
-              SizedBox(
-                height: 50,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  children: [
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            const SizedBox(height: 8.0),
+            SizedBox(
+              height: 50,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                children: [
                     buildFilterChip(
                       context: context,
                       label: "All",
@@ -142,193 +153,172 @@ class HomePage extends GetView<HomeController> {
               ),
               // Listings Section
               Expanded(
-                child: RefreshIndicator(
-                  onRefresh: () => controller.loadProperties(),
-                  child: Obx(
-                    () => controller.hasError.value
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Lottie.asset(
-                                  'assets/animations/oops.json',
-                                  width: 200,
-                                  height: 200,
+              child: RefreshIndicator(
+                onRefresh: () => controller.loadProperties(),
+                child: Obx(
+                  () => controller.hasError.value
+                      ? _buildErrorView()
+                      : SingleChildScrollView(
+                          controller: controller.listController,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildSectionHeader('Featured Properties', 'See All'),
+                              SizedBox(
+                                height: 310,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                  itemCount: controller.featuredProperties.length,
+                                  itemBuilder: (context, index) {
+                                    final property = controller.featuredProperties[index];
+                                    return ListingCard(
+                                      property: property,
+                                      imageWidth: 260,
+                                      imageHeight: 150,
+                                      cardHeight: 300,
+                                      isFeatured: true,
+                                      agentName: "Sarah Johnson",
+                                    );
+                                  },
                                 ),
-                                const Text(
-                                  'Oops! Connection Error',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                ElevatedButton(
-                                  onPressed: controller.retryLoading,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.primary,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 32,
-                                      vertical: 12,
-                                    ),
-                                  ),
-                                  child: const Text('Retry'),
-                                ),
-                              ],
-                            ),
-                          )
-                        : ConstrainedBox(
-                            constraints: BoxConstraints(
-                              minHeight: MediaQuery.of(context).size.height,
-                            ),
-                            child: SingleChildScrollView(
-                              controller: controller.listController,
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                          const SizedBox(height: 16.0),
-                                  controller.recommendedProperties.isNotEmpty
-                                      ? Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 16.0),
-                                          child: Text(
-                                            "Recommended for You",
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        )
-                                      : const SizedBox.shrink(),
-                                  controller.recommendedProperties.isNotEmpty
-                                      ? SizedBox(
-                                          height: 280,
-                                          child: Obx(() => ListView.builder(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 16.0),
-                                                itemCount: controller
-                                                    .recommendedProperties
-                                                    .length,
-                                                itemBuilder: (context, index) {
-                                                  final property = controller
-                                                          .recommendedProperties[
-                                                      index];
-                                                  return Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 16.0),
-                                                    child: ListingCard(
-                                                      property: property,
-                                                      imageWidth: 220,
-                                                      imageHeight: 160,
-                                                      cardHeight: 260,
-                                                    ),
-                                                  );
-                                                },
-                                              )))
-                                      : const SizedBox.shrink(),
-
-                                  const SizedBox(height: 16.0),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16.0),
-                                    child: Text(
-                                      "All Properties",
-                                      style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 16.0),
-                                  SizedBox(
-                                    child: Obx(() => ListView.builder(
-                                          primary: false,
-                                          shrinkWrap: true,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          itemCount: controller
-                                                  .filteredProperties.length +
-                                              (controller.isLoadingMore.value
-                                                  ? 3
-                                                  : 0),
-                                          itemBuilder: (context, index) {
-                                            if (index <
-                                                controller.filteredProperties
-                                                    .length) {
-                                              final property = controller
-                                                  .filteredProperties[index];
-                                              return ListingCard(
-                                                property: property,
-                                                imageWidth: double.infinity,
-                                                imageHeight: 180,
-                                                cardHeight: 300,
-                                              );
-                                            } else {
-                                              return Skeletonizer(
-                                                enabled: true,
-                                                child: ListingCard(
-                                                  property: RecordModel(),
-                                                  imageWidth: double.infinity,
-                                                  imageHeight: 180,
-                                                  cardHeight: 300,
-                                                ),
-                                              );
-                                            }
-                                          },
-                                        )),
-                                  ),
-                                  // Loading indicator at bottom
-                                  Obx(() => controller.isLoadingMore.value
-                                      ? SizedBox(
-                                          height: 100,
-                                          child: Center(
-                                            child: Lottie.asset(
-                                              'assets/animations/loading_more.json',
-                                              height: 50,
-                                              width: 50,
-                                            ),
-                                          ),
-                                        )
-                                      : const SizedBox()),
-
-                                  // No more data message
-                                  Obx(() => !controller.isLoadingMore.value &&
-                                          !controller.hasMoreData.value
-                                      ? const Padding(
-                                          padding: EdgeInsets.all(16.0),
-                                          child: Text(
-                                            "No more properties to load",
-                                            textAlign: TextAlign.center,
-                                            style:
-                                                TextStyle(color: Colors.grey),
-                                          ),
-                                        )
-                                      : const SizedBox()),
-
-                                  // Banner ad at the bottom
-                                  SizedBox(
-                                    height: 50, // Adjust height as needed
-                                    child: AdWidget(
-                                        ad: AdService.to
-                                            .createUniqueBannerAd()),
-                                  ),
-
-                                  const SizedBox(height: 16.0),
-                                ],
                               ),
-                            ),
+
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Container(
+                                  height: 150,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.grey.shade300,
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      // Map placeholder - integrate your map widget here
+                                      Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: ElevatedButton(
+                                            onPressed: () => Get.toNamed('/map'),
+                                            child: const Text("View on Map"),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                              _buildSectionHeader('Latest Properties', 'See All'),
+                              ListView.builder(
+                                primary: false,
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: controller.filteredProperties.length + (controller.isLoadingMore.value ? 3 : 0),
+                                itemBuilder: (context, index) {
+                                  if (index < controller.filteredProperties.length) {
+                                    final property = controller.filteredProperties[index];
+                                    return ListingCard(
+                                      property: property,
+                                      imageWidth: double.infinity,
+                                      imageHeight: 180,
+                                      cardHeight: 300,
+                                      isNew: index == 0,
+                                      isPriceReduced: index == 1,
+                                      agentName: "David Wilson",
+                                    );
+                                  } else {
+                                    return _buildSkeletonCard();
+                                  }
+                                },
+                              ),
+
+                              _buildLoadingIndicator(),
+                              _buildNoMoreDataMessage(),
+                              _buildAdBanner(),
+                            ],
                           ),
-                  ),
+                        ),
                 ),
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
+
+  Widget _buildSectionHeader(String title, String buttonText) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          TextButton(onPressed: () {}, child: Text(buttonText)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildErrorView() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset('assets/animations/oops.json', width: 200, height: 200),
+          const Text('Oops! Connection Error', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: controller.retryLoading,
+            child: const Text('Retry'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSkeletonCard() {
+    return Skeletonizer(
+      enabled: true,
+      child: ListingCard(
+        property: RecordModel(),
+        imageWidth: double.infinity,
+        imageHeight: 180,
+        cardHeight: 300,
+      ),
+    );
+  }
+
+  Widget _buildLoadingIndicator() {
+    return Obx(() => controller.isLoadingMore.value
+        ? SizedBox(
+            height: 100,
+            child: Center(
+              child: Lottie.asset('assets/animations/loading_more.json', height: 50, width: 50),
+            ),
+          )
+        : const SizedBox());
+  }
+
+  Widget _buildNoMoreDataMessage() {
+    return Obx(() => !controller.isLoadingMore.value && !controller.hasMoreData.value
+        ? const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text("No more properties to load", textAlign: TextAlign.center, style: TextStyle(color: Colors.grey)),
+          )
+        : const SizedBox());
+  }
+
+  Widget _buildAdBanner() {
+    return SizedBox(
+      height: 50,
+      child: AdWidget(ad: AdService.to.createUniqueBannerAd()),
+    );
+  }
+
 
   Widget buildFilterChip({
     required BuildContext context,

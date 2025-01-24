@@ -3,7 +3,6 @@ import 'package:csc_picker_plus/csc_picker_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/data/enums/enums.dart';
-import '../../core/theme/colors.dart';
 import 'profile_setup_controller.dart';
 
 import 'package:easy_stepper/easy_stepper.dart';
@@ -19,7 +18,7 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [AppColors.primary, AppColors.primary.withOpacity(0.7)],
+            colors: [Theme.of(context).primaryColor, Theme.of(context).primaryColor.withOpacity(0.7)],
           ),
         ),
         child: SafeArea(
@@ -112,7 +111,7 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
       case 1:
         return _buildLocationStep();
       case 2:
-        return _buildProfilePhotoStep();
+        return _buildProfilePhotoStep(context);
       case 3:
         return _buildReviewStep();
       default:
@@ -228,7 +227,7 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
     );
   }
 
-Widget _buildProfilePhotoStep() {
+Widget _buildProfilePhotoStep(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -256,7 +255,7 @@ Widget _buildProfilePhotoStep() {
                 bottom: 0,
                 right: 0,
                 child: CircleAvatar(
-                  backgroundColor: AppColors.primary,
+                  backgroundColor: Theme.of(context).primaryColor,
                   child: IconButton(
                     icon: const Icon(Icons.camera_alt, color: Colors.white),
                     onPressed: controller.getImage,

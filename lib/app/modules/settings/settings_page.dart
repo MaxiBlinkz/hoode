@@ -1,13 +1,12 @@
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import '../../core/theme/colors.dart';
 import '../user_preference/user_preference_page.dart';
 import 'settings_controller.dart';
 
 class SettingsPage extends GetView<SettingsController> {
   const SettingsPage({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,7 @@ class SettingsPage extends GetView<SettingsController> {
       ),
       body: ListView(
         children: [
-          _buildSection(
+          _buildSection(context,
             'Appearance',
             [
               Obx(() => SwitchListTile(
@@ -32,7 +31,7 @@ class SettingsPage extends GetView<SettingsController> {
                   )),
             ],
           ),
-          _buildSection(
+          _buildSection(context,
             'Preferences',
             [
               ListTile(
@@ -61,7 +60,7 @@ class SettingsPage extends GetView<SettingsController> {
 
             ],
           ),
-          _buildSection(
+          _buildSection(context,
             'Account',
             [
               ListTile(
@@ -86,7 +85,7 @@ class SettingsPage extends GetView<SettingsController> {
               ),
             ],
           ),
-          _buildSection(
+          _buildSection(context,
             'Danger Zone',
             [
               ListTile(
@@ -101,7 +100,7 @@ class SettingsPage extends GetView<SettingsController> {
     );
   }
 
-  Widget _buildSection(String title, List<Widget> children) {
+  Widget _buildSection(BuildContext context, String title, List<Widget> children) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -109,10 +108,10 @@ class SettingsPage extends GetView<SettingsController> {
           padding: const EdgeInsets.all(16),
           child: Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: AppColors.primary,
+              color: Theme.of(context).primaryColor,
             ),
           ),
         ),

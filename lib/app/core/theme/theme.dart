@@ -52,7 +52,12 @@ ThemeData lightTheme = ThemeData(
           }
           return Colors.grey;
         }),
-        checkColor: WidgetStateProperty.all(Colors.white))
+      checkColor: WidgetStateProperty.all(Colors.white)),
+  navigationBarTheme: const NavigationBarThemeData(
+    backgroundColor: lightGray,
+    indicatorColor: primaryBlue,
+  ),
+
 );
 
 //Dark theme
@@ -97,7 +102,11 @@ ThemeData darkTheme = ThemeData(
           }
           return Colors.grey;
         }),
-        checkColor: WidgetStateProperty.all(Colors.white))
+        checkColor: WidgetStateProperty.all(Colors.white)),
+        navigationBarTheme: const NavigationBarThemeData(
+    backgroundColor: darkGray,
+    indicatorColor: primaryBlue,
+  ),
 );
 
 // Custom Text Styles

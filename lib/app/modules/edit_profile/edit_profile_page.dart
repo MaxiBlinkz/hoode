@@ -2,7 +2,6 @@ import 'package:csc_picker_plus/csc_picker_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import '../../core/theme/colors.dart';
 import 'edit_profile_controller.dart';
 
 class EditProfilePage extends GetView<EditProfileController> {
@@ -27,8 +26,8 @@ class EditProfilePage extends GetView<EditProfileController> {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          AppColors.primary,
-                          AppColors.primary.withOpacity(0.7),
+                          Theme.of(context).primaryColor,
+                          Theme.of(context).primaryColor.withOpacity(0.7),
                         ],
                       ),
                     ),
@@ -52,10 +51,10 @@ class EditProfilePage extends GetView<EditProfileController> {
                               bottom: 0,
                               right: 0,
                               child: CircleAvatar(
-                                backgroundColor: AppColors.primary,
+                                backgroundColor: Theme.of(context).primaryColor,
                                 child: IconButton(
-                                  icon: const Icon(IconlyLight.camera, color: Colors.white),
-                                  onPressed: controller.getImage,
+                                  icon: Icon(IconlyLight.camera, color: Colors.white),
+                                  onPressed: () => controller.getImage(context)
                                 ),
                               ),
                             ),

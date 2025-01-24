@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/theme/colors.dart';
+import '../../core/theme/theme.dart';
 
 
 import 'auth_controller.dart';
@@ -16,7 +16,7 @@ class AuthPage extends GetView<AuthController> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [AppColors.primary, AppColors.primary.withOpacity(0.7)],
+            colors: [Theme.of(context).primaryColor, Theme.of(context).primaryColor.withOpacity(0.7)],
           ),
         ),
         child: SafeArea(
@@ -53,12 +53,12 @@ class AuthPage extends GetView<AuthController> {
                     ),
                       child: Column(
                         children: [
-                          const Text(
+                          Text(
                         "Login",
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.primary,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -67,8 +67,6 @@ class AuthPage extends GetView<AuthController> {
                             onPressed: () async {
                             },
                             style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              backgroundColor: AppColors.primary,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 50, vertical: 15),
                               textStyle: const TextStyle(fontSize: 18),

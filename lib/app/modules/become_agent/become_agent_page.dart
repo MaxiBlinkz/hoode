@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
-import '../../core/theme/colors.dart';
 
 import 'become_agent_controller.dart';
 
@@ -18,7 +17,7 @@ class BecomeAgentPage extends GetView<BecomeAgentController> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [AppColors.primary, AppColors.primary.withOpacity(0.7)],
+            colors: [Theme.of(context).primaryColor, Theme.of(context).primaryColor.withOpacity(0.7)],
           ),
         ),
         child: SafeArea(
@@ -95,7 +94,7 @@ class BecomeAgentPage extends GetView<BecomeAgentController> {
                   ),
                   child: Form(
                     key: controller.agentFormKey,
-                    child: Obx(() => _buildCurrentStep()),
+                    child: Obx(() => _buildCurrentStep(context)),
                   ),
                 ),
               ),
@@ -106,16 +105,16 @@ class BecomeAgentPage extends GetView<BecomeAgentController> {
     );
   }
 
-  Widget _buildCurrentStep() {
+  Widget _buildCurrentStep(BuildContext context) {
     switch (controller.currentStep.value) {
       case 0:
         return _buildBasicInfoStep();
       case 1:
         return _buildProfessionalDetailsStep();
       case 2:
-        return _buildSpecializationsStep();
+        return _buildSpecializationsStep(context);
       case 3:
-        return _buildReviewStep();
+        return _buildReviewStep(context);
       default:
         return const SizedBox();
     }
@@ -234,7 +233,7 @@ class BecomeAgentPage extends GetView<BecomeAgentController> {
   );
 }
 
-Widget _buildSpecializationsStep() {
+Widget _buildSpecializationsStep(BuildContext context) {
   return SingleChildScrollView(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -259,8 +258,8 @@ Widget _buildSpecializationsStep() {
               label: Text(spec),
               selected: controller.selectedSpecializations.contains(spec),
               onSelected: (_) => controller.toggleSpecialization(spec),
-              selectedColor: AppColors.primary.withOpacity(0.2),
-              checkmarkColor: AppColors.primary,
+              selectedColor: Theme.of(context).primaryColor.withOpacity(0.2),
+              checkmarkColor: Theme.of(context).primaryColor,
             );
           }).toList(),
         )),
@@ -287,7 +286,7 @@ Widget _buildSpecializationsStep() {
   );
 }
 
-Widget _buildReviewStep() {
+Widget _buildReviewStep(BuildContext context) {
   return SingleChildScrollView(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,10 +298,10 @@ Widget _buildReviewStep() {
           ),
         ),
         const SizedBox(height: 24),
-        _buildReviewTile('Name', controller.nameController.text, IconlyLight.profile),
-        _buildReviewTile('Title', controller.titleController.text, IconlyLight.work),
-        _buildReviewTile('License', controller.licenseController.text, IconlyLight.document),
-        _buildReviewTile('Experience', controller.experienceController.text, IconlyLight.time_circle),
+        _buildReviewTile('Name', controller.nameController.text, IconlyLight.profile, context),
+        _buildReviewTile('Title', controller.titleController.text, IconlyLight.work, context),
+        _buildReviewTile('License', controller.licenseController.text, IconlyLight.document, context),
+        _buildReviewTile('Experience', controller.experienceController.text, IconlyLight.time_circle, context),
         const Divider(height: 32),
         Text(
           'Specializations',
@@ -312,7 +311,7 @@ Widget _buildReviewStep() {
           spacing: 8,
           children: controller.selectedSpecializations.map((spec) => Chip(
             label: Text(spec),
-            backgroundColor: AppColors.primary.withOpacity(0.1),
+            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
           )).toList(),
         ),
         const SizedBox(height: 32),
@@ -346,9 +345,9 @@ Widget _buildReviewStep() {
   );
 }
 
-Widget _buildReviewTile(String title, String value, IconData icon) {
+Widget _buildReviewTile(String title, String value, IconData icon, BuildContext context) {
   return ListTile(
-    leading: Icon(icon, color: AppColors.primary),
+    leading: Icon(icon, color: Theme.of(context).primaryColor),
     title: Text(title),
     subtitle: Text(value),
     dense: true,

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import '../../core/widgets/social_button.dart';
-import '../../core/theme/colors.dart';
 import 'login_controller.dart';
 
 class LoginPage extends GetView<LoginController> {
@@ -19,7 +18,7 @@ class LoginPage extends GetView<LoginController> {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [AppColors.primary, AppColors.primary.withOpacity(0.7)],
+          colors: [Theme.of(context).primaryColor, Theme.of(context).primaryColor.withOpacity(0.7)],
         ),
       ),
       child: SafeArea(
@@ -56,12 +55,12 @@ class LoginPage extends GetView<LoginController> {
                     key: loginFormKey,
                     child: Column(
                       children: [
-                        const Text(
+                        Text(
                           "Login",
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.primary,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -69,8 +68,8 @@ class LoginPage extends GetView<LoginController> {
                           controller: controller.emailController,
                             decoration: InputDecoration(
                               hintText: "Email",
-                              prefixIcon: const Icon(IconlyLight.message,
-                                  color: AppColors.primary),
+                              prefixIcon: Icon(IconlyLight.message,
+                                  color: Theme.of(context).primaryColor),
                               filled: true,
                               fillColor: Colors.grey[200],
                               border: OutlineInputBorder(
@@ -96,14 +95,14 @@ class LoginPage extends GetView<LoginController> {
                               obscureText: !controller.isPasswordVisible.value,
                               decoration: InputDecoration(
                                 hintText: "Password",
-                                prefixIcon: const Icon(IconlyLight.lock,
-                                    color: AppColors.primary),
+                                prefixIcon: Icon(IconlyLight.lock,
+                                    color: Theme.of(context).primaryColor),
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                     controller.isPasswordVisible.value
                                         ? IconlyLight.hide
                                         : IconlyLight.show,
-                                    color: AppColors.primary,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                   onPressed:
                                       controller.togglePasswordVisibility,
@@ -133,7 +132,7 @@ class LoginPage extends GetView<LoginController> {
                             Obx(() => Checkbox(
                                   value: controller.rememberMe.value,
                                   onChanged: controller.toggleRememberMe,
-                                  activeColor: AppColors.primary,
+                                  activeColor: Theme.of(context).primaryColor,
                                 )),
                             const Text(
                               'Remember Me',
@@ -143,7 +142,7 @@ class LoginPage extends GetView<LoginController> {
                         ),
                         const SizedBox(height: 10),
                         EasyButton(
-                            buttonColor: AppColors.primary,
+                            buttonColor: Theme.of(context).primaryColor,
                             borderRadius: 36,
                           onPressed: () {
                             if (loginFormKey.currentState!.validate()) {

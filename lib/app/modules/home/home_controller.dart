@@ -7,7 +7,6 @@ import '../../core/algorithms/models/seasonal_data.dart';
 import '../../core/algorithms/models/user_interaction_history.dart';
 import '../../core/algorithms/models/user_preferences.dart';
 import '../../core/algorithms/property_recommender.dart';
-// import 'package:hoode/app/core/config/constants.dart';
 import 'package:hoode/app/data/enums/enums.dart';
 import 'package:hoode/core.dart';
 import 'package:logger/logger.dart';
@@ -15,7 +14,8 @@ import 'package:pocketbase/pocketbase.dart';
 import 'package:hoode/app/data/services/db_helper.dart';
 
 class HomeController extends GetxController {
-  final properties = [].obs;
+  final properties = <RecordModel>[].obs;
+  final featuredProperties = <RecordModel>[].obs;
   var isLoading = true.obs;
   int currentPage = 1;
   int totalListing = 20;
@@ -24,6 +24,7 @@ class HomeController extends GetxController {
   final totalItems = 0.obs;
   final isLoadingMore = false.obs;
   final hasError = false.obs;
+  final searchQuery = ''.obs;
 
   final selectedFilter = RxString('');
   final filteredProperties = <RecordModel>[].obs;
@@ -45,8 +46,21 @@ class HomeController extends GetxController {
     loadProperties();
     _initializeRecommendationSystem();
     loadRecommendations();
-    // testWithMockData();
+    loadFeaturedProperties();
     loadMore();
+  }
+
+  Future<void> loadFeaturedProperties() async {
+    try {
+      final response = await pb.collection('properties').getList(
+            filter: 'featured = true',
+            sort: '-created',
+            perPage: 5,
+          );
+      featuredProperties.value = response.items;
+    } catch (e) {
+      logger.e('Error loading featured properties: $e');
+    }
   }
 
   Stream<List<RecordModel>> getProperties(int page) async* {
@@ -59,53 +73,44 @@ class HomeController extends GetxController {
       final userState = currentUser?.data['state'];
       final userCity = currentUser?.data['city'];
 
+      var filter = '';
+      if (searchQuery.isNotEmpty) {
+        filter =
+            'title ~ "${searchQuery.value}" || location ~ "${searchQuery.value}"';
+      }
+
       final response = await pb.collection('properties').getList(
             page: page,
             perPage: totalListing,
+            filter: filter,
           );
-  
+
       totalItems(response.totalItems);
       hasMoreData(properties.length < totalItems.value);
 
       final sortedItems = response.items;
-
-      // Enhanced location-based sorting
       sortedItems.sort((a, b) {
-        // Country match comparison
         final aCountryMatch = a.data['country'] == userCountry;
         final bCountryMatch = b.data['country'] == userCountry;
-        if (aCountryMatch != bCountryMatch) {
-          return aCountryMatch ? -1 : 1;
-        }
+        if (aCountryMatch != bCountryMatch) return aCountryMatch ? -1 : 1;
 
-        // If same country match status, check state
         if (aCountryMatch && bCountryMatch) {
           final aStateMatch = a.data['state'] == userState;
           final bStateMatch = b.data['state'] == userState;
-          if (aStateMatch != bStateMatch) {
-            return aStateMatch ? -1 : 1;
-          }
+          if (aStateMatch != bStateMatch) return aStateMatch ? -1 : 1;
 
-          // If same state match status, check city
           if (aStateMatch && bStateMatch) {
             final aCityMatch = a.data['city'] == userCity;
             final bCityMatch = b.data['city'] == userCity;
-            if (aCityMatch != bCityMatch) {
-              return aCityMatch ? -1 : 1;
-            }
+            if (aCityMatch != bCityMatch) return aCityMatch ? -1 : 1;
           }
         }
-
-        // If all location matches are equal, sort by created date
         return b.get<String>('created').compareTo(a.get<String>('created'));
       });
 
       yield sortedItems;
-
-      if (sortedItems.isNotEmpty) {
-        status(Status.success);
-        isLoading(false);
-      }
+      status(Status.success);
+      isLoading(false);
       update();
 
     } catch (e) {
@@ -113,6 +118,11 @@ class HomeController extends GetxController {
       hasError(true);
       logger.e('Error fetching properties: $e');
     }
+  }
+
+  void searchProperties(String query) {
+    searchQuery.value = query;
+    loadProperties();
   }
 
   Future<void> loadProperties() async {
@@ -128,15 +138,14 @@ class HomeController extends GetxController {
   }
 
   void refreshAfterBookmarkChange() {
-  loadProperties();
-  update();
-}
+    loadProperties();
+    update();
+  }
 
-void retryLoading() {
-  loadProperties();
-  update();
-}
-
+  void retryLoading() {
+    loadProperties();
+    update();
+  }
 
   void loadMore() {
     listController.addListener(() {
@@ -151,38 +160,37 @@ void retryLoading() {
           hasMoreData.value) {
         isLoadingMore(true);
         currentPage++;
-        getProperties(currentPage).listen((data) {
-          if (data.isEmpty) {
-            hasMoreData(false);
-          } else {
-            // Preserve existing items and add new ones
-            properties.addAll(data);
-          }
-          isLoadingMore(false);
-        }, onError: (error) {
-          isLoadingMore(false);
-          logger.e('Error loading more properties: $error');
-        });
+        getProperties(currentPage).listen(
+          (data) {
+            if (data.isEmpty) {
+              hasMoreData(false);
+            } else {
+              properties.addAll(data);
+              filterProperties(selectedFilter.value);
+            }
+            isLoadingMore(false);
+          },
+          onError: (error) {
+            isLoadingMore(false);
+            logger.e('Error loading more properties: $error');
+          },
+        );
       }
     });
   }
 
-
   void _initializeRecommendationSystem() {
-    // Initialize with user data from your auth system
     userPrefs = UserPreferences(
       targetPrice: 250000.0,
       preferredLocation: GeoPoint(latitude: 0, longitude: 0),
       preferredAmenities: ['parking', 'pool'],
       preferredType: 'apartment',
     );
-
     interactions = UserInteractionHistory(
       viewCounts: {},
       favorites: {},
       clicks: {},
     );
-
     trends = MarketTrends();
     seasonal = SeasonalData();
   }
@@ -190,7 +198,7 @@ void retryLoading() {
   Future<void> loadRecommendations() async {
     if (properties.isNotEmpty) {
       recommendedProperties.value = PropertyRecommender.getRecommendations(
-        properties.cast<RecordModel>().toList(),
+        properties.toList(),
         userPrefs,
         interactions,
         trends,
@@ -200,21 +208,17 @@ void retryLoading() {
   }
 
   void filterProperties(String category) {
-  selectedFilter.value = category;
-  
-  if (category.isEmpty) {
-    filteredProperties.value = properties.cast<RecordModel>().toList();
-    return;
-  }
+    selectedFilter.value = category;
 
-  filteredProperties.value = properties.cast<RecordModel>().where((property) {
-    return property.data['category']?.toString().toLowerCase() == category.toLowerCase();
-  }).toList();
-}
+    if (category.isEmpty) {
+      filteredProperties.value = properties.toList();
+      return;
+    }
 
-  @override
-  void onReady() {
-    super.onReady();
+    filteredProperties.value = properties.where((property) {
+      return property.data['category']?.toString().toLowerCase() ==
+          category.toLowerCase();
+    }).toList();
   }
 
   @override

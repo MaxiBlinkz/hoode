@@ -5,7 +5,6 @@ it means you have to rename it to something more unique.
 */
 export 'package:hoode/app/core/bindings/application_bindings.dart';
 export 'package:hoode/app/core/config/constants.dart';
-export 'package:hoode/app/core/theme/colors.dart';
 export 'package:hoode/app/core/theme/theme.dart';
 export 'package:hoode/app/core/widgets/avatar.dart';
 export 'package:hoode/app/core/widgets/category_item.dart';

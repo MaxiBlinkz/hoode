@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import '../../core/config/constants.dart';
-import '../../core/theme/colors.dart';
 import '../../core/widgets/avatar.dart';
 import 'package:logger/logger.dart';
 import 'listing_detail_controller.dart';
@@ -83,7 +82,7 @@ class ListingDetailPage extends GetView<ListingDetailController> {
                         controller.isBookmarked.value
                             ? IconlyBold.bookmark
                             : IconlyLight.bookmark,
-                        color: AppColors.primary,
+                        color: Theme.of(context).primaryColor,
                       ),
                       onPressed: controller.toggleBookmark,
                     )),
@@ -123,14 +122,14 @@ class ListingDetailPage extends GetView<ListingDetailController> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         _buildFeature(IconlyBold.home,
-                            property.data['bedrooms']?.toString()),
+                            property.data['bedrooms']?.toString(), context),
                         _buildFeature(Icons.bathtub,
-                            property.data['bathrooms']?.toString()),
+                            property.data['bathrooms']?.toString(), context),
                         _buildFeature(
                             IconlyBold.chart,
                             property.data['area']?.toString() != null
                                 ? '${property.data['area']} sqft'
-                                : null),
+                                : null, context),
                       ],
                     ),
 
@@ -217,10 +216,10 @@ bottomNavigationBar: Container(
                   ),
                   Text(
                     "\$$price",
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                 ],
@@ -233,7 +232,7 @@ bottomNavigationBar: Container(
                   Expanded(
               child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
+                        backgroundColor: Theme.of(context).primaryColor,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -253,9 +252,9 @@ bottomNavigationBar: Container(
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
-                      foregroundColor: AppColors.primary,
+                      foregroundColor: Theme.of(context).primaryColor,
                       padding: const EdgeInsets.symmetric(vertical: 12),
-                      side: const BorderSide(color: AppColors.primary),
+                      side: BorderSide(color: Theme.of(context).primaryColor),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -273,14 +272,14 @@ bottomNavigationBar: Container(
     );
   }
 
-  Widget _buildFeature(IconData icon, String? text) {
+  Widget _buildFeature(IconData icon, String? text, BuildContext context) {
     if (text == null || text.isEmpty || text == '0') {
       return const SizedBox.shrink();
     }
 
     return Column(
       children: [
-        Icon(icon, color: AppColors.primary),
+        Icon(icon, color: Theme.of(context).primaryColor),
         const SizedBox(height: 4),
         Text(text),
       ],

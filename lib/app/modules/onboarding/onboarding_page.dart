@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../core/theme/colors.dart';
 import 'onboarding_controller.dart';
 
 class OnboardingPage extends GetView<OnboardingController> {
@@ -75,7 +74,7 @@ class OnboardingPage extends GetView<OnboardingController> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: controller.currentPage.value == index
-                                ? AppColors.primary
+                                ? Theme.of(context).primaryColor
                                 : Colors.grey.shade300,
                           ),
                         ),

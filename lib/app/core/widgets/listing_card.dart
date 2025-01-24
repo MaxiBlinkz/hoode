@@ -11,6 +11,10 @@ class ListingCard extends StatelessWidget {
   final double? imageWidth;
   final double? imageHeight;
   final double? cardHeight;
+  final bool isFeatured;
+  final bool isNew;
+  final bool isPriceReduced;
+  final String? agentName;
   final bookmarkService = Get.find<BookmarkService>();
   final adService = AdService.to;
   final VoidCallback? onTap;
@@ -22,6 +26,10 @@ class ListingCard extends StatelessWidget {
     this.imageHeight,
     this.cardHeight,
     this.onTap,
+    this.isFeatured = false,
+    this.isNew = false,
+    this.isPriceReduced = false,
+    this.agentName,
   });
 
   @override
@@ -35,15 +43,17 @@ class ListingCard extends StatelessWidget {
     final String title = property.data['title']?.toString() ?? "No Title";
     final String location = property.data['location']?.toString() ?? "No Location";
     final String price = property.data['price']?.toString() ?? "0";
+    final String sqft = property.data['sqft']?.toString() ?? "0";
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       child: GestureDetector(
         onTap: onTap ?? _defaultOnTap,
         child: Container(
+          width: imageWidth,
           height: cardHeight ?? 240,
           decoration: BoxDecoration(
-            color:Theme.of(context).colorScheme.surfaceContainerHighest,
+            color: Theme.of(context).cardTheme.color,
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
@@ -82,6 +92,60 @@ class ListingCard extends StatelessWidget {
                             width: double.infinity,
                           ),
                   ),
+                  if (isFeatured)
+                    Positioned(
+                      top: 10,
+                      left: 10,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.blue,
+                        ),
+                        child: Text(
+                          "Featured",
+                          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                color: Colors.white,
+                              ),
+                        ),
+                      ),
+                    ),
+                  if (isNew)
+                    Positioned(
+                      top: 10,
+                      left: isFeatured ? 90 : 10,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.green,
+                        ),
+                        child: Text(
+                          "New",
+                          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                color: Colors.white,
+                              ),
+                        ),
+                      ),
+                    ),
+                  if (isPriceReduced)
+                    Positioned(
+                      top: 10,
+                      left: (isFeatured && isNew) ? 150 : (isFeatured || isNew) ? 90 : 10,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.orange,
+                        ),
+                        child: Text(
+                          "Price Reduced",
+                          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                color: Colors.white,
+                              ),
+                        ),
+                      ),
+                    ),
                   Positioned(
                     top: 8,
                     right: 8,
@@ -102,12 +166,12 @@ class ListingCard extends StatelessWidget {
                       child: IconButton(
                         padding: EdgeInsets.zero,
                         icon: Obx(() => Icon(
-                          bookmarkService.bookmarks.contains(property.id)
-                              ? IconlyBold.heart
-                              : IconlyLight.heart,
-                          color: Colors.red,
-                          size: 20,
-                        )),
+                              bookmarkService.bookmarks.contains(property.id)
+                                  ? IconlyBold.heart
+                                  : IconlyLight.heart,
+                              color: Colors.red,
+                              size: 20,
+                            )),
                         onPressed: () => bookmarkService.toggleBookmark(property.id),
                       ),
                     ),
@@ -167,10 +231,33 @@ class ListingCard extends StatelessWidget {
                             _buildFeatureIcon(IconlyLight.home, "${property.data['bedrooms'] ?? 0}"),
                             const SizedBox(width: 12),
                             _buildFeatureIcon(IconlyLight.discovery, "${property.data['bathrooms'] ?? 0}"),
+                            const SizedBox(width: 12),
+                            _buildFeatureIcon(Icons.crop_square_outlined, "${property.data['sqft'] ?? 0} sqft"),
                           ],
                         ),
                       ],
                     ),
+                    if (agentName != null) ...[
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          const CircleAvatar(
+                            radius: 12,
+                            backgroundImage: AssetImage("assets/images/avatar.jpg"),
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            agentName!,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          const Icon(
+                            Icons.verified,
+                            color: Colors.blue,
+                            size: 14,
+                          ),
+                        ],
+                      ),
+                    ],
                   ],
                 ),
               ),

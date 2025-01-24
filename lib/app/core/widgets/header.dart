@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 
-import '../../core/theme/colors.dart';
 
 class Header extends StatelessWidget {
   const Header({
@@ -13,8 +12,8 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 105,
-      decoration: const BoxDecoration(
-          color: AppColors.primary,
+      decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
           borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(12),
               bottomRight: Radius.circular(12))),

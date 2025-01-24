@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import '../../core/widgets/social_button.dart';
 import '../profile_setup/profile_setup_page.dart';
 import 'package:iconly/iconly.dart';
-import '../../core/theme/colors.dart';
 import 'register_controller.dart';
 
 class RegisterPage extends GetView<RegisterController> {
@@ -20,7 +19,7 @@ class RegisterPage extends GetView<RegisterController> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [AppColors.primary, AppColors.primary.withOpacity(0.7)],
+            colors: [Theme.of(context).primaryColor, Theme.of(context).primaryColor.withOpacity(0.7)],
           ),
         ),
         child: SafeArea(
@@ -57,12 +56,12 @@ class RegisterPage extends GetView<RegisterController> {
                       key: regFormKey,
                       child: Column(
                         children: [
-                          const Text(
+                          Text(
                             "Register",
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.primary,
+                              color: Theme.of(context).primaryColor,
                             ),
                           ),
                           const SizedBox(height: 20),
@@ -70,8 +69,8 @@ class RegisterPage extends GetView<RegisterController> {
                             controller: controller.nameController,
                             decoration: InputDecoration(
                               hintText: "Username",
-                              prefixIcon: const Icon(IconlyLight.profile,
-                                  color: AppColors.primary),
+                              prefixIcon: Icon(IconlyLight.profile,
+                                  color: Theme.of(context).primaryColor),
                               filled: true,
                               fillColor: Colors.grey[200],
                               border: OutlineInputBorder(
@@ -93,8 +92,8 @@ class RegisterPage extends GetView<RegisterController> {
                             controller: controller.emailController,
                             decoration: InputDecoration(
                               hintText: "Email",
-                              prefixIcon: const Icon(IconlyLight.message,
-                                  color: AppColors.primary),
+                              prefixIcon: Icon(IconlyLight.message,
+                                  color: Theme.of(context).primaryColor),
                               filled: true,
                               fillColor: Colors.grey[200],
                               border: OutlineInputBorder(
@@ -120,14 +119,14 @@ class RegisterPage extends GetView<RegisterController> {
                             obscureText: !controller.hidePassword.value,
                             decoration: InputDecoration(
                               hintText: "Password",
-                              prefixIcon: const Icon(IconlyLight.lock,
-                                  color: AppColors.primary),
+                              prefixIcon: Icon(IconlyLight.lock,
+                                  color: Theme.of(context).primaryColor),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   controller.hidePassword.value
                                       ? IconlyLight.hide
                                       : IconlyLight.show,
-                                  color: AppColors.primary,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                                 onPressed: controller.togglePasswordVisibility,
                               ),
@@ -157,14 +156,14 @@ class RegisterPage extends GetView<RegisterController> {
                                   !controller.hideConfirmPassword.value,
                             decoration: InputDecoration(
                               hintText: "Confirm Password",
-                              prefixIcon: const Icon(IconlyLight.lock,
-                                  color: AppColors.primary),
+                              prefixIcon: Icon(IconlyLight.lock,
+                                  color: Theme.of(context).primaryColor),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   controller.hideConfirmPassword.value
                                       ? IconlyLight.hide
                                       : IconlyLight.show,
-                                  color: AppColors.primary,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                                 onPressed:
                                     controller.toggleConfirmPasswordVisibility,
@@ -190,7 +189,7 @@ class RegisterPage extends GetView<RegisterController> {
                           ),
                           const SizedBox(height: 30),
                           EasyButton(
-                            buttonColor: AppColors.primary,
+                            buttonColor: Theme.of(context).primaryColor,
                             borderRadius: 36,
                             onPressed: () {
                               if (regFormKey.currentState!.validate()) {
@@ -290,13 +289,14 @@ class RegisterPage extends GetView<RegisterController> {
     required String hintText,
     required IconData prefixIcon,
     bool isPassword = false,
+    required BuildContext context,
   }) {
     return TextField(
       controller: controller,
       obscureText: isPassword,
       decoration: InputDecoration(
         hintText: hintText,
-        prefixIcon: Icon(prefixIcon, color: AppColors.primary),
+        prefixIcon: Icon(prefixIcon, color: Theme.of(context).primaryColor),
         filled: true,
         fillColor: Colors.grey[200],
         border: OutlineInputBorder(

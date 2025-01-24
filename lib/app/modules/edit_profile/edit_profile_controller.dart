@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:hoode/app/core/theme/colors.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
@@ -25,7 +24,7 @@ class EditProfileController extends GetxController {
   final formKey = GlobalKey<FormState>();
   final isLoading = false.obs;
 
-  Future<void> getImage() async {
+  Future<void> getImage(BuildContext context) async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     
@@ -36,7 +35,7 @@ class EditProfileController extends GetxController {
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: 'Crop Profile Photo',
-            toolbarColor: AppColors.primary,
+            toolbarColor: Theme.of(context).primaryColor,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.square,
           ),
