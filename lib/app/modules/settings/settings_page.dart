@@ -30,33 +30,6 @@ class SettingsPage extends GetView<SettingsController> {
                     value: controller.themeController.isDarkMode.value,
                     onChanged: controller.toggleTheme,
                   )),
-              ListTile(
-                leading: Icon(Icons.color_lens),
-                title: const Text('Color Scheme'),
-                trailing: Obx(() => Text(controller.currentScheme.value.name)),
-                onTap: () => _showColorSchemeDialog(context),
-              ),
-              Obx(() => SwitchListTile(
-                    title: const Text('Neobrutalism Style'),
-                    secondary: const Icon(Icons.architecture),
-                    value:
-                        controller.themeController.isNeoBrutalismEnabled.value,
-                    onChanged: controller.toggleNeoBrutalism,
-                  )),
-              ListTile(
-                leading: const Icon(Icons.palette),
-                title: const Text('Accent Color'),
-                trailing: Obx(() => Container(
-                      width: 24,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        color: controller.themeController.accentColor.value,
-                        border: Border.all(color: Colors.black, width: 2),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    )),
-                onTap: () => _showAccentColorPicker(context),
-              ),
             ],
           ),
           _buildSection(
@@ -206,79 +179,6 @@ class SettingsPage extends GetView<SettingsController> {
             child: const Text('Logout', style: TextStyle(color: Colors.red)),
           ),
         ],
-      ),
-    );
-  }
-  void _showColorSchemeDialog(BuildContext context) {
-    Get.dialog(
-      AlertDialog(
-        title: const Text('Select Color Scheme'),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: FlexScheme.values.length,
-            itemBuilder: (context, index) {
-              final scheme = FlexScheme.values[index];
-              return ListTile(
-                title: Text(scheme.name),
-                onTap: () {
-                  controller.changeColorScheme(scheme);
-                  Get.back();
-                },
-                trailing: Container(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    color: FlexThemeData.light(scheme: scheme).primaryColor,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _showAccentColorPicker(BuildContext context) {
-    final materialColors = <MaterialColor>[
-      Colors.yellow,
-      Colors.orange,
-      Colors.pink,
-      Colors.blue,
-      Colors.green,
-      Colors.purple,
-      Colors.red,
-      Colors.teal,
-    ];
-
-    Get.dialog(
-      AlertDialog(
-        title: const Text('Select Accent Color'),
-        content: Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: materialColors
-              .map((MaterialColor color) => InkWell(
-                    onTap: () {
-                      controller.setAccentColor(color);
-                      Get.back();
-                    },
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      margin: EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: color,
-                        border: Border.all(color: Colors.black, width: 3),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ))
-              .toList(),
-        ),
       ),
     );
   }

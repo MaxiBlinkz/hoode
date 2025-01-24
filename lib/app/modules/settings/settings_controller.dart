@@ -26,34 +26,17 @@ class SettingsController extends GetxController {
 }).obs;
 
   @override
-void onInit() {
-  super.onInit();
-  isDarkMode.value = themeController.isDarkMode.value;
-  currentScheme.value = themeController.currentScheme.value;
-  accentColor.value = themeController.accentColor.value;
-  
-  ever(themeController.isDarkMode, (_) => isDarkMode.value = themeController.isDarkMode.value);
-  ever(themeController.currentScheme, (_) => currentScheme.value = themeController.currentScheme.value);
-  ever(themeController.accentColor, (_) => accentColor.value = themeController.accentColor.value);
-}
+  void onInit() {
+    super.onInit();
+    isDarkMode.value = themeController.isDarkMode.value;
+    ever(themeController.isDarkMode, (_) => isDarkMode.value = themeController.isDarkMode.value);
+  }
 
 
   void toggleTheme(bool value) {
     themeController.toggleTheme(value);
   }
 
-  void toggleNeoBrutalism(bool value) {
-    themeController.toggleNeoBrutalism(value);
-  }
-
-  void setAccentColor(MaterialColor color) {
-    accentColor.value = color;
-    themeController.updateAccentColor(color);
-  }
-
-  void changeColorScheme(FlexScheme scheme) {
-    themeController.changeScheme(scheme);
-  }
 
   void toggleNotifications(bool value) {
     isNotificationsEnabled.value = value;
