@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hoode/app/data/services/authservice.dart';
+import '../../data/services/authservice.dart';
 import '../../core/analytics/models/market_analytics.dart';
 import '../../data/services/db_helper.dart';
 import '../../data/services/user_service.dart';
@@ -22,6 +22,14 @@ class DashboardController extends GetxController {
   final propertyTypeTrends = <String, double>{}.obs;
   final monthlyRevenue = <FlSpot>[].obs;
 
+
+  // New variables for the dashboard
+  final totalViews = 0.obs; // added totalViews
+  final newLeads = 0.obs;  // added newLeads
+
+
+    final activeListings = <RecordModel>[].obs; // Active listings
+
   @override
   void onInit() {
     super.onInit();
@@ -29,43 +37,54 @@ class DashboardController extends GetxController {
   }
 
   Future<RecordModel?> getCurrentUser() async {
-  if (!pb.authStore.isValid || pb.authStore.record == null) {
-    final token = GetStorage().read('authToken');
-    final userData = GetStorage().read('userData');
-    
-    if (token != null && userData != null) {
-      pb.authStore.save(token, RecordModel.fromJson(userData));
-      await pb.collection('users').authRefresh();
-      
-      if (!pb.authStore.isValid) {
-        Get.toNamed('/login');
-        return null;
+    if (!pb.authStore.isValid || pb.authStore.record == null) {
+      final token = GetStorage().read('authToken');
+      final userData = GetStorage().read('userData');
+
+      if (token != null && userData != null) {
+        pb.authStore.save(token, RecordModel.fromJson(userData));
+        await pb.collection('users').authRefresh();
+
+        if (!pb.authStore.isValid) {
+          Get.toNamed('/login');
+          return null;
+        }
       }
     }
+    return pb.authStore.record;
   }
-  return pb.authStore.record;
-}
 
   Future<void> loadUserDashboard() async {
-  isLoading(true);
-  try {
-    user.value = await getCurrentUser();
-    if (user.value != null) {
-      isAgent.value = await userService.isUserAgent(user.value!.id);
-      
-      if (isAgent.value) {
-        final records = await pb.collection('properties').getList(
-          filter: 'agent = "${user.value!.id}"',
-        );
-        listingsCount.value = records.totalItems;
-        
-        await loadAgentStats();
+    isLoading(true);
+    try {
+      user.value = await getCurrentUser();
+      if (user.value != null) {
+        isAgent.value = await userService.isUserAgent(user.value!.id);
+
+        if (isAgent.value) {
+          final records = await pb.collection('properties').getList(
+            filter: 'agent = "${user.value!.id}"',
+          );
+            // Fetch active listings
+           final activeListingsResponse = await pb.collection('properties').getList(
+                filter: 'agent = "${user.value!.id}"',
+                perPage: 5,
+            );
+            activeListings.value = activeListingsResponse.items;
+
+          listingsCount.value = records.totalItems;
+           // Simulate data for total views
+           totalViews.value = 1234;
+           // Simulate data for new leads
+            newLeads.value = 48;
+
+          await loadAgentStats();
+        }
       }
+    } finally {
+      isLoading(false);
     }
-  } finally {
-    isLoading(false);
   }
-}
 
 
   Future<void> loadAgentStats() async {
@@ -75,6 +94,7 @@ class DashboardController extends GetxController {
     propertyTypeTrends.value = MarketAnalytics.getPropertyTypeDistribution();
     monthlyRevenue.value = MarketAnalytics.getRevenueData();
   }
+
 
   void navigateToMyListings() => Get.toNamed('/my-listings');
   void navigateToAddListing() => Get.toNamed('/add-listing');

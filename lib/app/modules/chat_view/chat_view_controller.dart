@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:chatview/chatview.dart';
-import 'package:hoode/app/data/services/authservice.dart';
+import '../../data/services/authservice.dart';
 // import 'package:hoode/app/core/config/constants.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -16,6 +16,9 @@ class ChatViewController extends GetxController {
   late ChatController chatController;
   final authService = Get.find<AuthService>();
   final logger = Logger();
+    final messageController = TextEditingController();
+    final message = ''.obs;
+
 
   @override
   void onInit() async {
@@ -26,6 +29,11 @@ class ChatViewController extends GetxController {
     setupChatController();
     subscribeToMessages();
   }
+
+ void updateText(String text) {
+    message.value = text;
+  }
+
 
   void setupChatController() {
   final currentChatUser = ChatUser(
@@ -46,9 +54,6 @@ class ChatViewController extends GetxController {
   );
 }
 
-
-
-
   void subscribeToMessages() {
     pb.collection('messages').subscribe('*', (e) {
       if (e.action == 'create' && e.record != null) {
@@ -59,10 +64,11 @@ class ChatViewController extends GetxController {
           sentBy: e.record!.data['sender_id'] ?? '',
         );
         messages.add(newMessage);
-        chatController.addMessage(newMessage);
+        // chatController.addMessage(newMessage);
       }
     });
   }
+
 
   Future<void> sendMessage(String message, ReplyMessage? replyMessage,
       MessageType messageType) async {
@@ -72,7 +78,7 @@ class ChatViewController extends GetxController {
         'sender_id': currentUser.value?.id,
         'receiver_id': otherUser.value?.id,
         'type': messageType.name,
-        'reply_to': replyMessage?.messageId, // Using messageId instead of id
+        'reply_to': replyMessage?.messageId,
       });
     } catch (e) {
       logger.e('Error sending message: $e');
@@ -82,6 +88,7 @@ class ChatViewController extends GetxController {
   @override
   void onClose() {
     pb.collection('messages').unsubscribe('*');
+     messageController.dispose();
     super.onClose();
   }
 }

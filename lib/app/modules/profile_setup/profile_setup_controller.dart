@@ -51,15 +51,12 @@ class ProfileSetupController extends GetxController {
 
   RecordModel user = RecordModel();
 
-  
   final ImagePicker _picker = ImagePicker();
   Rx<File?> selectedImage = Rx<File?>(null);
   var imagePath = "";
 
   final currentStep = 0.obs;
   final steps = ['Personal Info', 'Location', 'Profile Photo', 'Review'].obs;
-
-  
 
   void nextStep() {
     if (currentStep.value < steps.length - 1) {
@@ -86,7 +83,6 @@ class ProfileSetupController extends GetxController {
     }
   }
 
-
   void setCountry(String? value) {
     if (value != null) {
       country(value);
@@ -106,25 +102,21 @@ class ProfileSetupController extends GetxController {
   }
 
   Future<void> getImage() async {
-  final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-  if (image != null) {
-    final cropResult = await Get.to(() => ImageCropperPage(
-      imagePath: image.path,
-      aspectRatio: 1.0,
-    ));
-    
-    if (cropResult != null) {
-      selectedImage.value = File(cropResult);
-      Get.snackbar(
-        "Image Selected", 
-        "Image successfully cropped and selected",
-        snackPosition: SnackPosition.BOTTOM,
-        snackStyle: SnackStyle.FLOATING
-      );
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      final cropResult = await Get.to(() => ImageCropperPage(
+            imagePath: image.path,
+            aspectRatio: 1.0,
+          ));
+
+      if (cropResult != null) {
+        selectedImage.value = File(cropResult);
+        Get.snackbar("Image Selected", "Image successfully cropped and selected",
+            snackPosition: SnackPosition.BOTTOM,
+            snackStyle: SnackStyle.FLOATING);
+      }
     }
   }
-}
-
 
   Future<Uint8List> convertImageToPng(Uint8List imageBytes) async {
     final img.Image? image = img.decodeImage(imageBytes);
@@ -227,7 +219,6 @@ class ProfileSetupController extends GetxController {
       );
     }
   }
-
 
   void initControllers() {
     firstnameController

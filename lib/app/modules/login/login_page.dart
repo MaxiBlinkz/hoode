@@ -56,28 +56,28 @@ class LoginPage extends GetView<LoginController> {
                     child: Column(
                       children: [
                         Text(
-                          "Login",
+                          "Welcome Back",
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
+                        const SizedBox(height: 10),
+                         Text(
+                         "Sign in to continue",
+                           style: TextStyle(
+                           fontSize: 14,
+                            color: Colors.grey.shade500,
+                           ),
+                       ),
                         const SizedBox(height: 20),
                         TextFormField(
                           controller: controller.emailController,
                             decoration: InputDecoration(
                               hintText: "Email",
-                              prefixIcon: Icon(IconlyLight.message,
-                                  color: Theme.of(context).primaryColor),
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 15),
+                                prefixIcon: Icon(IconlyLight.message,
+                                    color: Theme.of(context).primaryColor),
                             ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -107,14 +107,6 @@ class LoginPage extends GetView<LoginController> {
                                   onPressed:
                                       controller.togglePasswordVisibility,
                                 ),
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                  borderSide: BorderSide.none,
-                                ),
-                                contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 15),
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -128,19 +120,20 @@ class LoginPage extends GetView<LoginController> {
                             )),
                         const SizedBox(height: 10),
                         Row(
-                          children: [
-                            Obx(() => Checkbox(
-                                  value: controller.rememberMe.value,
-                                  onChanged: controller.toggleRememberMe,
-                                  activeColor: Theme.of(context).primaryColor,
-                                )),
-                            const Text(
-                              'Remember Me',
-                              style: TextStyle(color: Colors.grey),
-                            ),
+                          mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+
+                              TextButton(
+                          onPressed: () {
+                            // Implement forgot password logic
+                          },
+                          child: const Text("Forgot Password?",
+                          style: TextStyle(color: Colors.grey),
+                          ),
+                        ),
                           ],
                         ),
-                        const SizedBox(height: 10),
+                       const SizedBox(height: 10),
                         EasyButton(
                             buttonColor: Theme.of(context).primaryColor,
                             borderRadius: 36,
@@ -150,43 +143,23 @@ class LoginPage extends GetView<LoginController> {
                             }
                             },
                             idleStateWidget: const Text(
-                              "Login",
+                              "Sign In",
                               style: TextStyle(color: Colors.white),
                             ),
                           loadingStateWidget: const CircularProgressIndicator(
                               color: Colors.white,
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        TextButton(
-                          onPressed: () {
-                            // Implement forgot password logic
-                          },
-                          child: const Text("Forgot Password?"),
-                        ),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
-                // Sign Up Button
-                TextButton(
-                  onPressed: () {
-                    // Navigate to sign up page
-                    Get.toNamed('/register');
-                  },
-                  child: const Text(
-                    "Don't have an account? Sign Up",
-                    style: TextStyle(color: Colors.white),
+                  const SizedBox(height: 10),
+                  const Text(
+                    "Or continue with",
+                    style: TextStyle(color: Colors.grey),
                   ),
-                ),
-                const SizedBox(height: 20),
-                // Social Login Text
-                const Text(
-                  "Or continue with",
-                  style: TextStyle(color: Colors.grey),
-                ),
-                const SizedBox(height: 20),
+                   const SizedBox(height: 20),
                 // Social Login Buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -216,15 +189,17 @@ class LoginPage extends GetView<LoginController> {
                     ),
                   ],
                 ),
-                // // ################## Banner ad at bottom ########################
-                // const SizedBox(height: 20),
-                // adService.bannerAd != null
-                //     ? SizedBox(
-                //         width: adService.bannerAd!.size.width.toDouble(),
-                //         height: adService.bannerAd!.size.height.toDouble(),
-                //         child: AdWidget(ad: adService.bannerAd!),
-                //       )
-                //     : const SizedBox(),
+                  const SizedBox(height: 20),
+                 TextButton(
+                  onPressed: () {
+                    // Navigate to sign up page
+                    Get.toNamed('/register');
+                  },
+                  child: const Text(
+                    "Don't have an account? Sign Up",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ],
             ),
           ),

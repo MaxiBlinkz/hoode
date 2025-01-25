@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/modules/image_cropper/image_cropper_controller.dart';
+import 'image_cropper_controller.dart';
 
 class ImageCropperPage extends GetView<ImageCropperController> {
   final String imagePath;

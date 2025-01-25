@@ -52,13 +52,13 @@ class AddListingPage extends GetView<AddListingController> {
                   child: Obx(() {
                     switch (controller.currentStep.value) {
                       case 0:
-                        return _buildBasicInfoStep();
+                        return _buildBasicInfoStep(context);
                       case 1:
-                        return _buildDetailsStep();
+                        return _buildDetailsStep(context);
                       case 2:
-                        return _buildAmenitiesStep();
+                        return _buildAmenitiesStep(context);
                       case 3:
-                        return _buildImagesStep();
+                        return _buildImagesStep(context);
                       default:
                         return const SizedBox.shrink();
                     }
@@ -127,91 +127,122 @@ class AddListingPage extends GetView<AddListingController> {
         ));
   }
 
-  Widget _buildBasicInfoStep() {
+Widget _buildBasicInfoStep(BuildContext context) {
+    return Column(
+      children: [
+        Obx(() => TextFormField(
+              decoration: InputDecoration(
+                  labelText: 'Property Title',
+                  hintText: "Enter property title",
+                  prefixIcon:  Icon(IconlyLight.home, color: Theme.of(context).colorScheme.onSurface),
+                 ),
+              key: const ValueKey('title'),
+              initialValue: controller.title.value,
+              onChanged: (value) => controller.title.value = value,
+              validator: (value) =>
+              value?.isEmpty ?? true ? 'Title required' : null,
+            )),
+        const SizedBox(height: 16),
+        Obx(() => DropdownButtonFormField<String>(
+              decoration:  InputDecoration(
+                labelText: 'Property Type',
+                hintText: "Select property type",
+                  prefixIcon:  Icon(IconlyLight.category, color: Theme.of(context).colorScheme.onSurface),
+              ),
+              key: const ValueKey('category'),
+              value: controller.category.value.isNotEmpty ? controller.category.value : null,
+              items: controller.categories.map((category) => DropdownMenuItem(
+                    value: category,
+                    child: Text(category),
+                  )).toList(),
+              onChanged: (value) {
+                controller.category.value = value ?? '';
+              },
+              validator: (value) => value == null ? 'Category required' : null,
+            )),
+      ],
+    );
+  }
+
+  Widget _buildDetailsStep(BuildContext context) {
   return Column(
     children: [
-      Obx(() => TextFormField(
-        decoration: const InputDecoration(labelText: 'Title'),
-        // key is crucial for reactive form
-        key: const ValueKey('title'),
-        initialValue: controller.title.value,
-        onChanged: (value) => controller.title.value = value,
-        validator: (value) => value?.isEmpty ?? true ? 'Title required' : null,
-      )),
+      Obx(() {
+        return TextFormField(
+          decoration:  InputDecoration(
+              labelText: 'Price',
+             hintText: "Enter price",
+              prefixIcon: Icon(IconlyLight.wallet, color: Theme.of(context).colorScheme.onSurface),
+              prefixText: '\$',
+            ),
+          keyboardType: TextInputType.number,
+          onChanged: (value) =>
+              controller.price.value = double.tryParse(value) ?? 0,
+        );
+      }),
       const SizedBox(height: 16),
-      Obx(() => DropdownButtonFormField<String>(
-            decoration: const InputDecoration(labelText: 'Category'),
-            key: const ValueKey('category'),
-            value: controller.category.value.isNotEmpty ? controller.category.value : null, // Key change here
-            items: controller.categories.map((category) => DropdownMenuItem(
-                  value: category, // Ensure unique values here
-                  child: Text(category),
-                )).toList(),
-            onChanged: (value) {
-              controller.category.value = value ?? ''; //Maintain this for convenience
-            },
-            validator: (value) => value == null ? 'Category required' : null,
+         Obx(() =>  TextFormField(
+            decoration: InputDecoration(
+                labelText: 'Property Size',
+                 hintText: "Enter property size",
+                prefixIcon:  Icon(Icons.crop_square_outlined, color: Theme.of(context).colorScheme.onSurface),
+                suffixText: "sq ft"
+              ),
+            keyboardType: TextInputType.number,
+            onChanged: (value) =>
+            controller.area.value = double.tryParse(value) ?? 0,
+          )),
+        const SizedBox(height: 16),
+      Row(
+        children: [
+          Obx(() {
+            return Expanded(
+              child: TextFormField(
+                  decoration:  InputDecoration(
+                   labelText: 'Bedrooms',
+                   hintText: "Enter number of bedrooms",
+                     prefixIcon: Icon(IconlyLight.home, color: Theme.of(context).colorScheme.onSurface),
+                  ),
+                keyboardType: TextInputType.number,
+                onChanged: (value) =>
+                    controller.bedrooms.value = int.tryParse(value) ?? 0,
+              ),
+            );
+          }),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Obx(() {
+              return TextFormField(
+                  decoration: InputDecoration(
+                      labelText: 'Bathrooms',
+                      hintText: "Enter number of bathrooms",
+                       prefixIcon: Icon(Icons.bathtub, color: Theme.of(context).colorScheme.onSurface),
+                    ),
+                keyboardType: TextInputType.number,
+                onChanged: (value) =>
+                    controller.bathrooms.value = int.tryParse(value) ?? 0,
+              );
+            }),
+          ),
+        ],
+      ),
+
+         const SizedBox(height: 16),
+         Obx(() =>  TextFormField(
+            decoration: InputDecoration(
+                labelText: 'Address',
+                 hintText: "Enter property address",
+                  prefixIcon: Icon(IconlyLight.location, color: Theme.of(context).colorScheme.onSurface),
+              ),
+            onChanged: (value) =>
+            controller.address.value = value,
           )),
     ],
   );
 }
 
 
-  Widget _buildDetailsStep() {
-    return Column(
-      children: [
-        Obx(() {
-          return TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Price',
-              border: OutlineInputBorder(),
-              prefixIcon: Icon(IconlyLight.wallet),
-              prefixText: '\$',
-            ),
-            keyboardType: TextInputType.number,
-            onChanged: (value) =>
-                controller.price.value = double.tryParse(value) ?? 0,
-          );
-        }),
-        const SizedBox(height: 16),
-        Row(
-          children: [
-            Obx(() {
-              return Expanded(
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Bedrooms',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(IconlyLight.home),
-                  ),
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) =>
-                      controller.bedrooms.value = int.tryParse(value) ?? 0,
-                ),
-              );
-            }),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Obx(() {
-                return TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Bathrooms',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.bathtub),
-                  ),
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) =>
-                      controller.bathrooms.value = int.tryParse(value) ?? 0,
-                );
-              }),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildAmenitiesStep() {
+  Widget _buildAmenitiesStep(BuildContext context) {
     return Obx(() {
       return Wrap(
         spacing: 8,
@@ -221,14 +252,27 @@ class AddListingPage extends GetView<AddListingController> {
             label: Text(amenity),
             selected: controller.amenities.contains(amenity),
             onSelected: (_) => controller.toggleAmenity(amenity),
-            selectedColor: Theme.of(Get.context!).colorScheme.primaryContainer,
+              backgroundColor: Theme.of(context).colorScheme.surface,
+            selectedColor: Theme.of(context).colorScheme.primaryContainer,
+            labelStyle: TextStyle(
+              color: controller.amenities.contains(amenity)
+                  ? Theme.of(context).colorScheme.onPrimaryContainer
+                  : Theme.of(context).colorScheme.onSurface,
+            ),
+            side: BorderSide(color: Theme.of(context).colorScheme.outline),
+               shadowColor: Theme.of(context).shadowColor.withValues(
+                  red: 0,
+                  green: 0,
+                  blue: 0,
+                  alpha: 10,
+                ),
           );
         }).toList(),
       );
     });
   }
 
-  Widget _buildImagesStep() {
+  Widget _buildImagesStep(BuildContext context) {
     return Column(
       children: [
         Obx(() {

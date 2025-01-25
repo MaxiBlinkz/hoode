@@ -5,8 +5,9 @@ import '../../data/enums/enums.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:toastification/toastification.dart';
-import 'package:hoode/app/data/services/db_helper.dart';
-
+import '../../data/services/db_helper.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RegisterController extends GetxController {
   final nameController = TextEditingController();
@@ -16,7 +17,8 @@ class RegisterController extends GetxController {
 
   final logger = Logger(printer: PrettyPrinter());
   final notify = Toastification();
-  //final bugsnag = Bugsnag();
+
+    final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   var name = "".obs;
   var email = "".obs;
@@ -51,9 +53,8 @@ class RegisterController extends GetxController {
     } catch (e) {
       status(Status.error);
       err.value = e.toString();
-      Get.snackbar("Error", '$e', backgroundColor: Colors.red);
+            Get.snackbar("Error", '$e', backgroundColor: Colors.red);
       logger.e('$e');
-      // await bugnag.bugsnag.notify(e, stack);
     } finally {
       if (status == Status.success) {
         final authData = await pb.collection('users').authWithPassword(
@@ -74,6 +75,40 @@ class RegisterController extends GetxController {
   void toggleConfirmPasswordVisibility() {
     hideConfirmPassword.toggle();
     update();
+  }
+
+   Future<void> googleSignUp() async {
+    status(Status.loading);
+    try {
+        final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+        if (googleUser == null) return;
+
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+
+        // Use the correct PocketBase OAuth2 authentication method
+        final authData = await pb.collection('users').authWithOAuth2(
+          'google',
+          (url) async {
+            await launchUrl(url);
+          },
+           createData: {
+           'email': googleUser.email,
+           'emailVisibility': true,
+         },
+        );
+
+          if (pb.authStore.isValid) {
+          status(Status.success);
+            storage.write('token', authData.token);
+           Get.offAllNamed('/profile-setup', arguments: {'id': authData.record?.id});
+        }
+    } catch (e) {
+      status(Status.error);
+      err.value = e.toString();
+      logger.e('Google Sign In Error: ${err.value}');
+    }
+      update();
   }
 
   void initControllers() {

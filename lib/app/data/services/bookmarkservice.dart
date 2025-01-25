@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hoode/app/modules/bookmarks/bookmarks_controller.dart';
+import '../../modules/bookmarks/bookmarks_controller.dart';
 import 'authservice.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';

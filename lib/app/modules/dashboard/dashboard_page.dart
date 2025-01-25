@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import '../../core/widgets/market_trends_dashboard.dart';
 import 'package:lottie/lottie.dart';
 import 'dashboard_controller.dart';
+import '../../core/widgets/listing_card.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class DashboardPage extends GetView<DashboardController> {
   const DashboardPage({super.key});
@@ -25,27 +27,38 @@ class DashboardPage extends GetView<DashboardController> {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
-          expandedHeight: 200,
+          expandedHeight: 150,
           floating: false,
           pinned: true,
           flexibleSpace: FlexibleSpaceBar(
             background: Container(
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).scaffoldBackgroundColor,
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CircleAvatar(
-                    radius: 50,
-                    backgroundImage: AssetImage('assets/images/avatar.jpg'),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    controller.user.value?.data['name'] ?? 'Agent',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Dashboard",
+                             style: Theme.of(context).textTheme.displaySmall!.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "Welcome back, ${controller.user.value?.data['name'] ?? 'Agent'}",
+                               style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.grey.shade600),
+                          ),
+                        ],
+                      ),
+                      IconButton(
+                        icon: const Icon(IconlyLight.notification),
+                        onPressed: () => Get.toNamed("/messages"),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -54,69 +67,109 @@ class DashboardPage extends GetView<DashboardController> {
         ),
         SliverToBoxAdapter(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildStatCard(context, 'Properties',
-                        controller.listingsCount.toString()),
-                    _buildStatCard(context, 'Messages', '12'),
-                    _buildStatCard(context, 'Bookings', '5'),
-                  ],
+                 child: GridView.count(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2, // Display 2 cards in a row
+                      childAspectRatio: 1.5,
+                      mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                      children: [
+                    _buildStatCard(
+                      context,
+                      IconlyLight.home,
+                      'Active Listings',
+                      controller.listingsCount.toString(),
+                    ),
+                    _buildStatCard(
+                      context,
+                      IconlyLight.show,
+                      'Total Views',
+                       controller.totalViews.toString()
+                    ),
+                    _buildStatCard(
+                      context,
+                      IconlyLight.user2,
+                      'New Leads',
+                      controller.newLeads.toString(),
+                    ),
+                     _buildStatCard(
+                      context,
+                       IconlyLight.wallet,
+                      'Revenue',
+                      '\$52K',
+                    ),
+                ],
                 ),
               ),
-              // Add Market Trends Dashboard
-              MarketTrendsDashboard(
-                    priceTrend: controller.marketPriceTrend,
-                    demandTrend: controller.marketDemandTrend,
-                    propertyTypes: controller.propertyTypeTrends,
-                    revenue: controller.monthlyRevenue,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                child: Text("Active Listings", style: Theme.of(context).textTheme.titleLarge,),
+              ),
+                 SizedBox(
+                    height: 310,
+                    child: Obx(() =>  ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      itemCount: controller.activeListings.length,
+                      itemBuilder: (context, index) {
+                         return Obx(() =>
+                            controller.activeListings.isNotEmpty ?
+                                  ListingCard(
+                                    property: controller.activeListings[index],
+                                      imageWidth: 260,
+                                      imageHeight: 150,
+                                      cardHeight: 300,
+                                      isFeatured: false,
+                                      agentName: "Sarah Johnson",
+                                    ) : const Text("No Properties Listed"),
+                         );
+                      },
+                    ),)
                   ),
-              _buildActionButton(
-                context, 
-                'My Properties',
-                IconlyBold.home,
-                controller.navigateToMyListings,
-              ),
-              _buildActionButton(
-                context, 
-                'Add Property',
-                IconlyBold.plus,
-                controller.navigateToAddListing,
-              ),
-              _buildActionButton(
-                context, 
-                'Messages',
-                IconlyBold.chat,
-                controller.navigateToMessages,
-              ),
-              _buildActionButton(
-                context, 
-                'Analytics',
-                IconlyBold.chart,
-                controller.navigateToAnalytics,
-              ),
-              _buildActionButton(
-                context, 
-                'Bookings',
-                IconlyBold.calendar,
-                controller.navigateToBookings,
-              ),
-              _buildActionButton(
-                context, 
-                'Settings',
-                IconlyBold.setting,
-                controller.navigateToSettings,
-              ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                     child: Text("Recent Activities", style: Theme.of(context).textTheme.titleLarge,),
+                  ),
+                  _buildRecentActivity(context, IconlyLight.user2, "New Lead", "Sarah Johnson requested a viewing", "2h ago"),
+                  _buildRecentActivity(context, IconlyLight.home, "Property Update", "Price reduced for 123 Luxury Ave", "4h ago"),
+                  _buildRecentActivity(context, IconlyLight.document, "Offer Received", "New offer for 456 Elite St", "6h ago"),
+
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                      child: Text("Quick Actions", style: Theme.of(context).textTheme.titleLarge,),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                            _buildQuickActionButton(context, IconlyLight.plus, "Add Property", () {}),
+                            _buildQuickActionButton(context, IconlyLight.calendar, "Schedule Tour", () {}),
+                             _buildQuickActionButton(context, IconlyLight.chat, "Messages", () {}),
+                            _buildQuickActionButton(context, IconlyLight.chart, "Analytics", () {}),
+                         ],
+                      ),
+                  ),
+
+                   Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                    child: Text("Upcoming Appointments", style: Theme.of(context).textTheme.titleLarge,),
+                  ),
+
+                  _buildAppointment(context,"10:00 AM", "Michael Brown", "123 Luxury Ave", "Confirmed"),
+                    _buildAppointment(context,"2:30 PM", "Emma Wilson", "456 Elite St", "Pending"),
+                    _buildAppointment(context,"4:00 PM", "James Davis", "789 Premium Rd", "Confirmed"),
             ],
           ),
         ),
       ],
     );
   }
-
   Widget _buildUserDashboard(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -196,7 +249,7 @@ class DashboardPage extends GetView<DashboardController> {
     );
   }
 
-  Widget _buildStatCard(BuildContext context, String title, String value) {
+  Widget _buildStatCard(BuildContext context, IconData icon, String title, String value) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -204,7 +257,7 @@ class DashboardPage extends GetView<DashboardController> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).shadowColor.withValues(
+             color: Theme.of(context).shadowColor.withValues(
                   red: 0,
                   green: 0,
                   blue: 0,
@@ -217,12 +270,14 @@ class DashboardPage extends GetView<DashboardController> {
       ),
       child: Column(
         children: [
+         Icon(icon, color: Theme.of(context).colorScheme.primary, size: 30,),
+          const SizedBox(height: 8),
           Text(
             value,
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           Text(
@@ -250,6 +305,68 @@ class DashboardPage extends GetView<DashboardController> {
         color: Theme.of(context).colorScheme.onSurfaceVariant,
       ),
       onTap: onTap,
+    );
+  }
+
+    Widget _buildRecentActivity(BuildContext context, IconData icon, String title, String subtitle, String time) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: ListTile(
+        leading:  CircleAvatar(
+            backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+              child: Icon(icon, color: Theme.of(context).colorScheme.primary)
+          ),
+          title: Text(title, style: Theme.of(context).textTheme.bodyMedium,),
+           subtitle: Text(subtitle, style: Theme.of(context).textTheme.bodySmall,),
+          trailing:  Text(time, style: Theme.of(context).textTheme.bodySmall,),
+        ),
+    );
+  }
+
+   Widget _buildQuickActionButton(BuildContext context, IconData icon, String title, VoidCallback onTap) {
+    return  Column(
+        children: [
+           CircleAvatar(
+            backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+              child: IconButton(
+                icon: Icon(icon, color: Theme.of(context).colorScheme.primary),
+                onPressed: onTap,
+              ),
+          ),
+            const SizedBox(height: 8),
+            Text(title, style: Theme.of(context).textTheme.bodySmall,)
+          ],
+        );
+  }
+    Widget _buildAppointment(BuildContext context, String time, String name, String address, String status) {
+    return Padding(
+       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: ListTile(
+        title:  Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+             Text(time, style: Theme.of(context).textTheme.bodyMedium,),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                color: status == "Confirmed" ? Colors.green.shade100 : Colors.orange.shade100,
+                  borderRadius: BorderRadius.circular(5)
+                 ),
+                 child:  Text(status, style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    color: status == "Confirmed" ? Colors.green.shade900 : Colors.orange.shade900
+                   )
+                 )
+              ),
+          ],
+        ),
+         subtitle:  Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(name, style: Theme.of(context).textTheme.bodyMedium,),
+            Text(address, style: Theme.of(context).textTheme.bodySmall,),
+          ],
+         )
+        ),
     );
   }
 }

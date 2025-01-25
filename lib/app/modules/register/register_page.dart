@@ -57,13 +57,21 @@ class RegisterPage extends GetView<RegisterController> {
                       child: Column(
                         children: [
                           Text(
-                            "Register",
+                            "Create Account",
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
+                          const SizedBox(height: 10),
+                        Text(
+                            "Sign up to get started",
+                           style: TextStyle(
+                           fontSize: 14,
+                            color: Colors.grey.shade500,
+                           ),
+                       ),
                           const SizedBox(height: 20),
                           TextFormField(
                             controller: controller.nameController,
@@ -71,14 +79,6 @@ class RegisterPage extends GetView<RegisterController> {
                               hintText: "Username",
                               prefixIcon: Icon(IconlyLight.profile,
                                   color: Theme.of(context).primaryColor),
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 15),
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -90,18 +90,10 @@ class RegisterPage extends GetView<RegisterController> {
                           const SizedBox(height: 20),
                           TextFormField(
                             controller: controller.emailController,
-                            decoration: InputDecoration(
+                             decoration: InputDecoration(
                               hintText: "Email",
                               prefixIcon: Icon(IconlyLight.message,
                                   color: Theme.of(context).primaryColor),
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 15),
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -117,28 +109,20 @@ class RegisterPage extends GetView<RegisterController> {
                           TextFormField(
                             controller: controller.passwordController,
                             obscureText: !controller.hidePassword.value,
-                            decoration: InputDecoration(
-                              hintText: "Password",
-                              prefixIcon: Icon(IconlyLight.lock,
-                                  color: Theme.of(context).primaryColor),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  controller.hidePassword.value
-                                      ? IconlyLight.hide
-                                      : IconlyLight.show,
-                                  color: Theme.of(context).primaryColor,
+                              decoration: InputDecoration(
+                                hintText: "Password",
+                                prefixIcon: Icon(IconlyLight.lock,
+                                    color: Theme.of(context).primaryColor),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    controller.hidePassword.value
+                                        ? IconlyLight.hide
+                                        : IconlyLight.show,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                  onPressed: controller.togglePasswordVisibility,
                                 ),
-                                onPressed: controller.togglePasswordVisibility,
                               ),
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding:
-                                  EdgeInsets.symmetric(vertical: 15),
-                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter a password';
@@ -154,29 +138,21 @@ class RegisterPage extends GetView<RegisterController> {
                             controller: controller.confirmPasswordController,
                             obscureText:
                                   !controller.hideConfirmPassword.value,
-                            decoration: InputDecoration(
-                              hintText: "Confirm Password",
-                              prefixIcon: Icon(IconlyLight.lock,
-                                  color: Theme.of(context).primaryColor),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  controller.hideConfirmPassword.value
-                                      ? IconlyLight.hide
-                                      : IconlyLight.show,
-                                  color: Theme.of(context).primaryColor,
+                              decoration: InputDecoration(
+                                hintText: "Confirm Password",
+                                prefixIcon: Icon(IconlyLight.lock,
+                                    color: Theme.of(context).primaryColor),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    controller.hideConfirmPassword.value
+                                        ? IconlyLight.hide
+                                        : IconlyLight.show,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                  onPressed:
+                                      controller.toggleConfirmPasswordVisibility,
                                 ),
-                                onPressed:
-                                    controller.toggleConfirmPasswordVisibility,
                               ),
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding:
-                                  EdgeInsets.symmetric(vertical: 15),
-                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Please confirm your password";
@@ -197,7 +173,7 @@ class RegisterPage extends GetView<RegisterController> {
                               }
                             },
                             idleStateWidget: const Text(
-                              "Register",
+                              "Sign Up",
                               style: TextStyle(color: Colors.white),
                             ),
                             loadingStateWidget: const CircularProgressIndicator(
@@ -209,19 +185,18 @@ class RegisterPage extends GetView<RegisterController> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  TextButton(
-                    onPressed: () {
-                      // Navigate to login page
-                      Get.toNamed('/login');
-                    },
-                    child: const Text(
-                      "Already have an account? Login",
-                      style: TextStyle(color: Colors.white),
-                    ),
+                     TextButton(
+                  onPressed: () {
+                    // Navigate to sign up page
+                    Get.toNamed('/login');
+                  },
+                  child: const Text(
+                    "Already have an account? Login",
+                    style: TextStyle(color: Colors.white),
                   ),
-                  // Auth2
-                  const SizedBox(height: 20),
-                  const Text(
+                ),
+                 const SizedBox(height: 20),
+                   const Text(
                     "Or continue with",
                     style: TextStyle(color: Colors.grey),
                   ),
@@ -251,8 +226,6 @@ class RegisterPage extends GetView<RegisterController> {
                       ),
                     ],
                   ),
-
-                  // Auth2 End
                 ],
               ),
             ),
@@ -281,30 +254,6 @@ class RegisterPage extends GetView<RegisterController> {
           ],
         );
       },
-    );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String hintText,
-    required IconData prefixIcon,
-    bool isPassword = false,
-    required BuildContext context,
-  }) {
-    return TextField(
-      controller: controller,
-      obscureText: isPassword,
-      decoration: InputDecoration(
-        hintText: hintText,
-        prefixIcon: Icon(prefixIcon, color: Theme.of(context).primaryColor),
-        filled: true,
-        fillColor: Colors.grey[200],
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide.none,
-        ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 15),
-      ),
     );
   }
 }

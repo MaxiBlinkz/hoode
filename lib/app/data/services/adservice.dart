@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:hoode/app/data/exceptions/dublicate_widget_exception.dart';
+import '../exceptions/dublicate_widget_exception.dart';
 import 'package:logger/logger.dart';
 
 class AdService extends GetxService {

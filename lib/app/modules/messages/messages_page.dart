@@ -29,20 +29,20 @@ class MessagesPage extends GetView<MessagesController> {
                 leading: CircleAvatar(
                   child: Text(otherParticipant?.data['name']?[0] ?? '?'),
                 ),
-                title: Text(otherParticipant?.data['name'] ?? 'Unknown'),
+                title: Text(otherParticipant?.data['name'] ?? 'Unknown',  style: Theme.of(context).textTheme.bodyMedium,),
                 subtitle: Text(
                   lastMessage?.toString() ?? 'No messages yet',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall
                 ),
                 trailing: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       _formatDate(conversation.data['created']),
-                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey[600]),
                     ),
-
                     const SizedBox(height: 4),
                     Icon(IconlyLight.arrowRight2, color: Colors.grey[400]),
                   ],

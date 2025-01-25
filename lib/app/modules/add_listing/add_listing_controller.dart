@@ -4,9 +4,10 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:logger/logger.dart';
-import 'package:hoode/app/data/services/db_helper.dart';
+import '../../data/services/db_helper.dart';
 import 'package:http/http.dart' as http;
-import 'package:hoode/app/data/enums/enums.dart';
+import '../../data/enums/enums.dart';
+
 
 class AddListingController extends GetxController {
   final formKey = GlobalKey<FormState>();
@@ -27,7 +28,9 @@ class AddListingController extends GetxController {
   final pb = PocketBase(DbHelper.getPocketbaseUrl());
   var status = Status.initial.obs;
 
+
   // final titleController = TextEditingController();
+
 
   final availableAmenities = [
     'Parking',
@@ -42,6 +45,7 @@ class AddListingController extends GetxController {
     'Elevator',
   ];
 
+
   final categories = [
     'House',
     'Apartment',
@@ -52,6 +56,7 @@ class AddListingController extends GetxController {
     'Penthouse',
   ];
 
+
   void toggleAmenity(String amenity) {
     if (amenities.contains(amenity)) {
       amenities.remove(amenity);
@@ -60,20 +65,21 @@ class AddListingController extends GetxController {
     }
   }
 
+
   void nextStep() {
-  if (formKey.currentState!.validate()) { // GetX validation
-    if (currentStep.value < 3) {
-      currentStep.value++;
+    if (validateStep(currentStep.value)) { // GetX validation
+      if (currentStep.value < 3) {
+        currentStep.value++;
+      }
+    } else {
+      // Show error message as before
+      Get.snackbar(
+        'Required Fields',
+        'Please fill in all required fields before proceeding',
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
-  } else {
-    // Show error message as before
-    Get.snackbar(
-      'Required Fields',
-      'Please fill in all required fields before proceeding',
-      snackPosition: SnackPosition.BOTTOM,
-    );
   }
-}
 
 
   void previousStep() {
@@ -82,11 +88,13 @@ class AddListingController extends GetxController {
     }
   }
 
+
   Future<void> addImage() async {
     final List<XFile>? pickedFiles = await _picker.pickMultiImage(
       imageQuality: 85,
       maxWidth: 1920,
     );
+
 
     if (pickedFiles != null) {
       images.addAll(pickedFiles.map((xFile) => File(xFile.path)));
@@ -96,11 +104,13 @@ class AddListingController extends GetxController {
     }
   }
 
+
   void removeImage(int index) {
     if (index >= 0 && index < images.length) {
       images.removeAt(index);
     }
   }
+
 
   Future<void> submitListing() async {
     if (!formKey.currentState!.validate()) return;
@@ -113,8 +123,10 @@ class AddListingController extends GetxController {
       return;
     }
 
+
     status(Status.loading);
     isLoading.value = true;
+
 
     try {
       final body = <String, dynamic>{
@@ -129,6 +141,7 @@ class AddListingController extends GetxController {
         "amenities": amenities,
       };
 
+
       List<http.MultipartFile> imageFiles = [];
       for (var i = 0; i < images.length; i++) {
         final imageBytes = await images[i].readAsBytes();
@@ -140,10 +153,12 @@ class AddListingController extends GetxController {
         imageFiles.add(imageFile);
       }
 
+
       final record = await pb.collection('listings').create(
             body: body,
             files: imageFiles,
           );
+
 
       logger.i('Listing created successfully: ${record.toString()}');
       status(Status.success);
@@ -165,13 +180,13 @@ class AddListingController extends GetxController {
       isLoading.value = false;
     }
   }
-  
+
   bool validateStep(int step) {
     switch (step) {
       case 0:
         return title.value.isNotEmpty && category.value.isNotEmpty;
       case 1:
-        return price.value > 0 && bedrooms.value > 0;
+        return price.value > 0 && bedrooms.value > 0 && bathrooms.value > 0 && area.value > 0 && address.value.isNotEmpty;
       case 2:
         return amenities.isNotEmpty;
       case 3:
@@ -180,6 +195,7 @@ class AddListingController extends GetxController {
         return false;
     }
   }
+
 
   // void initControllers() {
   //   titleController.addListener(() => title.value = titleController.text);
@@ -190,16 +206,19 @@ class AddListingController extends GetxController {
   //   //     () => confirmPassword.value = confirmPasswordController.text);
   // }
 
+
   // @override
   // void onInit() {
   //   super.onInit();
   //   initControllers();
   // }
 
+
   // @override
   // void onReady() {
   //   super.onReady();
   // }
+
 
   // @override
   // void onClose() {

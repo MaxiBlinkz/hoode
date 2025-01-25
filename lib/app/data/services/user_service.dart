@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hoode/app/data/services/authservice.dart';
+import 'authservice.dart';
 import 'db_helper.dart';
 import 'package:pocketbase/pocketbase.dart';
 

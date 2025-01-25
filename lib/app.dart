@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/core/bindings/application_bindings.dart';
-import 'package:hoode/app/core/theme/theme_controller.dart';
+import 'app/core/bindings/application_bindings.dart';
+import 'app/core/theme/theme_controller.dart';
 import 'package:toastification/toastification.dart';
-import 'package:hoode/app/routes/app_pages.dart';
-import 'package:hoode/app/core/theme/theme.dart';
+import 'app/routes/app_pages.dart';
+import 'app/core/theme/theme.dart';
 
 import 'flavors.dart';
 

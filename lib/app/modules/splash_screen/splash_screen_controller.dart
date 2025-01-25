@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:hoode/app/data/services/authservice.dart';
-import 'package:hoode/app/data/services/adservice.dart';
-import 'package:hoode/app/data/services/bookmarkservice.dart';
-import 'package:hoode/app/data/services/user_service.dart';
+import '../../data/services/authservice.dart';
+import '../../data/services/adservice.dart';
+import '../../data/services/bookmarkservice.dart';
+import '../../data/services/user_service.dart';
 
 class SplashScreenController extends GetxController {
   final authService = Get.find<AuthService>();

@@ -5,6 +5,9 @@ import '../../core/config/constants.dart';
 import '../../core/widgets/avatar.dart';
 import 'package:logger/logger.dart';
 import 'listing_detail_controller.dart';
+import 'package:share_plus/share_plus.dart';
+import '../../core/widgets/listing_card.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ListingDetailPage extends GetView<ListingDetailController> {
   ListingDetailPage({super.key});
@@ -25,13 +28,15 @@ class ListingDetailPage extends GetView<ListingDetailController> {
     final String price = property.data['price']?.toString() ?? "0";
     final String description =
         property.data['description']?.toString() ?? "Description";
-    
+    final String sqft = property.data['sqft']?.toString() ?? '0';
+    final String bedrooms = property.data['bedrooms']?.toString() ?? '0';
+    final String bathrooms = property.data['bathrooms']?.toString() ?? '0';
+
     return Scaffold(
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
-
 
         if (property == null) {
           return Center(
@@ -50,7 +55,6 @@ class ListingDetailPage extends GetView<ListingDetailController> {
           );
         }
 
-
         return CustomScrollView(
           slivers: [
             SliverAppBar(
@@ -61,9 +65,9 @@ class ListingDetailPage extends GetView<ListingDetailController> {
                   tag: 'property-${property.id}',
                   child: imageUrl != null
                       ? Image.network(
-                    '$POCKETBASE_URL/api/files/properties/${property.id}/${property.data['image'][0].toString()}',
-                    fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
+                          '$POCKETBASE_URL/api/files/properties/${property.id}/${property.data['image'][0].toString()}',
+                          fit: BoxFit.cover,
+                           errorBuilder: (context, error, stackTrace) =>
                               Image.asset(
                                 'assets/images/house_placeholder.jpg',
                               ))
@@ -86,73 +90,68 @@ class ListingDetailPage extends GetView<ListingDetailController> {
                       ),
                       onPressed: controller.toggleBookmark,
                     )),
-                IconButton(
-                  icon: const Icon(IconlyLight.send),
-                  onPressed: () {/* Share functionality */},
+                 IconButton(
+                  icon: const Icon(IconlyLight.upload),
+                  onPressed: () => controller.shareProperty(
+                      title, location, price, imageUrl),
                 ),
               ],
             ),
-            SliverToBoxAdapter(
+             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                        title,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
+                  const SizedBox(height: 8),
+                  Row(
                       children: [
                         Icon(IconlyLight.location,
                             color: Colors.grey[600], size: 18),
                         const SizedBox(width: 4),
-                        Text(
-                          location,
-                          style: TextStyle(color: Colors.grey[600]),
-                        ),
+                         Expanded(
+                           child: Text(
+                              location,
+                               maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                               style: TextStyle(color: Colors.grey[600]),
+                            ),
+                         ),
                       ],
                     ),
                     const SizedBox(height: 16),
-                    Row(
+                      Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _buildFeature(IconlyBold.home,
-                            property.data['bedrooms']?.toString(), context),
-                        _buildFeature(Icons.bathtub,
-                            property.data['bathrooms']?.toString(), context),
+                       _buildFeature(IconlyBold.home,
+                           bedrooms, context),
+                       _buildFeature(Icons.bathtub,
+                           bathrooms, context),
                         _buildFeature(
-                            IconlyBold.chart,
-                            property.data['area']?.toString() != null
-                                ? '${property.data['area']} sqft'
-                                : null, context),
+                            Icons.crop_square_outlined,
+                            '$sqft sqft', context),
                       ],
                     ),
-
-                    const Divider(height: 32),
-                    const Text(
+                     const SizedBox(height: 16),
+                      const Divider(height: 32),
+                    Text(
                       'Description',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(height: 8),
-                    Text(description),
+                    Text(description, style: Theme.of(context).textTheme.bodyMedium,),
+                     const SizedBox(height: 16),
                     const Divider(height: 32),
-                    const Text(
+                    Text(
                       'Listed by',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(height: 16),
-                    Row(
+                     Row(
                       children: [
                         const Avatar(
                           initials: "MK",
@@ -177,102 +176,187 @@ class ListingDetailPage extends GetView<ListingDetailController> {
                           ),
                         ),
                       ],
-                    ),                    
-                  ],
-                ),
-              ),
-            ),
-          ],
-        );
-      }),
-      // In the bottomNavigationBar section, update the Row widget:
-bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 10,
-              offset: const Offset(0, -1),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Price",
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 14,
                     ),
-                  ),
-                  Text(
-                    "\$$price",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor,
+                     const SizedBox(height: 16),
+                    const Divider(height: 32),
+                   Text(
+                      "Reviews",
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
-                  ),
+                    const SizedBox(height: 10),
+                    Obx(() =>  Column(
+                      children: [
+                         RatingBarIndicator(
+                          rating: controller.averageRating.value,
+                         itemCount: 5,
+                         itemSize: 24.0,
+                          itemBuilder: (context, _) => Icon(
+                           Icons.star,
+                             color: Theme.of(context).primaryColor,
+                            ),
+                         ),
+                        Text(
+                              '${controller.averageRating.value.toStringAsFixed(1)} average rating',
+                              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                            ),
+                        const SizedBox(height: 16),
+                        if (controller.reviews.isEmpty)
+                            const Center(child: Text('No reviews yet'))
+                        else
+                        ListView.separated(
+                          shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                          itemCount: controller.reviews.length,
+                          separatorBuilder: (context, index) => const Divider(),
+                          itemBuilder: (context, index) {
+                            final review = controller.reviews[index];
+                              return ListTile(
+                                leading: const CircleAvatar(
+                                    backgroundImage: AssetImage("assets/images/avatar.jpg"),
+                                ),
+                              title: Text(
+                                  review.data['user_name'] ?? 'User Name',
+                                   style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                 children: [
+                                    RatingBarIndicator(
+                                      rating: review.data['rating'] != null ? review.data['rating'].toDouble() : 0,
+                                    itemCount: 5,
+                                     itemSize: 16.0,
+                                     itemBuilder: (context, _) => Icon(
+                                         Icons.star,
+                                           color: Theme.of(context).primaryColor,
+                                           ),
+                                      ),
+                                    Text(review.data['comment'] ?? '', style: Theme.of(context).textTheme.bodySmall,),
+                                 ],
+                              ),
+                            );
+                         }
+                      ),
+                      ElevatedButton(onPressed: () => controller.showAddReviewDialog(context), child: const Text("Add a Review")),
+                  //    ],
+                  //  ),
+                  const SizedBox(height: 16),
+                      SizedBox(
+                                height: 310,
+                                child:  ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                      itemCount: controller.similarProperties.length,
+                                      itemBuilder: (context, index) {
+                                        final similarProperty = controller.similarProperties[index];
+                                          return ListingCard(
+                                            property: similarProperty,
+                                            imageWidth: 260,
+                                            imageHeight: 150,
+                                            cardHeight: 300,
+                                            isFeatured: false,
+                                            agentName: "Sarah Johnson",
+                                          );
+                                      },
+                                    ),
+                                ),
+                    const SizedBox(height: 16),
                 ],
-              ),
+                ),
+                  ),]
             ),
-            Expanded(
-              flex: 3,
-              child: Row(
+        )),
+        ]);
+      }),
+      bottomNavigationBar: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 10,
+                offset: const Offset(0, -1),
+              ),
+            ],
+          ),
+        child: Row(
                 children: [
                   Expanded(
-              child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                    flex: 2,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                         Text(
+                          "Price",
+                            style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            fontSize: 14,
+                          ),
                         ),
-                      ),
-                      onPressed: controller.bookProperty,
-                      child: Obx(() => Text(
-                            controller.isBooked.value ? 'Booked' : 'Book Now',
-                            style: const TextStyle(
-                              fontSize: 16,
+                        Text(
+                          "\$$price",
+                         style: TextStyle(
+                              fontSize: 24,
                               fontWeight: FontWeight.bold,
+                               color: Theme.of(context).primaryColor,
                             ),
-                          )),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(width: 8),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Theme.of(context).primaryColor,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      side: BorderSide(color: Theme.of(context).primaryColor),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                  Expanded(
+                      flex: 3,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              onPressed: controller.bookProperty,
+                              child: Obx(() => Text(
+                                    controller.isBooked.value ? 'Booked' : 'Book Now',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  )),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context).colorScheme.surface,
+                              foregroundColor: Theme.of(context).primaryColor,
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              side: BorderSide(color: Theme.of(context).primaryColor),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            onPressed: controller.contactAgent,
+                            child:  Icon(IconlyBold.chat, color: Theme.of(context).colorScheme.onSurface),
+                          ),
+                        ],
                       ),
                     ),
-                    onPressed: controller.contactAgent,
-                    child: const Icon(IconlyBold.chat),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-
+                 ],
+             ),
+          ),
     );
   }
 
-  Widget _buildFeature(IconData icon, String? text, BuildContext context) {
+
+    Widget _buildFeature(IconData icon, String? text, BuildContext context) {
     if (text == null || text.isEmpty || text == '0') {
       return const SizedBox.shrink();
     }
@@ -281,9 +365,8 @@ bottomNavigationBar: Container(
       children: [
         Icon(icon, color: Theme.of(context).primaryColor),
         const SizedBox(height: 4),
-        Text(text),
+        Text(text, style: Theme.of(context).textTheme.bodyMedium,),
       ],
     );
   }
-
 }

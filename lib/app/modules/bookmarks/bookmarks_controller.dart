@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:hoode/app/modules/home/home_controller.dart';
+import '../home/home_controller.dart';
 import 'package:pocketbase/pocketbase.dart';
 import '../../data/services/bookmarkservice.dart';
 

@@ -1,10 +1,8 @@
-// import 'package:csc_picker/csc_picker.dart';
 import 'package:csc_picker_plus/csc_picker_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/data/enums/enums.dart';
 import 'profile_setup_controller.dart';
-
 import 'package:easy_stepper/easy_stepper.dart';
 
 class ProfileSetupPage extends GetView<ProfileSetupController> {
@@ -18,7 +16,10 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Theme.of(context).primaryColor, Theme.of(context).primaryColor.withOpacity(0.7)],
+            colors: [
+              Theme.of(context).primaryColor,
+              Theme.of(context).primaryColor.withOpacity(0.7)
+            ],
           ),
         ),
         child: SafeArea(
@@ -119,42 +120,58 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
     }
   }
 
-  Widget _buildPersonalInfoStep() {
+ Widget _buildPersonalInfoStep() {
     return Form(
       key: controller.personalInfoFormKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Personal Information',
+         Text(
+            'Complete Your Profile',
             style: Get.textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
+              const SizedBox(height: 10),
+                 Text(
+                            "Help people discover you by adding your info",
+                           style: TextStyle(
+                           fontSize: 14,
+                            color: Colors.grey.shade500,
+                           ),
+                       ),
           const SizedBox(height: 20),
-          CustomTextField(
+              TextFormField(
             controller: controller.firstnameController,
-            label: 'First Name',
-            icon: Icons.person_outline,
+             decoration: InputDecoration(
+               hintText: "Full Name",
+                  prefixIcon: Icon(Icons.person_outline,
+                      color: Theme.of(Get.context!).primaryColor),
+             ),
             validator: (value) =>
-                value?.isEmpty ?? true ? 'First name required' : null,
+                value?.isEmpty ?? true ? 'Full name required' : null,
           ),
           const SizedBox(height: 16),
-          CustomTextField(
+           TextFormField(
             controller: controller.lastnameController,
-            label: 'Last Name',
-            icon: Icons.person_outline,
+              decoration: InputDecoration(
+              hintText: "Username",
+                  prefixIcon: Icon(Icons.person_outline,
+                      color: Theme.of(Get.context!).primaryColor)
+             ),
             validator: (value) =>
-                value?.isEmpty ?? true ? 'Last name required' : null,
+                value?.isEmpty ?? true ? 'Username is required' : null,
           ),
           const SizedBox(height: 16),
-          CustomTextField(
+           TextFormField(
             controller: controller.contactInfoController,
-            label: 'Contact Info',
-            icon: Icons.phone_outlined,
-            validator: (value) =>
-                value?.isEmpty ?? true ? 'Contact info required' : null,
+             decoration: InputDecoration(
+              hintText: "Bio",
+                  prefixIcon: Icon(Icons.info_outline,
+                      color: Theme.of(Get.context!).primaryColor)
+            ),
           ),
+          const SizedBox(height: 16),
           const Spacer(),
           SizedBox(
             width: double.infinity,
@@ -180,24 +197,32 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Your Location',
+            Text(
+            'Complete Your Profile',
             style: Get.textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 20),
-          CSCPickerPlus(
-            showCities: true,
-            showStates: true,
+               const SizedBox(height: 10),
+                 Text(
+                            "Help people discover you by adding your info",
+                           style: TextStyle(
+                           fontSize: 14,
+                            color: Colors.grey.shade500,
+                           ),
+                       ),
+           const SizedBox(height: 20),
+           CSCPickerPlus(
+             showCities: true,
+             showStates: true,
             onCountryChanged: (value) => controller.setCountry(value),
-            onStateChanged: (value) => controller.setState(value),
-            onCityChanged: (value) => controller.setCity(value),
-          ),
+             onStateChanged: (value) => controller.setState(value),
+             onCityChanged: (value) => controller.setCity(value),
+            ),
           const SizedBox(height: 16),
           ListTile(
             leading: const Icon(Icons.location_on_outlined),
-            title: const Text('Set Precise Location'),
+            title: const Text('Add Location'),
             subtitle: Text(controller.address.value),
             trailing: IconButton(
               icon: const Icon(Icons.map_outlined),
@@ -227,16 +252,24 @@ class ProfileSetupPage extends GetView<ProfileSetupController> {
     );
   }
 
-Widget _buildProfilePhotoStep(BuildContext context) {
+  Widget _buildProfilePhotoStep(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Profile Photo',
-          style: Get.textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
+            Text(
+            'Complete Your Profile',
+            style: Get.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
+               const SizedBox(height: 10),
+                 Text(
+                            "Help people discover you by adding your info",
+                           style: TextStyle(
+                           fontSize: 14,
+                            color: Colors.grey.shade500,
+                           ),
+                       ),
         const SizedBox(height: 20),
         Center(
           child: Stack(
@@ -266,11 +299,15 @@ Widget _buildProfilePhotoStep(BuildContext context) {
           ),
         ),
         const SizedBox(height: 20),
-        const Text(
-          'Add a profile photo to help others recognize you',
+        Text(
+          'Add Photo',
           textAlign: TextAlign.center,
+          style: TextStyle(
+           fontSize: 14,
+            color: Colors.grey.shade500,
+           ),
         ),
-        const Spacer(),
+         const Spacer(),
         Row(
           children: [
             Expanded(
@@ -292,33 +329,47 @@ Widget _buildProfilePhotoStep(BuildContext context) {
     );
   }
 
-Widget _buildReviewStep() {
+  Widget _buildReviewStep() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Review Your Profile',
-          style: Get.textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
+       Text(
+            'Complete Your Profile',
+            style: Get.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        const SizedBox(height: 20),
+               const SizedBox(height: 10),
+                 Text(
+                            "Help people discover you by adding your info",
+                           style: TextStyle(
+                           fontSize: 14,
+                            color: Colors.grey.shade500,
+                           ),
+                       ),
+            const SizedBox(height: 20),
         ListTile(
           leading: CircleAvatar(
             backgroundImage: controller.selectedImage.value != null
                 ? FileImage(controller.selectedImage.value!)
                 : null,
           ),
-          title: Text('${controller.firstname} ${controller.lastname}'),
-          subtitle: Text(controller.contactInfo.value),
+          title: Text('${controller.firstname.value} ${controller.lastname.value}'),
+            subtitle:  Text(controller.contactInfo.value),
         ),
         const Divider(),
         ListTile(
           leading: const Icon(Icons.location_on),
-          title: Text('${controller.city}, ${controller.state}'),
-          subtitle: Text(controller.country.value),
+          title: Text('${controller.city.value}, ${controller.state.value}'),
+           subtitle: Text(controller.country.value),
         ),
-        const Spacer(),
+            const Divider(),
+                ListTile(
+          leading: const Icon(Icons.location_on),
+          title: Text('Location'),
+             subtitle: Text(controller.address.value),
+        ),
+         const Spacer(),
         Row(
           children: [
             Expanded(
@@ -335,15 +386,14 @@ Widget _buildReviewStep() {
                         : controller.saveProfile,
                     child: controller.status.value == Status.loading
                         ? const CircularProgressIndicator()
-                        : const Text('Complete Setup'),
+                        : const Text('Save Profile'),
                   )),
-          ),
+            ),
           ],
         ),
       ],
     );
   }
-
 }
 
 class CustomTextField extends StatelessWidget {
@@ -368,11 +418,6 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        filled: true,
-        fillColor: Colors.grey[100],
       ),
     );
   }

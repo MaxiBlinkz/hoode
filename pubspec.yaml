@@ -29,12 +29,14 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   chatview: ^2.4.0
+  collection: any
   country_state_city_picker_2: ^1.0.5
   country_state_city_pro:
   csc_picker: # The following adds the Cupertino Icons font to your application.
   csc_picker_plus:
   easy_loading_button:
   easy_stepper: ^0.8.5+1
+  equatable: any
   extended_image: ^9.0.9
   fl_chart: ^0.70.0
   flex_color_scheme:
@@ -42,6 +44,7 @@ dependencies:
     sdk: flutter
   flutter_iconly:
   flutter_map:
+  flutter_rating_bar: ^4.0.1
   flutter_remix: ^0.0.1
   geocoding:
   geolocator:
@@ -54,6 +57,7 @@ dependencies:
   image: ^4.3.0
   image_cropper: ^8.0.2
   image_picker: ^1.1.2
+  intl: any
   json_annotation:
   latlong2:
   logger:
@@ -65,13 +69,11 @@ dependencies:
   pocketbase_server_flutter:
   rounded_loading_button_plus:
   sentry_flutter: ^8.9.0
+  share_plus: ^10.1.4
   skeletonizer: ^1.4.2
   step_progress_indicator: ^1.0.2
   toastification:
   url_launcher:
-  intl: any
-  collection: any
-  equatable: any
 dev_dependencies:
   analyzer: any
   build_runner:

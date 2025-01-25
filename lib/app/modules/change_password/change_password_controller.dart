@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/data/services/db_helper.dart';
+import '../../data/services/db_helper.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class ChangePasswordController extends GetxController {

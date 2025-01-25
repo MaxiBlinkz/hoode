@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hoode/app/data/services/authservice.dart';
+import '../../data/services/authservice.dart';
 import '../../data/services/db_helper.dart';
 import '../../data/services/user_service.dart';
 import 'package:pocketbase/pocketbase.dart';

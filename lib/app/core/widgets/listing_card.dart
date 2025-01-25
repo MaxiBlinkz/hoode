@@ -39,10 +39,11 @@ class ListingCard extends StatelessWidget {
             property.data['image'].isNotEmpty
         ? "$POCKETBASE_URL/api/files/properties/${property.id}/${property.data['image'][0].toString()}"
         : null;
-
     final String title = property.data['title']?.toString() ?? "No Title";
     final String location = property.data['location']?.toString() ?? "No Location";
     final String price = property.data['price']?.toString() ?? "0";
+     final int bedrooms = property.data['bedrooms']  ?? 0;
+    final int bathrooms = property.data['bathrooms']  ?? 0;
     final String sqft = property.data['sqft']?.toString() ?? "0";
 
     return Padding(
@@ -228,11 +229,11 @@ class ListingCard extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            _buildFeatureIcon(IconlyLight.home, "${property.data['bedrooms'] ?? 0}"),
+                            _buildFeatureIcon(IconlyLight.home, "$bedrooms"),
                             const SizedBox(width: 12),
-                            _buildFeatureIcon(IconlyLight.discovery, "${property.data['bathrooms'] ?? 0}"),
+                            _buildFeatureIcon(IconlyLight.discovery, "$bathrooms"),
                             const SizedBox(width: 12),
-                            _buildFeatureIcon(Icons.crop_square_outlined, "${property.data['sqft'] ?? 0} sqft"),
+                            _buildFeatureIcon(Icons.crop_square_outlined, "$sqft sqft"),
                           ],
                         ),
                       ],

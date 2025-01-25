@@ -3,12 +3,11 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:hoode/app/data/services/adservice.dart';
-import 'package:hoode/app/modules/listing_search/listing_search_page.dart';
+import '../../data/services/adservice.dart';
+import '../listing_search/listing_search_page.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import '../../core/widgets/avatar.dart';
 import '../../core/widgets/listing_card.dart';
 import 'home_controller.dart';
 
@@ -23,10 +22,8 @@ class HomePage extends GetView<HomeController> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
         foregroundColor: Theme.of(context).colorScheme.onSurface,
-        title: const Avatar(
-          initials: "MK",
-          image_url: "assets/images/avatar.jpg",
-        ),
+        // Removed the Avatar widget
+        title: const Text(""),
         actions: [
           IconButton(
             icon: const Icon(IconlyLight.search),
@@ -47,19 +44,20 @@ class HomePage extends GetView<HomeController> {
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(10)
+                borderRadius: BorderRadius.circular(10),
               ),
-              child: const TextField(
+              child:  TextField(
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  hintText: "Search by location, property type...",
-                  border: InputBorder.none
-                ),
+                    prefixIcon: Icon(Icons.search),
+                    hintText: "Search by location, property type...",
+                    border: InputBorder.none),
+                    onChanged: (value) => controller.searchProperties(value),
               ),
             ),
           ),
         ),
       ),
+      // ... (Rest of your HomePage code)
       body: SafeArea(
         child: Column(
           children: [
@@ -70,89 +68,89 @@ class HomePage extends GetView<HomeController> {
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 children: [
-                    buildFilterChip(
-                      context: context,
-                      label: "All",
-                      avatar: Icon(IconlyBold.category, size: 16),
-                      filterValue: '',
-                    ),
-                    buildFilterChip(
-                      context: context,
-                      label: "House",
-                      avatar: Icon(IconlyBold.home, size: 16),
-                      filterValue: 'house',
-                    ),
-                    buildFilterChip(
-                      context: context,
-                      label: "Apartment",
-                      avatar: Icon(FlutterRemix.building_2_fill, size: 16),
-                      filterValue: 'apartment',
-                    ),
-                    buildFilterChip(
-                      context: context,
-                      label: "Villa",
-                      avatar: Icon(FlutterRemix.building_4_fill, size: 16),
-                      filterValue: 'villa',
-                    ),
-                    buildFilterChip(
-                      context: context,
-                      label: "Condo",
-                      avatar: Icon(FlutterRemix.building_3_fill, size: 16),
-                      filterValue: 'condo',
-                    ),
-                    buildFilterChip(
-                      context: context,
-                      label: "Townhouse",
-                      avatar: Icon(FlutterRemix.home_4_fill, size: 16),
-                      filterValue: 'townhouse',
-                    ),
-                    buildFilterChip(
-                      context: context,
-                      label: "Studio",
-                      avatar: Icon(FlutterRemix.home_5_fill, size: 16),
-                      filterValue: 'studio',
-                    ),
-                    buildFilterChip(
-                      context: context,
-                      label: "Penthouse",
-                      avatar: Icon(FlutterRemix.building_fill, size: 16),
-                      filterValue: 'penthouse',
-                    ),
-                    buildFilterChip(
-                      context: context,
-                      label: "Loft",
-                      avatar: Icon(FlutterRemix.building_line, size: 16),
-                      filterValue: 'loft',
-                    ),
-                    buildFilterChip(
-                      context: context,
-                      label: "Hotel",
-                      avatar: Icon(FlutterRemix.building_fill, size: 16),
-                      filterValue: 'hotel',
-                    ),
-                    buildFilterChip(
-                      context: context,
-                      label: "Motel",
-                      avatar: Icon(FlutterRemix.building_line, size: 16),
-                      filterValue: 'motel',
-                    ),
-                    buildFilterChip(
-                      context: context,
-                      label: "Guesthouse",
-                      avatar: Icon(FlutterRemix.building_fill, size: 16),
-                      filterValue: 'guesthouse',
-                    ),
-                    buildFilterChip(
-                      context: context,
-                      label: "Cottage",
-                      avatar: Icon(FlutterRemix.building_line, size: 16),
-                      filterValue: 'cottage',
-                    ),
-                  ],
-                ),
+                  buildFilterChip(
+                    context: context,
+                    label: "All",
+                    avatar: Icon(IconlyBold.category, size: 16),
+                    filterValue: '',
+                  ),
+                  buildFilterChip(
+                    context: context,
+                    label: "House",
+                    avatar: Icon(IconlyBold.home, size: 16),
+                    filterValue: 'house',
+                  ),
+                  buildFilterChip(
+                    context: context,
+                    label: "Apartment",
+                    avatar: Icon(FlutterRemix.building_2_fill, size: 16),
+                    filterValue: 'apartment',
+                  ),
+                  buildFilterChip(
+                    context: context,
+                    label: "Villa",
+                    avatar: Icon(FlutterRemix.building_4_fill, size: 16),
+                    filterValue: 'villa',
+                  ),
+                  buildFilterChip(
+                    context: context,
+                    label: "Condo",
+                    avatar: Icon(FlutterRemix.building_3_fill, size: 16),
+                    filterValue: 'condo',
+                  ),
+                  buildFilterChip(
+                    context: context,
+                    label: "Townhouse",
+                    avatar: Icon(FlutterRemix.home_4_fill, size: 16),
+                    filterValue: 'townhouse',
+                  ),
+                  buildFilterChip(
+                    context: context,
+                    label: "Studio",
+                    avatar: Icon(FlutterRemix.home_5_fill, size: 16),
+                    filterValue: 'studio',
+                  ),
+                  buildFilterChip(
+                    context: context,
+                    label: "Penthouse",
+                    avatar: Icon(FlutterRemix.building_fill, size: 16),
+                    filterValue: 'penthouse',
+                  ),
+                  buildFilterChip(
+                    context: context,
+                    label: "Loft",
+                    avatar: Icon(FlutterRemix.building_line, size: 16),
+                    filterValue: 'loft',
+                  ),
+                  buildFilterChip(
+                    context: context,
+                    label: "Hotel",
+                    avatar: Icon(FlutterRemix.building_fill, size: 16),
+                    filterValue: 'hotel',
+                  ),
+                  buildFilterChip(
+                    context: context,
+                    label: "Motel",
+                    avatar: Icon(FlutterRemix.building_line, size: 16),
+                    filterValue: 'motel',
+                  ),
+                  buildFilterChip(
+                    context: context,
+                    label: "Guesthouse",
+                    avatar: Icon(FlutterRemix.building_fill, size: 16),
+                    filterValue: 'guesthouse',
+                  ),
+                  buildFilterChip(
+                    context: context,
+                    label: "Cottage",
+                    avatar: Icon(FlutterRemix.building_line, size: 16),
+                    filterValue: 'cottage',
+                  ),
+                ],
               ),
-              // Listings Section
-              Expanded(
+            ),
+            // Listings Section
+            Expanded(
               child: RefreshIndicator(
                 onRefresh: () => controller.loadProperties(),
                 child: Obx(
@@ -184,7 +182,6 @@ class HomePage extends GetView<HomeController> {
                                   },
                                 ),
                               ),
-
                               Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: Container(
@@ -210,7 +207,6 @@ class HomePage extends GetView<HomeController> {
                                   ),
                                 ),
                               ),
-
                               _buildSectionHeader('Latest Properties', 'See All'),
                               ListView.builder(
                                 primary: false,
@@ -234,7 +230,6 @@ class HomePage extends GetView<HomeController> {
                                   }
                                 },
                               ),
-
                               _buildLoadingIndicator(),
                               _buildNoMoreDataMessage(),
                               _buildAdBanner(),
@@ -319,7 +314,6 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-
   Widget buildFilterChip({
     required BuildContext context,
     required String label,
@@ -336,7 +330,7 @@ class HomePage extends GetView<HomeController> {
             onSelected: (selected) {
               controller.filterProperties(selected ? filterValue : '');
             },
-            backgroundColor: Theme.of(context).colorScheme.surface,
+             backgroundColor: Theme.of(context).colorScheme.surface,
             selectedColor: Theme.of(context).colorScheme.primaryContainer,
             labelStyle: TextStyle(
               color: controller.selectedFilter.value == filterValue
@@ -344,7 +338,7 @@ class HomePage extends GetView<HomeController> {
                   : Theme.of(context).colorScheme.onSurface,
             ),
             side: BorderSide(color: Theme.of(context).colorScheme.outline),
-            shadowColor: Theme.of(context).shadowColor.withValues(
+             shadowColor: Theme.of(context).shadowColor.withValues(
                   red: 0,
                   green: 0,
                   blue: 0,

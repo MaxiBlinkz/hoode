@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:hoode/app/modules/image_cropper/image_cropper_controller.dart';
+import '../../modules/image_cropper/image_cropper_controller.dart';
 import '../theme/theme_controller.dart';
 import '../../data/services/adservice.dart';
 import '../../data/services/bookmarkservice.dart';

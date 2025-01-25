@@ -10,7 +10,7 @@ import decimal
 fake = Faker()
 
 def authenticate(base_url, admin_email, admin_password):
-    url = f"{base_url}/api/admins/auth-with-password"
+    url = f"{base_url.rstrip('/')}/api/admins/auth-with-password"
     try:
         response = requests.post(url, json={"identity": admin_email, "password": admin_password})
         response.raise_for_status()
@@ -49,32 +49,34 @@ def generate_users(count, avatars):
             "first_name": fake.first_name(),
             "last_name": fake.last_name(),
             "username": fake.user_name(),
-            "password": "12345678",  # Ensure password meets requirements
-            "passwordConfirm": "12345678",  # Match password confirmation
             "agent_status": random.choice(["active", "pending", "inactive"]),
             "avatar": random.choice(avatars),
+            "password": "12345678",
+            "passwordConfirm": "12345678",
         }
-        # Validation logging
-        assert "password" in user and "passwordConfirm" in user, f"User missing password fields: {user}"
         users.append(user)
     return users
 
-
-def generate_agents(users, count, avatars):
+def generate_agents(users, count, avatars, user_id_map):
     # Filter agent users and ensure we have at least one
     agent_users = [user for user in users if user.get("is_agent")]
     if not agent_users:
-        print("No agent users available. Creating one agent user...")
-        agent_user = users[0] if users else None
-        if agent_user:
-            agent_user["is_agent"] = True
-            agent_users = [agent_user]
-        else:
-            return []
+          print("No agent users available. Creating one agent user...")
+          for user in users:
+             user["is_agent"] = True
+             agent_users = [user]
+             break # Exit loop after setting the first user to agent
+          else:
+              return []
 
     agents = []
     for _ in range(count):
         agent_user = random.choice(agent_users)
+         # Ensure user id is mapped to email
+        user_id = user_id_map.get(agent_user["email"])
+        if not user_id:
+            print(f"Warning: No user ID found for {agent_user['email']}. Skipping agent generation.")
+            continue
         agents.append({
             "agent_name": f"{fake.first_name()} {fake.last_name()}",
             "agent_title": fake.job(),
@@ -83,10 +85,9 @@ def generate_agents(users, count, avatars):
             "contact": {"phone": fake.phone_number(), "email": fake.email()},
             "total_listings": random.randint(1, 100),
             "avatar": random.choice(avatars),
-            "user": agent_user["email"],
+            "user": user_id, #Use the id
         })
     return agents
-
 
 def generate_properties(agents, count, images):
     properties = []
@@ -105,15 +106,20 @@ def generate_properties(agents, count, images):
             "country": fake.country(),
             "state": fake.state(),
             "city": fake.city(),
+             "bedrooms": random.randint(1, 5),
+              "bathrooms": random.randint(1, 3),
+              "sqft": random.randint(500, 3000),
             "status": random.choice(["available", "sold", "booked"]),
-            "agent": agent["agent_name"],
+            "agent": agent["user"], #Assign the user id.
         })
     return properties
+
 
 def custom_json_encoder(obj):
     if isinstance(obj, decimal.Decimal):
         return float(obj)
     raise TypeError(f"Object of type {obj.__class__.__name__} is not JSON serializable")
+
 
 def populate_database_with_return(base_url, token, collection, data):
     url = f"{base_url}/api/collections/{collection}/records"
@@ -132,25 +138,47 @@ def populate_database_with_return(base_url, token, collection, data):
                 record_data[key] = []
 
         # Prepare form data with all fields
+         
         form_data = {
             "username": record_data.get("username"),
             "email": record_data.get("email"),
             "emailVisibility": True,
-            "password": "12345678",
-            "passwordConfirm": "12345678",
-            "first_name": record_data.get("first_name"),
+             "first_name": record_data.get("first_name"),
             "last_name": record_data.get("last_name"),
-            "address": record_data.get("address"),
+             "address": record_data.get("address"),
             "country": record_data.get("country"),
-            "longitude": record_data.get("longitude"),
-            "latitude": record_data.get("latitude"),
-            "is_agent": record_data.get("is_agent"),
-            "date_of_birth": record_data.get("date_of_birth"),
-            "agent_status": record_data.get("agent_status")
+             "longitude": record_data.get("longitude"),
+             "latitude": record_data.get("latitude"),
+             "is_agent": record_data.get("is_agent"),
+             "date_of_birth": record_data.get("date_of_birth"),
+            "agent_status": record_data.get("agent_status"),
+            "agent_name": record_data.get("agent_name"),
+             "agent_title": record_data.get("agent_title"),
+              "bio": record_data.get("bio"),
+             "specialiazion": record_data.get("specialiazion"),
+            "contact": record_data.get("contact"),
+            "total_listings": record_data.get("total_listings"),
+             "title": record_data.get("title"),
+               "price": record_data.get("price"),
+               "description": record_data.get("description"),
+                "address": record_data.get("address"),
+                 "category": record_data.get("category"),
+                  "type": record_data.get("type"),
+                    "longitude": record_data.get("longitude"),
+                    "latitude": record_data.get("latitude"),
+                     "country": record_data.get("country"),
+                      "state": record_data.get("state"),
+                       "city": record_data.get("city"),
+                       "status": record_data.get("status"),
+                     "bedrooms": record_data.get("bedrooms"),
+                      "bathrooms": record_data.get("bathrooms"),
+                      "sqft": record_data.get("sqft"),
+                  "agent": record_data.get("agent"),
+            "user": record_data.get("user") # Add user field, might not be needed in all collections
         }
-
         # Convert form data to JSON string
         form_data = {"data": json.dumps(form_data, default=custom_json_encoder)}
+
 
         # Add password fields at root level for users collection
         if collection == "users":
@@ -158,24 +186,25 @@ def populate_database_with_return(base_url, token, collection, data):
             form_data["passwordConfirm"] = "12345678"
 
         files = {
-            key: (filename, open(path, 'rb'), mime_type) 
+            key: (filename, open(path, 'rb'), mime_type)
             for key, (filename, path, mime_type) in files_to_upload.items()
         }
 
+
         try:
             response = requests.post(url, files=files, data=form_data, headers=headers)
-            if response.status_code == 200:
-                created_records.append(response.json())
-            else:
-                print(f"Failed to create record: {response.json()}")
+            response.raise_for_status()
+            created_records.append(response.json())
+        except requests.exceptions.HTTPError as http_err:
+             print(f"HTTP error occurred: {http_err} URL: {url},  Response: {response.text}")
+        except Exception as e:
+            print(f"An error occurred : {e}, URL: {url}")
         finally:
-            for file_tuple in files.values():
-                file_tuple[1].close()
+             for file_tuple in files.values():
+                 if hasattr(file_tuple[1], 'close'):
+                    file_tuple[1].close()
 
     return created_records
-
-
-
 
 def main():
     avatars_folder = "avatars"
@@ -209,28 +238,31 @@ def main():
     user_id_map = {user["email"]: user["id"] for user in created_users if "id" in user}
     
     # Generate and filter agents
-    agents = generate_agents(created_users, agent_count, avatars)  # Use created_users instead of users
-    valid_agents = [agent for agent in agents if agent["user"] in user_id_map]
-    
+    agents = generate_agents(created_users, agent_count, avatars, user_id_map)  # Pass user_id_map
+    valid_agents = [agent for agent in agents if agent["user"] in user_id_map.values()]
+
     if not valid_agents:
         print("No valid agents could be created. Please check agent creation.")
         return
         
     # Continue with valid agents
-    for agent in valid_agents:
-        agent["user"] = user_id_map[agent["user"]]
+   
     created_agents = populate_database_with_return(base_url, token, "agents", valid_agents)
     
     # Only proceed with properties if we have agents
     if created_agents:
-        agent_id_map = {agent["agent_name"]: agent["id"] for agent in created_agents}
-        properties = generate_properties(created_agents, property_count, images)
-        for property_ in properties:
-            property_["agent"] = agent_id_map[property_["agent"]]
-        populate_database_with_return(base_url, token, "properties", properties)
-        print("Database population complete.")
+         agent_id_map = {agent["agent_name"]: agent["id"] for agent in created_agents if 'id' in agent}
+         properties = generate_properties(created_agents, property_count, images)
+         for property_ in properties:
+              if property_["agent"] in agent_id_map.values():
+                property_["agent"] =  property_["agent"]
+              else:
+                  print(f"Error: No agent id found for id {property_['agent']}. skipping property creation")
+                  continue
+         populate_database_with_return(base_url, token, "properties", properties)
+         print("Database population complete.")
     else:
-        print("No properties were created as no agents were available.")
+         print("No properties were created as no agents were available.")
 
 if __name__ == "__main__":
     main()
