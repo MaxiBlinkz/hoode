@@ -10,6 +10,7 @@ import 'package:pocketbase/pocketbase.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import '../../core/widgets/listing_card.dart';
 import 'home_controller.dart';
+import '../../core/theme/theme.dart';
 
 class HomePage extends GetView<HomeController> {
   HomePage({super.key});
@@ -23,20 +24,20 @@ class HomePage extends GetView<HomeController> {
         backgroundColor: Theme.of(context).colorScheme.surface,
         foregroundColor: Theme.of(context).colorScheme.onSurface,
         // Removed the Avatar widget
-        title: const Text(""),
-        actions: [
-          IconButton(
-            icon: const Icon(IconlyLight.search),
-            onPressed: () => Get.to(() => const ListingSearchPage()),
-          ),
-          Badge(
-            label: const Text("2"),
-            child: IconButton(
-              icon: const Icon(IconlyLight.notification),
-              onPressed: () => Get.toNamed("/messages"),
-            ),
-          ),
-        ],
+        //title: const Text(""),
+        // actions: [
+        //   // IconButton(
+        //   //   icon: const Icon(IconlyLight.search),
+        //   //   onPressed: () => Get.to(() => const ListingSearchPage()),
+        //   // ),
+        //   Badge(
+        //     label: const Text("2"),
+        //     child: IconButton(
+        //       icon: const Icon(IconlyLight.notification),
+        //       onPressed: () => Get.toNamed("/messages"),
+        //     ),
+        //   ),
+        // ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: Padding(
@@ -46,12 +47,13 @@ class HomePage extends GetView<HomeController> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child:  TextField(
+              child: TextField(
                 decoration: InputDecoration(
                     prefixIcon: Icon(Icons.search),
                     hintText: "Search by location, property type...",
+                    hintStyle: dashboardSubTitleTextStyle,
                     border: InputBorder.none),
-                    onChanged: (value) => controller.searchProperties(value),
+                onChanged: (value) => controller.searchProperties(value),
               ),
             ),
           ),
@@ -162,15 +164,19 @@ class HomePage extends GetView<HomeController> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildSectionHeader('Featured Properties', 'See All'),
+                              _buildSectionHeader(
+                                  'Featured Properties', 'See All'),
                               SizedBox(
                                 height: 310,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
-                                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                  itemCount: controller.featuredProperties.length,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0),
+                                  itemCount:
+                                      controller.featuredProperties.length,
                                   itemBuilder: (context, index) {
-                                    final property = controller.featuredProperties[index];
+                                    final property =
+                                        controller.featuredProperties[index];
                                     return ListingCard(
                                       property: property,
                                       imageWidth: 260,
@@ -198,7 +204,8 @@ class HomePage extends GetView<HomeController> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: ElevatedButton(
-                                            onPressed: () => Get.toNamed('/map'),
+                                            onPressed: () =>
+                                                Get.toNamed('/map'),
                                             child: const Text("View on Map"),
                                           ),
                                         ),
@@ -207,15 +214,20 @@ class HomePage extends GetView<HomeController> {
                                   ),
                                 ),
                               ),
-                              _buildSectionHeader('Latest Properties', 'See All'),
+                              _buildSectionHeader(
+                                  'Latest Properties', 'See All'),
                               ListView.builder(
                                 primary: false,
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemCount: controller.filteredProperties.length + (controller.isLoadingMore.value ? 3 : 0),
+                                itemCount: controller
+                                        .filteredProperties.length +
+                                    (controller.isLoadingMore.value ? 3 : 0),
                                 itemBuilder: (context, index) {
-                                  if (index < controller.filteredProperties.length) {
-                                    final property = controller.filteredProperties[index];
+                                  if (index <
+                                      controller.filteredProperties.length) {
+                                    final property =
+                                        controller.filteredProperties[index];
                                     return ListingCard(
                                       property: property,
                                       imageWidth: double.infinity,
@@ -251,7 +263,9 @@ class HomePage extends GetView<HomeController> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          Text(title,
+              style:
+                  const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           TextButton(onPressed: () {}, child: Text(buttonText)),
         ],
       ),
@@ -264,7 +278,8 @@ class HomePage extends GetView<HomeController> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Lottie.asset('assets/animations/oops.json', width: 200, height: 200),
-          const Text('Oops! Connection Error', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const Text('Oops! Connection Error',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: controller.retryLoading,
@@ -292,19 +307,23 @@ class HomePage extends GetView<HomeController> {
         ? SizedBox(
             height: 100,
             child: Center(
-              child: Lottie.asset('assets/animations/loading_more.json', height: 50, width: 50),
+              child: Lottie.asset('assets/animations/loading_more.json',
+                  height: 50, width: 50),
             ),
           )
         : const SizedBox());
   }
 
   Widget _buildNoMoreDataMessage() {
-    return Obx(() => !controller.isLoadingMore.value && !controller.hasMoreData.value
-        ? const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text("No more properties to load", textAlign: TextAlign.center, style: TextStyle(color: Colors.grey)),
-          )
-        : const SizedBox());
+    return Obx(
+        () => !controller.isLoadingMore.value && !controller.hasMoreData.value
+            ? const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text("No more properties to load",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey)),
+              )
+            : const SizedBox());
   }
 
   Widget _buildAdBanner() {
@@ -330,7 +349,7 @@ class HomePage extends GetView<HomeController> {
             onSelected: (selected) {
               controller.filterProperties(selected ? filterValue : '');
             },
-             backgroundColor: Theme.of(context).colorScheme.surface,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             selectedColor: Theme.of(context).colorScheme.primaryContainer,
             labelStyle: TextStyle(
               color: controller.selectedFilter.value == filterValue
@@ -338,7 +357,7 @@ class HomePage extends GetView<HomeController> {
                   : Theme.of(context).colorScheme.onSurface,
             ),
             side: BorderSide(color: Theme.of(context).colorScheme.outline),
-             shadowColor: Theme.of(context).shadowColor.withValues(
+            shadowColor: Theme.of(context).shadowColor.withValues(
                   red: 0,
                   green: 0,
                   blue: 0,

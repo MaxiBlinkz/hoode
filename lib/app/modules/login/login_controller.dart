@@ -30,7 +30,7 @@ class LoginController extends GetxController {
 
   final storage = GetStorage();
 
-  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  late final PocketBase pb;
   final authService = Get.find<AuthService>();
 
   Future<void> login() async {
@@ -158,8 +158,10 @@ class LoginController extends GetxController {
   }
 
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
+    String url = await DbHelper.getPocketbaseUrl();
+    pb = PocketBase(url);
     initControllers();
     loadCredentials();
   }

@@ -6,13 +6,15 @@ import 'db_helper.dart';
 
 class AuthService extends GetxService {
   final storage = GetStorage();
-  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  late final PocketBase pb;
   final isAuthenticated = false.obs;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
-    checkLoginStatus();
+    String url = await DbHelper.getPocketbaseUrl();
+    pb = PocketBase(url);
+    await checkLoginStatus();
   }
 
   Future<void> checkLoginStatus() async {
@@ -23,7 +25,6 @@ class AuthService extends GetxService {
     if (token != null && userData != null) {
       pb.authStore.save(token, RecordModel.fromJson(userData));
       await pb.collection('users').authRefresh();
-      
       storage.write('authToken', pb.authStore.token);
       storage.write('userData', pb.authStore.record?.toJson());
       isAuthenticated(pb.authStore.isValid);

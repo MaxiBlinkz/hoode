@@ -13,6 +13,7 @@ import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
 import '../../data/services/db_helper.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:pocketbase_server_flutter/pocketbase_server_flutter.dart';
 import 'dart:math' as Math; // Import the math library
 
 class HomeController extends GetxController {
@@ -37,11 +38,13 @@ class HomeController extends GetxController {
   RxMap<String, double> pricePredictions = <String, double>{}.obs;
   Logger logger = Logger();
   final listController = ScrollController();
-  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  late final PocketBase pb;
 
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
+    String url = await DbHelper.getPocketbaseUrl();
+    pb = PocketBase(url);
     loadProperties();
     _initializeRecommendationSystem();
     loadRecommendations();

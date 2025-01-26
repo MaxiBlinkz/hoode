@@ -9,7 +9,7 @@ class ChangePasswordController extends GetxController {
   final confirmPasswordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final isLoading = false.obs;
-  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  late final PocketBase pb;
 
   Future<void> changePassword() async {
     if (!formKey.currentState!.validate()) return;
@@ -52,8 +52,10 @@ class ChangePasswordController extends GetxController {
 
 
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
+    String url = await DbHelper.getPocketbaseUrl();
+    pb = PocketBase(url);
   }
 
   @override

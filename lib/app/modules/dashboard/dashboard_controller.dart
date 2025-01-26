@@ -15,7 +15,7 @@ class DashboardController extends GetxController {
   final isAgent = false.obs;
   final userService = Get.find<UserService>();
   final authService = Get.find<AuthService>();
-  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  late final PocketBase pb;
 
   final marketPriceTrend = <FlSpot>[].obs;
   final marketDemandTrend = <FlSpot>[].obs;
@@ -31,8 +31,10 @@ class DashboardController extends GetxController {
     final activeListings = <RecordModel>[].obs; // Active listings
 
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
+    String url = await DbHelper.getPocketbaseUrl();
+    pb = PocketBase(url);
     loadUserDashboard();
   }
 

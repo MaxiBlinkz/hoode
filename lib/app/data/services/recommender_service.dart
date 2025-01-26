@@ -3,19 +3,29 @@ import 'dart:convert';
 import 'package:hoode/app/data/exceptions/exceptions.dart';
 import 'package:hoode/app/data/services/db_helper.dart';
 import 'package:http/http.dart' as http;
+import 'package:pocketbase_server_flutter/pocketbase_server_flutter.dart';
 import '../models/property.dart';
 
-
 class RecommenderService {
-  final String baseUrl = DbHelper.getPocketbaseUrl();
+  String? baseUrl;
   final http.Client client;
 
-  RecommenderService({required this.client});
+  RecommenderService({required this.client}) {
+    _initializeBaseUrl();
+  }
+
+  Future<void> _initializeBaseUrl() async {
+    baseUrl = await PocketbaseServerFlutter.localIpAddress;
+  }
 
   Future<List<Property>> getRecommendations({
     required String userId,
     required String token,
   }) async {
+
+    if (baseUrl == null) {
+      await _initializeBaseUrl();
+    }
     try {
       final response = await client.get(
         Uri.parse('$baseUrl/recommendations/$userId'),

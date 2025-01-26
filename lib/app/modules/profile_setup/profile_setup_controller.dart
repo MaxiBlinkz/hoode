@@ -43,7 +43,7 @@ class ProfileSetupController extends GetxController {
   var status = Status.initial.obs;
   final Logger logger = Logger(printer: PrettyPrinter());
   final storage = GetStorage();
-  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  late final PocketBase pb;
   Rx<Object> err = "".obs;
 
   final personalInfoFormKey = GlobalKey<FormState>();
@@ -236,10 +236,12 @@ class ProfileSetupController extends GetxController {
   }
 
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
     id(Get.arguments['id']);
     initControllers();
+    String url = await DbHelper.getPocketbaseUrl();
+    pb = PocketBase(url);
     final token = storage.read('token');
     if (token != null) {
       pb.authStore.save(token, user);

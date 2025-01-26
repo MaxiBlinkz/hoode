@@ -8,13 +8,13 @@ import 'package:logger/logger.dart';
 
 class ListingSearchController extends GetxController {
   // final pb = PocketBase(POCKETBASE_URL);
-  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  late final PocketBase pb;
   final logger = Logger();
-  
+
   // Controllers
   final searchController = TextEditingController();
   final locationController = TextEditingController();
-  
+
   // Observable states
   final isLoading = false.obs;
   final searchResults = <RecordModel>[].obs;
@@ -26,8 +26,10 @@ class ListingSearchController extends GetxController {
   final locationAddress = ''.obs;
 
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
+    String url = await DbHelper.getPocketbaseUrl();
+    pb = PocketBase(url);
     getCurrentLocation();
   }
 
@@ -39,10 +41,9 @@ class ListingSearchController extends GetxController {
     try {
       final position = await Geolocator.getCurrentPosition();
       userLocation.value = Location(
-        latitude: position.latitude,
-        longitude: position.longitude,
-        timestamp: DateTime.now()
-      );
+          latitude: position.latitude,
+          longitude: position.longitude,
+          timestamp: DateTime.now());
       await reverseGeocode(position.latitude, position.longitude);
     } catch (e) {
       logger.e('Error getting current location: $e');
@@ -67,7 +68,8 @@ class ListingSearchController extends GetxController {
       final placemarks = await placemarkFromCoordinates(latitude, longitude);
       if (placemarks.isNotEmpty) {
         final place = placemarks.first;
-        locationAddress.value = '${place.street}, ${place.locality}, ${place.country}';
+        locationAddress.value =
+            '${place.street}, ${place.locality}, ${place.country}';
         locationController.text = locationAddress.value;
       }
     } catch (e) {
@@ -78,10 +80,9 @@ class ListingSearchController extends GetxController {
   Future<void> useCurrentLocation() async {
     final position = await Geolocator.getCurrentPosition();
     userLocation.value = Location(
-      latitude: position.latitude,
-      longitude: position.longitude,
-      timestamp: DateTime.now()
-    );
+        latitude: position.latitude,
+        longitude: position.longitude,
+        timestamp: DateTime.now());
     await reverseGeocode(position.latitude, position.longitude);
     await performSearch();
   }
@@ -99,15 +100,17 @@ class ListingSearchController extends GetxController {
         'price <= ${priceRange.value.end}',
         if (bedrooms > 0) 'bedrooms >= ${bedrooms.value}',
         if (bathrooms > 0) 'bathrooms >= ${bathrooms.value}',
-        if (searchController.text.isNotEmpty) 'title ~ "${searchController.text}"'
+        if (searchController.text.isNotEmpty)
+          'title ~ "${searchController.text}"'
       ];
 
       final results = await pb.collection('properties').getList(
-        filter: filters.join(' && '),
-        sort: location != null ? 
-          'distance(location, [${location.latitude}, ${location.longitude}])' : '-created',
-      );
-      
+            filter: filters.join(' && '),
+            sort: location != null
+                ? 'distance(location, [${location.latitude}, ${location.longitude}])'
+                : '-created',
+          );
+
       searchResults.value = results.items;
     } catch (e) {
       logger.e('Search error: $e');

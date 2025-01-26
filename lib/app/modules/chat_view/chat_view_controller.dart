@@ -9,7 +9,7 @@ import 'package:hoode/app/data/services/db_helper.dart';
 
 
 class ChatViewController extends GetxController {
-  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  late final PocketBase pb;
   final messages = <Message>[].obs;
   final currentUser = Rxn<RecordModel>();
   final otherUser = Rxn<RecordModel>();
@@ -23,6 +23,8 @@ class ChatViewController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+    String url = await DbHelper.getPocketbaseUrl();
+    pb = PocketBase(url);
     final conversationData = Get.arguments as Map<String, dynamic>;
     currentUser.value = await authService.getCurrentUser();
     otherUser.value = conversationData['agent'];

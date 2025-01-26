@@ -9,7 +9,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:flutter/material.dart';
 
 class ListingDetailController extends GetxController {
-  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  late final PocketBase pb;
   final bookmarkService = Get.find<BookmarkService>();
 
   final property = Rxn<RecordModel>();
@@ -22,9 +22,11 @@ class ListingDetailController extends GetxController {
   Logger log = Logger();
 
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
     final passedProperty = Get.arguments as RecordModel?;
+    String url = await DbHelper.getPocketbaseUrl();
+    pb = PocketBase(url);
     if (passedProperty != null) {
       property.value = passedProperty; // Use the passed property if available
       _incrementViewCount();

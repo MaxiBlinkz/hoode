@@ -8,11 +8,18 @@ import 'package:pocketbase/pocketbase.dart';
 import 'db_helper.dart';
 
 class BookmarkService extends GetxService {
-  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  late final PocketBase pb;
   final bookmarks = <String>[].obs;
   final bookmarkedIds = <String>[].obs;
   final authService = Get.find<AuthService>();
   Logger logger = Logger();
+
+  @override
+  Future<void> onInit() async {
+    super.onInit();
+    String url = await DbHelper.getPocketbaseUrl();
+    pb = PocketBase(url);
+  }
 
   Future<void> toggleBookmark(String propertyId) async {
   authService.requireAuth(() async {

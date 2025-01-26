@@ -32,9 +32,16 @@ class RegisterController extends GetxController {
   var status = Status.initial.obs;
   var err = "".obs;
 
+  late final PocketBase pb;
   final storage = GetStorage();
 
-  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  @override
+  Future<void> onInit() async {
+    super.onInit();
+    initControllers();
+    String url = await DbHelper.getPocketbaseUrl();
+    pb = PocketBase(url);
+  }
 
   Future<void> register() async {
     status(Status.loading);
@@ -120,11 +127,6 @@ class RegisterController extends GetxController {
         () => confirmPassword.value = confirmPasswordController.text);
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    initControllers();
-  }
 
   @override
   void onReady() {

@@ -25,7 +25,7 @@ class AddListingController extends GetxController {
   final currentStep = 0.obs;
   final _picker = ImagePicker();
   final Logger logger = Logger(printer: PrettyPrinter());
-  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  late final PocketBase pb;
   var status = Status.initial.obs;
 
 
@@ -55,6 +55,13 @@ class AddListingController extends GetxController {
     'Studio',
     'Penthouse',
   ];
+
+  @override
+  Future<void> onInit() async {
+    super.onInit();
+    String url = await DbHelper.getPocketbaseUrl();
+    pb = PocketBase(url);
+  }
 
 
   void toggleAmenity(String amenity) {

@@ -6,8 +6,15 @@ import 'package:pocketbase/pocketbase.dart';
 
 class UserService extends GetxService {
   static UserService get to => Get.find();
-  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  late final PocketBase pb;
   final authService = Get.find<AuthService>();
+
+  @override
+  void onInit() async{
+    super.onInit();
+    String url = await DbHelper.getPocketbaseUrl();
+    pb = PocketBase(url);
+  }
 
 
   Future<void> upgradeUserToAgent(String userId, Map<String, dynamic> agentDetails) async {

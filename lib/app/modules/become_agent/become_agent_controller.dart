@@ -14,7 +14,7 @@ class BecomeAgentController extends GetxController {
 
   final userService = Get.find<UserService>();
   final authService = Get.find<AuthService>();
-  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  late final PocketBase pb;
 
   // Form Controllers
   final nameController = TextEditingController();
@@ -42,8 +42,10 @@ class BecomeAgentController extends GetxController {
   final certifications = <String>[].obs;
 
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
+    String url = await DbHelper.getPocketbaseUrl();
+    pb = PocketBase(url);
   }
 
   void nextStep() {

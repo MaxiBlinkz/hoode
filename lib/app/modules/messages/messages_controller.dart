@@ -4,7 +4,7 @@ import 'package:pocketbase/pocketbase.dart';
 import '../../data/services/db_helper.dart';
 
 class MessagesController extends GetxController {
-  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  late final PocketBase pb;
   final conversations = <RecordModel>[].obs;
   final logger = Logger();
   final isLoading = true.obs;
@@ -23,7 +23,7 @@ class MessagesController extends GetxController {
       if (!pb.authStore.isValid || pb.authStore.model == null) {
         return;
       }
-      
+
       final records = await pb.collection('conversations').getFullList(
             filter: 'participants ~ "${pb.authStore.model.id}"',
             expand: 'participants,last_message',
@@ -38,7 +38,7 @@ class MessagesController extends GetxController {
 
   void subscribeToConversations() {
     if (!pb.authStore.isValid) return;
-    
+
     pb.collection('conversations').subscribe('*', (e) {
       if (e.action == 'create' && e.record != null) {
         conversations.add(e.record!);

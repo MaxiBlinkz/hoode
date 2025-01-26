@@ -4,14 +4,16 @@ import '../../data/services/db_helper.dart';
 import 'package:logger/logger.dart';
 
 class BookingsController extends GetxController {
-  final pb = PocketBase(DbHelper.getPocketbaseUrl());
+  late final PocketBase pb;
   final bookings = <RecordModel>[].obs;
   final isLoading = true.obs;
   final logger = Logger();
 
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
+    String url = await DbHelper.getPocketbaseUrl();
+    pb = PocketBase(url);
     loadBookings();
   }
 
@@ -21,7 +23,7 @@ class BookingsController extends GetxController {
         return;
       }
       final records = await pb.collection('bookings').getFullList(
-          filter: 'agent = "${pb.authStore.model.id}" || user = "${pb.authStore.model.id}"',
+          filter: 'agent = "${pb.authStore.record?.id}" || user = "${pb.authStore.model.id}"',
       );
       bookings.value = records;
     } catch (e) {
