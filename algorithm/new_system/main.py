@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Header, HTTPException
-from Pocketbase.PocketBase import PocketBase
+from pocketbase import PocketBase
 from pydantic import BaseModel
 from typing import List
 import uvicorn
