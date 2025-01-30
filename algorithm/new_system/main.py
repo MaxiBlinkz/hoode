@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Header, HTTPException
 from pocketbase import PocketBase
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 import uvicorn
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics.pairwise import cosine_similarity
