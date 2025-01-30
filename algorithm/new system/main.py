@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Header, HTTPException
-from pocketbase import PocketBase
+from Pocketbase.PocketBase import PocketBase
 from pydantic import BaseModel
 from typing import List
 import uvicorn
@@ -10,6 +10,7 @@ import pandas as pd
 from datetime import datetime
 import os
 from dotenv import load_dotenv
+
 
 
 load_dotenv()
