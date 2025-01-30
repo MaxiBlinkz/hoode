@@ -333,6 +333,34 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
+  Widget _buildRecommendationsSection() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      _buildSectionHeader('Recommended For You', 'See All'),
+      SizedBox(
+        height: 310,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          itemCount: controller.recommendedProperties.length,
+          itemBuilder: (context, index) {
+            final property = controller.recommendedProperties[index];
+            return ListingCard(
+              property: property,
+              imageWidth: 260,
+              imageHeight: 150,
+              cardHeight: 300,
+              //agentName: property.agentName,
+            );
+          },
+        ),
+      ),
+    ],
+  );
+}
+
+
   Widget buildFilterChip({
     required BuildContext context,
     required String label,

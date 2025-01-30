@@ -33,6 +33,9 @@ class $AssetsAnimationsGen {
   /// File path: assets/animations/market_trends.json
   String get marketTrends => 'assets/animations/market_trends.json';
 
+  /// File path: assets/animations/oops.json
+  String get oops => 'assets/animations/oops.json';
+
   /// File path: assets/animations/property_filter.json
   String get propertyFilter => 'assets/animations/property_filter.json';
 
@@ -48,6 +51,7 @@ class $AssetsAnimationsGen {
         loadMore,
         loadingMore,
         marketTrends,
+        oops,
         propertyFilter,
         propertyInsights
       ];
@@ -66,6 +70,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/apple.png
   AssetGenImage get apple => const AssetGenImage('assets/icons/apple.png');
 
+  /// File path: assets/icons/dev_icon.png
+  AssetGenImage get devIcon => const AssetGenImage('assets/icons/dev_icon.png');
+
   /// File path: assets/icons/facebook.png
   AssetGenImage get facebook =>
       const AssetGenImage('assets/icons/facebook.png');
@@ -73,8 +80,13 @@ class $AssetsIconsGen {
   /// File path: assets/icons/google.png
   AssetGenImage get google => const AssetGenImage('assets/icons/google.png');
 
+  /// File path: assets/icons/prod_icon.png
+  AssetGenImage get prodIcon =>
+      const AssetGenImage('assets/icons/prod_icon.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [apple, facebook, google];
+  List<AssetGenImage> get values =>
+      [apple, devIcon, facebook, google, prodIcon];
 }
 
 class $AssetsImagesGen {

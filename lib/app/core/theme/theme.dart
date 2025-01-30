@@ -33,7 +33,8 @@ ThemeData lightTheme = ThemeData(
     bodyLarge: TextStyle(color: darkGray),
     bodyMedium: TextStyle(color: darkGray),
     bodySmall: TextStyle(color: darkGray),
-    titleLarge: TextStyle(color: darkGray, fontWeight: FontWeight.bold),
+    titleLarge:
+        TextStyle(color: darkGray, fontWeight: FontWeight.bold, fontSize: 40.0),
     titleMedium: TextStyle(color: darkGray, fontWeight: FontWeight.bold),
     titleSmall: TextStyle(color: darkGray, fontWeight: FontWeight.bold),
   ),
@@ -192,6 +193,10 @@ TextStyle messageText = const TextStyle(
   color: messageTextColor,
 );
 
+OutlineInputBorder inputBorder = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(16),
+  borderSide: BorderSide(color: Colors.grey.shade200),
+);
 
 // Custom Button Styles
 ButtonStyle primaryButtonStyle = ElevatedButton.styleFrom(

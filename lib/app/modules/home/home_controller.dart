@@ -1,5 +1,10 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:hoode/app/data/services/api_service.dart';
 import '../../data/services/bookmarkservice.dart';
 import '../../core/algorithms/models/geo_point.dart';
 import '../../core/algorithms/models/market_trends.dart';
@@ -40,13 +45,14 @@ class HomeController extends GetxController {
   final listController = ScrollController();
   late final PocketBase pb;
 
+  final ApiService _apiService = ApiService();
+
   @override
   void onInit() async{
     super.onInit();
     String url = await DbHelper.getPocketbaseUrl();
     pb = PocketBase(url);
     loadProperties();
-    _initializeRecommendationSystem();
     loadRecommendations();
     loadFeaturedProperties();
     loadMore();
@@ -231,33 +237,53 @@ class HomeController extends GetxController {
     });
   }
 
-  void _initializeRecommendationSystem() {
-    userPrefs = UserPreferences(
-      targetPrice: 250000.0,
-      preferredLocation: GeoPoint(latitude: 0, longitude: 0),
-      preferredAmenities: ['parking', 'pool'],
-      preferredType: 'apartment',
-    );
-    interactions = UserInteractionHistory(
-      viewCounts: {},
-      favorites: {},
-      clicks: {},
-    );
-    trends = MarketTrends();
-    seasonal = SeasonalData();
-  }
+  // void _initializeRecommendationSystem() {
+  //   userPrefs = UserPreferences(
+  //     targetPrice: 250000.0,
+  //     preferredLocation: GeoPoint(latitude: 0, longitude: 0),
+  //     preferredAmenities: ['parking', 'pool'],
+  //     preferredType: 'apartment',
+  //   );
+  //   interactions = UserInteractionHistory(
+  //     viewCounts: {},
+  //     favorites: {},
+  //     clicks: {},
+  //   );
+  //   trends = MarketTrends();
+  //   seasonal = SeasonalData();
+  // }
 
   Future<void> loadRecommendations() async {
-    if (properties.isNotEmpty) {
-      recommendedProperties.value = PropertyRecommender.getRecommendations(
-        properties.toList(),
-        userPrefs,
-        interactions,
-        trends,
-        seasonal,
+    try {
+      final currentUser = await getCurrentUser();
+      final currentUserId = currentUser?.id ?? '';
+      final userLatitude = currentUser?.data['latitude'] ?? 0.0;
+      final userLongitude = currentUser?.data['longitude'] ?? 0.0;
+      final recommendations = await _apiService.getRecommendations(
+        userId: currentUserId,
+        latitude: userLatitude,
+        longitude: userLongitude,
       );
+      // Handle recommendations
+    } catch (e) {
+      // Handle error
     }
   }
+
+  Future<void> viewProperty(String propertyId) async {
+    try {
+      final currentUser = await getCurrentUser();
+      final currentUserId = currentUser?.id ?? '';
+      await _apiService.trackPropertyView(
+        currentUserId,
+        propertyId,
+      );
+      // Handle success
+    } catch (e) {
+      // Handle error
+    }
+  }
+
 
   void filterProperties(String category) {
     selectedFilter.value = category;
@@ -270,6 +296,34 @@ class HomeController extends GetxController {
           category.toLowerCase();
     }).toList();
   }
+
+  Future<RecordModel?> getCurrentUser() async {
+  try {
+    if (!pb.authStore.isValid || pb.authStore.record == null) {
+      final token = GetStorage().read('authToken');
+      final userData = GetStorage().read('userData');
+      
+      if (token != null && userData != null) {
+        pb.authStore.save(token, RecordModel.fromJson(userData));
+        await pb.collection('users').authRefresh();
+        
+        if (!pb.authStore.isValid) {
+          Get.toNamed('/login');
+          return null;
+        }
+      }
+    }
+    return pb.authStore.record;
+  } catch (e) {
+    Get.snackbar(
+      'Connection Error',
+      'Unable to connect to server. Please check your internet connection.',
+      backgroundColor: Colors.red,
+      colorText: Colors.white,
+    );
+    return null;
+  }
+}
 
   @override
   void onClose() {

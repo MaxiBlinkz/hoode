@@ -1,6 +1,7 @@
 import 'package:easy_loading_button/easy_loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hoode/app/core/theme/theme.dart';
 import '../../core/widgets/social_button.dart';
 import '../profile_setup/profile_setup_page.dart';
 import 'package:iconly/iconly.dart';
@@ -25,62 +26,44 @@ class RegisterPage extends GetView<RegisterController> {
         ),
         child: SafeArea(
           child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Hoode",
-                    style: TextStyle(
-                      fontSize: 48,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: 2,
+            child: Padding(
+              padding: EdgeInsets.only(left: 16.0, right: 16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Welcome",
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 30),
-                  Container(
-                    width: 350,
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 15,
-                          offset: Offset(0, 5),
+                    const SizedBox(height: 10),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Sign up to get started",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey.shade700,
                         ),
-                      ],
+                      ),
                     ),
-                    child: Form(
+                    Form(
                       key: regFormKey,
                       child: Column(
                         children: [
-                          Text(
-                            "Create Account",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                        Text(
-                            "Sign up to get started",
-                           style: TextStyle(
-                           fontSize: 14,
-                            color: Colors.grey.shade500,
-                           ),
-                       ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 6),
                           TextFormField(
                             controller: controller.nameController,
                             decoration: InputDecoration(
-                              hintText: "Username",
-                              prefixIcon: Icon(IconlyLight.profile,
-                                  color: Theme.of(context).primaryColor),
-                            ),
+                                hintText: "Username",
+                                labelStyle:
+                                    TextStyle(color: Colors.grey.shade200),
+                                prefixIcon: Icon(IconlyLight.profile,
+                                    color: Colors.grey.shade500),
+                                border: inputBorder),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter a username';
@@ -91,10 +74,12 @@ class RegisterPage extends GetView<RegisterController> {
                           const SizedBox(height: 20),
                           TextFormField(
                             controller: controller.emailController,
-                             decoration: InputDecoration(
+                            decoration: InputDecoration(
                               hintText: "Email",
+                              labelStyle: TextStyle(color: Colors.grey.shade200),
                               prefixIcon: Icon(IconlyLight.message,
-                                  color: Theme.of(context).primaryColor),
+                                  color: Colors.grey.shade500),
+                              border: inputBorder,
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -110,20 +95,21 @@ class RegisterPage extends GetView<RegisterController> {
                           TextFormField(
                             controller: controller.passwordController,
                             obscureText: !controller.hidePassword.value,
-                              decoration: InputDecoration(
-                                hintText: "Password",
-                                prefixIcon: Icon(IconlyLight.lock,
-                                    color: Theme.of(context).primaryColor),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    controller.hidePassword.value
-                                        ? IconlyLight.hide
-                                        : IconlyLight.show,
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                  onPressed: controller.togglePasswordVisibility,
+                            decoration: InputDecoration(
+                              hintText: "Password",
+                              prefixIcon: Icon(IconlyLight.lock,
+                                  color: Colors.grey.shade400),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  controller.hidePassword.value
+                                      ? IconlyLight.hide
+                                      : IconlyLight.show,
+                                  color: Colors.grey.shade400,
                                 ),
+                                onPressed: controller.togglePasswordVisibility,
                               ),
+                              border: inputBorder,
+                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter a password';
@@ -137,23 +123,23 @@ class RegisterPage extends GetView<RegisterController> {
                           const SizedBox(height: 20),
                           TextFormField(
                             controller: controller.confirmPasswordController,
-                            obscureText:
-                                  !controller.hideConfirmPassword.value,
-                              decoration: InputDecoration(
+                            obscureText: !controller.hideConfirmPassword.value,
+                            decoration: InputDecoration(
                                 hintText: "Confirm Password",
                                 prefixIcon: Icon(IconlyLight.lock,
-                                    color: Theme.of(context).primaryColor),
+                                    color: Colors.grey.shade400),
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                     controller.hideConfirmPassword.value
                                         ? IconlyLight.hide
                                         : IconlyLight.show,
-                                    color: Theme.of(context).primaryColor,
+                                    color: Colors.grey.shade400,
                                   ),
                                   onPressed:
                                       controller.toggleConfirmPasswordVisibility,
                                 ),
-                              ),
+                                border: inputBorder
+                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Please confirm your password";
@@ -184,50 +170,50 @@ class RegisterPage extends GetView<RegisterController> {
                         ],
                       ),
                     ),
+                    const SizedBox(height: 20),
+                       TextButton(
+                    onPressed: () {
+                      // Navigate to sign up page
+                      Get.toNamed('/login');
+                    },
+                    child: const Text(
+                      "Already have an account? Login",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                  const SizedBox(height: 20),
-                     TextButton(
-                  onPressed: () {
-                    // Navigate to sign up page
-                    Get.toNamed('/login');
-                  },
-                  child: const Text(
-                    "Already have an account? Login",
-                    style: TextStyle(color: Colors.white),
-                  ),
+                   const SizedBox(height: 20),
+                     const Text(
+                      "Or continue with",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SocialButton(
+                          icon: 'assets/icons/google.png',
+                          onPressed: () {
+                            // Implement Google login
+                          },
+                        ),
+                        const SizedBox(width: 20),
+                        SocialButton(
+                          icon: 'assets/icons/apple.png',
+                          onPressed: () {
+                            // Implement Apple login
+                          },
+                        ),
+                        const SizedBox(width: 20),
+                        SocialButton(
+                          icon: 'assets/icons/facebook.png',
+                          onPressed: () {
+                            // Implement Facebook login
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                 const SizedBox(height: 20),
-                   const Text(
-                    "Or continue with",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SocialButton(
-                        icon: 'assets/icons/google.png',
-                        onPressed: () {
-                          // Implement Google login
-                        },
-                      ),
-                      const SizedBox(width: 20),
-                      SocialButton(
-                        icon: 'assets/icons/apple.png',
-                        onPressed: () {
-                          // Implement Apple login
-                        },
-                      ),
-                      const SizedBox(width: 20),
-                      SocialButton(
-                        icon: 'assets/icons/facebook.png',
-                        onPressed: () {
-                          // Implement Facebook login
-                        },
-                      ),
-                    ],
-                  ),
-                ],
               ),
             ),
           ),
