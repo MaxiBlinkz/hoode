@@ -5,8 +5,17 @@ from sklearn.metrics.pairwise import cosine_similarity
 from geopy.distance import geodesic
 
 class PropertyRecommender:
-    def __init__(self):
+    def __init__(self, model_trainer=None):
         self.scaler = StandardScaler()
+        self.model_trainer = model_trainer
+        
+    def update_recommendations_with_model(self, properties_df):
+        if self.model_trainer and self.model_trainer.is_trained:
+            X, _ = self.model_trainer.prepare_training_data(properties_df)
+            predicted_scores = self.model_trainer.model.predict(X)
+            properties_df['predicted_interaction_score'] = predicted_scores
+            return properties_df
+        return properties_df
         
     def prepare_features(self, properties_df):
         # Feature weights (location gets higher weight)
@@ -47,7 +56,8 @@ class PropertyRecommender:
         
         return weighted_features
 
-     def get_recommendations(self, user_id, properties_df, user_lat, user_lon, n_recommendations=5):
+def get_recommendations(self, user_id, properties_df, user_lat, user_lon, n_recommendations=5):
+        properties_df = self.update_recommendations_with_model(properties_df)
         # Check if location and user data is available
         has_location = user_lat != 0.0 and user_lon != 0.0
         has_user = user_id != ""
