@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Header, HTTPException
+from pocketbase import PocketBase
 from pydantic import BaseModel
 from typing import List
 import uvicorn
@@ -7,8 +8,14 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import pandas as pd
 from datetime import datetime
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 app = FastAPI()
+client = PocketBase(os.getenv('POCKETBASE_URL'))
 
 class RecommendationRequest(BaseModel):
     user_id: str
@@ -24,10 +31,15 @@ class PropertyView(BaseModel):
 @app.post("/recommendations")
 async def get_recommendations(
     request: RecommendationRequest,
-    x_pb_token: Optional[str] = Header(None)
+    x_pb_token: str = Header(...)
 ):
     try:
-        properties_df = pd.DataFrame(request.properties)
+        # Authenticate with PocketBase using the passed token
+        client.auth_store.save(x_pb_token, None)
+        
+        # Fetch properties directly from PocketBase
+        properties = client.collection('properties').get_full_list()
+        properties_df = pd.DataFrame([record.dict() for record in properties])
         
         recommender = PropertyRecommender()
         recommendations = recommender.get_recommendations(
