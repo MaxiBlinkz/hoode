@@ -4,7 +4,6 @@ import 'package:flutter_remix/flutter_remix.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../../data/services/adservice.dart';
-import '../listing_search/listing_search_page.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -23,21 +22,6 @@ class HomePage extends GetView<HomeController> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
         foregroundColor: Theme.of(context).colorScheme.onSurface,
-        // Removed the Avatar widget
-        //title: const Text(""),
-        // actions: [
-        //   // IconButton(
-        //   //   icon: const Icon(IconlyLight.search),
-        //   //   onPressed: () => Get.to(() => const ListingSearchPage()),
-        //   // ),
-        //   Badge(
-        //     label: const Text("2"),
-        //     child: IconButton(
-        //       icon: const Icon(IconlyLight.notification),
-        //       onPressed: () => Get.toNamed("/messages"),
-        //     ),
-        //   ),
-        // ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: Padding(
@@ -63,9 +47,42 @@ class HomePage extends GetView<HomeController> {
       body: SafeArea(
         child: Column(
           children: [
+            // Search Bar
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.search),
+                          hintText: "Search by location, property type...",
+                          hintStyle: TextStyle(color: Colors.grey[600]),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                        ),
+                        onChanged: (value) => controller.searchProperties(value),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  IconButton(
+                    icon: const Icon(Icons.tune),
+                    onPressed: () {
+                      // Add filter action
+                    },
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 8.0),
             SizedBox(
-              height: 50,
+              height: 40,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
