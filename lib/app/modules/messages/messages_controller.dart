@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
-import '../../data/services/db_helper.dart';
 
 class MessagesController extends GetxController {
   late final PocketBase pb;

@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -11,14 +10,12 @@ import '../../core/algorithms/models/market_trends.dart';
 import '../../core/algorithms/models/seasonal_data.dart';
 import '../../core/algorithms/models/user_interaction_history.dart';
 import '../../core/algorithms/models/user_preferences.dart';
-import '../../core/algorithms/property_recommender.dart';
 import '../../data/enums/enums.dart';
 import '../../../core.dart';
 import 'package:logger/logger.dart';
 import 'package:pocketbase/pocketbase.dart';
 import '../../data/services/db_helper.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:pocketbase_server_flutter/pocketbase_server_flutter.dart';
 import 'dart:math' as Math; // Import the math library
 
 class HomeController extends GetxController {

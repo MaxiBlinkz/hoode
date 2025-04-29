@@ -9,7 +9,6 @@ import 'package:pocketbase/pocketbase.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import '../../core/widgets/listing_card.dart';
 import 'home_controller.dart';
-import '../../core/theme/theme.dart';
 
 class HomePage extends GetView<HomeController> {
   HomePage({super.key});
@@ -19,31 +18,6 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        foregroundColor: Theme.of(context).colorScheme.onSurface,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(60),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search),
-                    hintText: "Search by location, property type...",
-                    hintStyle: dashboardSubTitleTextStyle,
-                    border: InputBorder.none),
-                onChanged: (value) => controller.searchProperties(value),
-              ),
-            ),
-          ),
-        ),
-      ),
-      // ... (Rest of your HomePage code)
       body: SafeArea(
         child: Column(
           children: [
@@ -80,7 +54,7 @@ class HomePage extends GetView<HomeController> {
                 ],
               ),
             ),
-            const SizedBox(height: 8.0),
+            // Filter Chips
             SizedBox(
               height: 40,
               child: ListView(
@@ -90,7 +64,7 @@ class HomePage extends GetView<HomeController> {
                   buildFilterChip(
                     context: context,
                     label: "All",
-                    avatar: Icon(IconlyBold.category, size: 16),
+                    avatar: const Icon(IconlyBold.category, size: 16),
                     filterValue: '',
                   ),
                   buildFilterChip(
@@ -168,7 +142,7 @@ class HomePage extends GetView<HomeController> {
                 ],
               ),
             ),
-            // Listings Section
+            // Main Content
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () => controller.loadProperties(),
@@ -181,87 +155,80 @@ class HomePage extends GetView<HomeController> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildSectionHeader(
-                                  'Featured Properties', 'See All'),
+                              _buildSectionHeader('Featured Properties', 'See All'),
                               SizedBox(
-                                height: 310,
+                                height: 280,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0),
-                                  itemCount:
-                                      controller.featuredProperties.length,
+                                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                  itemCount: controller.featuredProperties.length,
                                   itemBuilder: (context, index) {
-                                    final property =
-                                        controller.featuredProperties[index];
-                                    return ListingCard(
-                                      property: property,
-                                      imageWidth: 260,
-                                      imageHeight: 150,
-                                      cardHeight: 300,
-                                      isFeatured: true,
-                                      agentName: "Sarah Johnson",
+                                    final property = controller.featuredProperties[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.only(right: 16),
+                                      child: ListingCard(
+                                        property: property,
+                                        imageWidth: 280,
+                                        imageHeight: 160,
+                                        cardHeight: 270,
+                                        isFeatured: true,
+                                        agentName: "Sarah Johnson",
+                                      ),
                                     );
                                   },
                                 ),
                               ),
+                              // Map Section
                               Padding(
-                                padding: const EdgeInsets.all(10.0),
+                                padding: const EdgeInsets.all(16.0),
                                 child: Container(
                                   height: 150,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.grey.shade300,
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Colors.grey[200],
                                   ),
                                   child: Stack(
                                     children: [
-                                      // Map placeholder - integrate your map widget here
-                                      Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: ElevatedButton(
-                                            onPressed: () =>
-                                                Get.toNamed('/map'),
-                                            child: const Text("View on Map"),
+                                      // Map placeholder
+                                      Center(
+                                        child: ElevatedButton(
+                                          onPressed: () => Get.toNamed('/map'),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.white,
+                                            foregroundColor: Colors.black,
                                           ),
+                                          child: const Text("View on Map"),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
-                              _buildSectionHeader(
-                                  'Latest Properties', 'See All'),
-                              ListView.builder(
-                                primary: false,
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: controller
-                                        .filteredProperties.length +
-                                    (controller.isLoadingMore.value ? 3 : 0),
-                                itemBuilder: (context, index) {
-                                  if (index <
-                                      controller.filteredProperties.length) {
-                                    final property =
-                                        controller.filteredProperties[index];
-                                    return ListingCard(
-                                      property: property,
-                                      imageWidth: double.infinity,
-                                      imageHeight: 180,
-                                      cardHeight: 300,
-                                      isNew: index == 0,
-                                      isPriceReduced: index == 1,
-                                      agentName: "David Wilson",
+                              _buildSectionHeader('Latest Properties', 'See All'),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                child: ListView.builder(
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: controller.filteredProperties.length,
+                                  itemBuilder: (context, index) {
+                                    final property = controller.filteredProperties[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.only(bottom: 16),
+                                      child: ListingCard(
+                                        property: property,
+                                        imageWidth: double.infinity,
+                                        imageHeight: 200,
+                                        cardHeight: 320,
+                                        isNew: index == 0,
+                                        isPriceReduced: index == 1,
+                                        agentName: "Emily Davis",
+                                      ),
                                     );
-                                  } else {
-                                    return _buildSkeletonCard();
-                                  }
-                                },
+                                  },
+                                ),
                               ),
-                              _buildLoadingIndicator(),
-                              _buildNoMoreDataMessage(),
-                              _buildAdBanner(),
                             ],
                           ),
                         ),
@@ -273,7 +240,6 @@ class HomePage extends GetView<HomeController> {
       ),
     );
   }
-
   Widget _buildSectionHeader(String title, String buttonText) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
@@ -357,6 +323,7 @@ class HomePage extends GetView<HomeController> {
       _buildSectionHeader('Recommended For You', 'See All'),
       SizedBox(
         height: 310,
+        
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: 16.0),

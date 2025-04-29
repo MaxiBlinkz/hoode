@@ -5,7 +5,6 @@ import '../../core/config/constants.dart';
 import '../../core/widgets/avatar.dart';
 import 'package:logger/logger.dart';
 import 'listing_detail_controller.dart';
-import 'package:share_plus/share_plus.dart';
 import '../../core/widgets/listing_card.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 

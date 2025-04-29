@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import '../../core/widgets/market_trends_dashboard.dart';
 import 'package:lottie/lottie.dart';
 import 'dashboard_controller.dart';
 import '../../core/widgets/listing_card.dart';
-import 'package:pocketbase/pocketbase.dart';
 
 class DashboardPage extends GetView<DashboardController> {
   const DashboardPage({super.key});

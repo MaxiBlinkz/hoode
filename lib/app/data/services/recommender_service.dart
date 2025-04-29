@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:hoode/app/data/exceptions/exceptions.dart';
 import 'package:hoode/app/data/services/db_helper.dart';
 import 'package:http/http.dart' as http;
-import 'package:pocketbase_server_flutter/pocketbase_server_flutter.dart';
 import '../models/property.dart';
 
 class RecommenderService {
@@ -15,7 +14,7 @@ class RecommenderService {
   }
 
   Future<void> _initializeBaseUrl() async {
-    baseUrl = await PocketbaseServerFlutter.localIpAddress;
+    baseUrl = await DbHelper.getPocketbaseUrl();
   }
 
   Future<List<Property>> getRecommendations({

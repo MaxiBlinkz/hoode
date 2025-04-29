@@ -1,5 +1,5 @@
 
-import 'package:pocketbase_server_flutter/pocketbase_server_flutter.dart';
+import 'package:hoode/app/data/services/db_helper.dart';
 
 class AppConfig {
   static const bool useLocalPocketbase = bool.fromEnvironment('useLocalPocketbase');
@@ -7,7 +7,7 @@ class AppConfig {
 
   static Future<void> initialize() async {
     pocketbaseUrl = useLocalPocketbase 
-      ? PocketbaseServerFlutter.localIpAddress as String
+      ? await DbHelper.getPocketbaseUrl()
       : String.fromEnvironment('pocketbaseUrl');
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'bookings_controller.dart';
 
 class BookingsPage extends GetView<BookingsController> {

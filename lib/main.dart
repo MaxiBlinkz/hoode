@@ -7,7 +7,6 @@ import 'app/core/config/app_config.dart';
 import 'app/core/theme/theme_controller.dart';
 import 'app/data/services/authservice.dart';
 import 'app/data/services/bookmarkservice.dart';
-import 'package:pocketbase_server_flutter/pocketbase_server_flutter.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'app.dart';
 
@@ -16,13 +15,6 @@ Future<void> main() async {
   await GetStorage.init();
   Get.put(ThemeController(), permanent: true);
   await AppConfig.initialize();
-
-  PocketbaseServerFlutter.start(
-    hostName: await PocketbaseServerFlutter.localIpAddress,
-    port: "8080",
-    dataPath: null,
-    enablePocketbaseApiLogs: true,
-  );
 
   final authService = Get.put(AuthService());
   try {

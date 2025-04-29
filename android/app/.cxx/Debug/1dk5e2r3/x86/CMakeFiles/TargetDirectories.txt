@@ -1,0 +1,2 @@
+C:/Users/maxwe/StudioProjects/hoode/android/app/.cxx/Debug/1dk5e2r3/x86/CMakeFiles/edit_cache.dir
+C:/Users/maxwe/StudioProjects/hoode/android/app/.cxx/Debug/1dk5e2r3/x86/CMakeFiles/rebuild_cache.dir
