@@ -47,7 +47,6 @@ dependencies:
   flutter_map:
   flutter_rating_bar: ^4.0.1
   flutter_remix: ^0.0.1
-  supabase_auth_ui: ^0.5.5
   geocoding:
   geolocator:
   get:
@@ -72,6 +71,7 @@ dependencies:
   share_plus: ^10.1.4
   shimmer: ^3.0.0
   skeletonizer: ^1.4.2
+  supabase_auth_ui: ^0.5.5
   supabase_flutter: ^2.9.0
   toastification:
   uuid: any
