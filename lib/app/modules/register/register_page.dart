@@ -1,7 +1,7 @@
-import 'package:easy_loading_button/easy_loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hoode/app/core/theme/theme.dart';
+import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 import '../../core/widgets/social_button.dart';
 import '../profile_setup/profile_setup_page.dart';
 import 'package:iconly/iconly.dart';
@@ -12,17 +12,10 @@ class RegisterPage extends GetView<RegisterController> {
 
   @override
   Widget build(BuildContext context) {
-    final regFormKey = GlobalKey<FormState>();
-
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
-          // gradient: LinearGradient(
-          //   begin: Alignment.topLeft,
-          //   end: Alignment.bottomRight,
-          //   colors: [Theme.of(context).primaryColor, Theme.of(context).primaryColor.withOpacity(0.7)],
-          // ),
         ),
         child: SafeArea(
           child: Center(
@@ -50,139 +43,58 @@ class RegisterPage extends GetView<RegisterController> {
                         ),
                       ),
                     ),
-                    Form(
-                      key: regFormKey,
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 6),
-                          TextFormField(
-                            controller: controller.nameController,
-                            decoration: InputDecoration(
-                                hintText: "Username",
-                                labelStyle:
-                                    TextStyle(color: Colors.grey.shade200),
-                                prefixIcon: Icon(IconlyLight.profile,
-                                    color: Colors.grey.shade500),
-                                border: inputBorder),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a username';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 20),
-                          TextFormField(
-                            controller: controller.emailController,
-                            decoration: InputDecoration(
-                              hintText: "Email",
-                              labelStyle: TextStyle(color: Colors.grey.shade200),
-                              prefixIcon: Icon(IconlyLight.message,
-                                  color: Colors.grey.shade500),
-                              border: inputBorder,
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your email';
-                              }
-                              if (!GetUtils.isEmail(value)) {
-                                return 'Please enter a valid email';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 20),
-                          TextFormField(
-                            controller: controller.passwordController,
-                            obscureText: !controller.hidePassword.value,
-                            decoration: InputDecoration(
-                              hintText: "Password",
-                              prefixIcon: Icon(IconlyLight.lock,
-                                  color: Colors.grey.shade400),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  controller.hidePassword.value
-                                      ? IconlyLight.hide
-                                      : IconlyLight.show,
-                                  color: Colors.grey.shade400,
-                                ),
-                                onPressed: controller.togglePasswordVisibility,
-                              ),
-                              border: inputBorder,
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a password';
-                              }
-                              if (value.length < 6) {
-                                return 'Password must be at least 6 characters';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 20),
-                          TextFormField(
-                            controller: controller.confirmPasswordController,
-                            obscureText: !controller.hideConfirmPassword.value,
-                            decoration: InputDecoration(
-                                hintText: "Confirm Password",
-                                prefixIcon: Icon(IconlyLight.lock,
-                                    color: Colors.grey.shade400),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    controller.hideConfirmPassword.value
-                                        ? IconlyLight.hide
-                                        : IconlyLight.show,
-                                    color: Colors.grey.shade400,
-                                  ),
-                                  onPressed:
-                                      controller.toggleConfirmPasswordVisibility,
-                                ),
-                                border: inputBorder
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please confirm your password";
-                              }
-                              if (value != controller.passwordController.text) {
-                                return "Password mismatch";
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 30),
-                          EasyButton(
-                            buttonColor: Theme.of(context).primaryColor,
-                            borderRadius: 36,
-                            onPressed: () {
-                              if (regFormKey.currentState!.validate()) {
-                                controller.register();
-                              }
-                            },
-                            idleStateWidget: const Text(
-                              "Sign Up",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            loadingStateWidget: const CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
+                    const SizedBox(height: 20),
+                    // Using Supabase Auth UI Email Field for Registration
+                    SupaEmailAuth(
+                      redirectTo: controller.redirectUrl,
+                      onSignInComplete: controller.onSignInComplete,
+                      onSignUpComplete: controller.onSignUpComplete,
+                      onError: controller.onAuthError,
+                      metadataFields: [
+                        MetaDataField(
+                          key: 'username',
+                          label: 'Username',
+                          prefixIcon: Icon(IconlyLight.profile, color: Colors.grey.shade500),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a username';
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
+                      isInitiallySigningIn: false, // Start with sign up form
+                      showConfirmPasswordField: true,
+                      prefixIconEmail: Icon(IconlyLight.message, color: Colors.grey.shade500),
+                      prefixIconPassword: Icon(IconlyLight.lock, color: Colors.grey.shade500),
+                      localization: SupaEmailAuthLocalization(
+                        enterEmail: "Email",
+                        enterPassword: "Password",
+                        signIn: "Sign In",
+                        signUp: "Sign Up",
+                        forgotPassword: "Forgot Password?",
+                        dontHaveAccount: "Don't have an account? Sign up",
+                        haveAccount: "Already have an account? Sign in",
+                        validEmailError: "Please enter a valid email address",
+                        passwordLengthError: "Password must be at least 6 characters",
+                        requiredFieldError: "This field is required",
+                        confirmPassword: "Confirm Password",
+                        confirmPasswordError: "Passwords do not match",
                       ),
                     ),
                     const SizedBox(height: 20),
-                       TextButton(
-                    onPressed: () {
-                      // Navigate to sign up page
-                      Get.toNamed('/login');
-                    },
-                    child: const Text(
-                      "Already have an account? Login",
-                      style: TextStyle(color: Colors.white),
+                    TextButton(
+                      onPressed: () {
+                        // Navigate to login page
+                        Get.toNamed('/login');
+                      },
+                      child: const Text(
+                        "Already have an account? Login",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
-                  ),
-                   const SizedBox(height: 20),
-                     const Text(
+                    const SizedBox(height: 20),
+                    const Text(
                       "Or continue with",
                       style: TextStyle(color: Colors.grey),
                     ),
@@ -193,7 +105,7 @@ class RegisterPage extends GetView<RegisterController> {
                         SocialButton(
                           icon: 'assets/icons/google.png',
                           onPressed: () {
-                            // Implement Google login
+                            controller.googleSignUp();
                           },
                         ),
                         const SizedBox(width: 20),
@@ -219,28 +131,6 @@ class RegisterPage extends GetView<RegisterController> {
           ),
         ),
       ),
-    );
-  }
-
-  void showNavigationDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Account Created"),
-          content: const Text(
-              "Your account has been successfully created. Would you like to set up your profile now?"),
-          actions: [
-            TextButton(
-              child: const Text("Set Up Profile"),
-              onPressed: () {
-                Get.offAll(() => ProfileSetupPage());
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

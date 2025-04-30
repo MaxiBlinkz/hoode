@@ -1,0 +1,12 @@
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo/logo-no-background.png"
+  min_sdk_android: 23 # matches your minSdk
+  web:
+    generate: false
+  windows:
+    generate: true
+    icon_size: 48 # Windows app icon size
+  macos:
+    generate: true

@@ -47,6 +47,7 @@ dependencies:
   flutter_map:
   flutter_rating_bar: ^4.0.1
   flutter_remix: ^0.0.1
+  supabase_auth_ui: ^0.5.5
   geocoding:
   geolocator:
   get:
@@ -111,6 +112,7 @@ flutter:
     - assets/fonts/Poppins/
     - assets/images/
     - assets/icons/
+    - assets/logo/
     - assets/animations/
   #   - images/a_dot_ham.jpeg
 
@@ -139,8 +141,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-pocketbase_utils:
-  enabled: true # Required. Must be set to true to activate the package. Default: false
-  pb_schema_path: pb_schema.json # Optional. Sets the path of your collection schema file. Default: pb_schema.json
-  output_dir: lib/generated/pocketbase # Optional. Sets the directory of generated model files. If the directory doesn't exist — it'll be created. Default: lib/generated/pocketbase
-  line_length: 80 # Optional. Sets the length of line for dart formatter of generated code. Default: 80

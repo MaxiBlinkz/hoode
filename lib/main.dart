@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:hoode/app/data/services/supabase_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'app/core/config/app_config.dart';
 import 'app/core/theme/theme_controller.dart';
@@ -14,7 +15,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
   Get.put(ThemeController(), permanent: true);
-  await AppConfig.initialize();
+  //await AppConfig.initialize();
 
   await Supabase.initialize(
     url: 'https://bhamvtgrierglecqrpph.supabase.co',
@@ -23,6 +24,8 @@ Future<void> main() async {
     //authCallbackUrlHostname: 'login-callback', // This matches the path in your redirectTo URL
   );
   // Initialize services
+  // Initialize SupabaseService
+  Get.put<SupabaseService>(SupabaseService(), permanent: true);
   Get.put(AuthService());
   Get.put(BookmarkService());
   await MobileAds.instance.initialize();

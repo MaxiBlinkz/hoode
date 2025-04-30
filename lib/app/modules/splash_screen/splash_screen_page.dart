@@ -194,7 +194,7 @@ class SplashScreenPage extends GetView<SplashScreenController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Lottie.asset(
-              'assets/animations/error.json',
+              'assets/animations/oops.json',
               width: 150,
               height: 150,
               fit: BoxFit.contain,

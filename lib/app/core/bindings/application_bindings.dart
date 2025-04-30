@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hoode/app/data/services/supabase_service.dart';
 import '../../modules/image_cropper/image_cropper_controller.dart';
 import '../theme/theme_controller.dart';
 import '../../data/services/adservice.dart';
@@ -23,6 +24,7 @@ class ApplicationBindings extends Bindings {
   void dependencies() {
     // Services - Permanent instances
     Get.put(AdService(), permanent: true);
+    Get.put(SupabaseService(), permanent: true);
     Get.put(BookmarkService(), permanent: true);
     Get.put(UserService(), permanent: true);
 

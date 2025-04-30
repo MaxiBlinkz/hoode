@@ -1,7 +1,7 @@
-import 'package:easy_loading_button/easy_loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
+import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 import '../../core/widgets/social_button.dart';
 import 'login_controller.dart';
 
@@ -51,115 +51,69 @@ class LoginPage extends GetView<LoginController> {
                       ),
                     ],
                   ),
-                  child: Form(
-                    key: loginFormKey,
-                    child: Column(
-                      children: [
-                        Text(
-                          "Welcome Back",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor,
-                          ),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Welcome Back",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
                         ),
-                        const SizedBox(height: 10),
-                         Text(
-                         "Sign in to continue",
-                           style: TextStyle(
-                           fontSize: 14,
-                            color: Colors.grey.shade500,
-                           ),
-                       ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          controller: controller.emailController,
-                            decoration: InputDecoration(
-                              hintText: "Email",
-                                prefixIcon: Icon(IconlyLight.message,
-                                    color: Theme.of(context).primaryColor),
-                            ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
-                            }
-                            if (!GetUtils.isEmail(value)) {
-                              return 'Please enter a valid email';
-                            }
-                            return null;
-                          },
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        "Sign in to continue",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade500,
                         ),
-                        const SizedBox(height: 20),
-                        Obx(() => TextFormField(
-                              controller: controller.passwordController,
-                              obscureText: !controller.isPasswordVisible.value,
-                              decoration: InputDecoration(
-                                hintText: "Password",
-                                prefixIcon: Icon(IconlyLight.lock,
-                                    color: Theme.of(context).primaryColor),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    controller.isPasswordVisible.value
-                                        ? IconlyLight.hide
-                                        : IconlyLight.show,
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                  onPressed:
-                                      controller.togglePasswordVisibility,
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your password';
-                                }
-                                if (value.length < 6) {
-                                  return 'Password must be at least 6 characters';
-                                }
-                                return null;
-                              },
-                            )),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-
-                              TextButton(
-                          onPressed: () {
-                            // Implement forgot password logic
-                          },
-                          child: const Text("Forgot Password?",
-                          style: TextStyle(color: Colors.grey),
-                          ),
-                        ),
-                          ],
-                        ),
-                       const SizedBox(height: 10),
-                        EasyButton(
-                            buttonColor: Theme.of(context).primaryColor,
-                            borderRadius: 36,
-                          onPressed: () {
-                            if (loginFormKey.currentState!.validate()) {
-                              controller.login();
-                            }
+                      ),
+                      const SizedBox(height: 20),
+                      // Using Supabase Auth UI Email Field
+                      SupaEmailAuth(
+                        redirectTo: controller.redirectUrl,
+                        onSignInComplete: controller.onSignInComplete,
+                        onSignUpComplete: controller.onSignUpComplete,
+                        onError: controller.onAuthError,
+                        metadataFields: [
+                          MetaDataField(
+                            key: 'username',
+                            label: 'Username',
+                            prefixIcon: Icon(IconlyLight.profile, color: Theme.of(context).primaryColor),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a username';
+                              }
+                              return null;
                             },
-                            idleStateWidget: const Text(
-                              "Sign In",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          loadingStateWidget: const CircularProgressIndicator(
-                              color: Colors.white,
                           ),
+                        ],
+                        isInitiallySigningIn: true,
+                        prefixIconEmail: Icon(IconlyLight.message, color: Theme.of(context).primaryColor),
+                        prefixIconPassword: Icon(IconlyLight.lock, color: Theme.of(context).primaryColor),
+                        localization: SupaEmailAuthLocalization(
+                          enterEmail: "Email",
+                          enterPassword: "Password",
+                          signIn: "Sign In",
+                          signUp: "Sign Up",
+                          forgotPassword: "Forgot Password?",
+                          dontHaveAccount: "Don't have an account? Sign up",
+                          haveAccount: "Already have an account? Sign in",
+                          validEmailError: "Please enter a valid email address",
+                          passwordLengthError: "Password must be at least 6 characters",
+                          requiredFieldError: "This field is required",
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    "Or continue with",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                   const SizedBox(height: 20),
+                const SizedBox(height: 20),
+                const Text(
+                  "Or continue with",
+                  style: TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 20),
                 // Social Login Buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -167,7 +121,6 @@ class LoginPage extends GetView<LoginController> {
                     SocialButton(
                       icon: 'assets/icons/google.png',
                       onPressed: () {
-                        // Implement Google login
                         controller.googleSignIn();
                       },
                     ),
@@ -175,7 +128,6 @@ class LoginPage extends GetView<LoginController> {
                     SocialButton(
                       icon: 'assets/icons/apple.png',
                       onPressed: () {
-                        // Implement Apple login
                         controller.appleSignIn();
                       },
                     ),
@@ -183,16 +135,14 @@ class LoginPage extends GetView<LoginController> {
                     SocialButton(
                       icon: 'assets/icons/facebook.png',
                       onPressed: () {
-                        // Implement Facebook login
                         controller.facebookSignIn();
                       },
                     ),
                   ],
                 ),
-                  const SizedBox(height: 20),
-                 TextButton(
+                const SizedBox(height: 20),
+                TextButton(
                   onPressed: () {
-                    // Navigate to sign up page
                     Get.toNamed('/register');
                   },
                   child: const Text(

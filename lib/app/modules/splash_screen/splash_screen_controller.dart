@@ -25,7 +25,7 @@ class SplashScreenController extends GetxController {
   final statusMessage = "Initializing...".obs;
   final hasError = false.obs;
   final errorMessage = "".obs;
-  final appVersion = "".obs;
+  final appVersion = "0.1.0".obs;
   final isOfflineMode = false.obs;
   final updateAvailable = false.obs;
 
@@ -49,7 +49,7 @@ class SplashScreenController extends GetxController {
 
   Future<void> initializeApp() async {
     final stopwatch = Stopwatch()..start();
-    
+
     try {
       // Get app version
       statusMessage("Starting up...");
@@ -65,17 +65,22 @@ class SplashScreenController extends GetxController {
         statusMessage("Offline mode");
         await _loadCachedData();
       } else {
-        // Check for app updates
+        // Check for app updates - Wrap this in its own try-catch
         statusMessage("Checking for updates...");
         initializationProgress(0.2);
+        try {
         await _checkForUpdates();
+        } catch (updateError) {
+          logger.e('Error during update check: $updateError');
+          // Continue with app initialization despite update check error
+        }
 
         // Initialize ad services
         statusMessage("Initializing ads...");
         initializationProgress(0.3);
         await adService.createUniqueBannerAd();
         adService.loadInterstitialAd();
-        
+
         // Check authentication status
         statusMessage("Checking authentication...");
         initializationProgress(0.5);
@@ -162,7 +167,7 @@ class SplashScreenController extends GetxController {
       final packageInfo = await PackageInfo.fromPlatform();
       appVersion.value = "${packageInfo.version} (${packageInfo.buildNumber})";
     } catch (e) {
-      appVersion.value = "1.0.0";
+      appVersion.value = "0.1.0";
     }
   }
 
@@ -186,24 +191,52 @@ class SplashScreenController extends GetxController {
 
   Future<void> _checkForUpdates() async {
     try {
+      // First check if we can connect to Supabase
+      if (_client == null) {
+        logger.w('Supabase client is not initialized');
+        return;
+      }
+
+      // Use a more robust query that won't fail if there are no records
       final response = await _client
           .from('app_config')
           .select('latest_version, force_update')
-          .single();
+          .limit(1)
+          .maybeSingle();
+
+      // If no data was returned, just return without error
+      if (response == null) {
+        logger.w('No app_config data found');
+        return;
+      }
 
       final packageInfo = await PackageInfo.fromPlatform();
       final currentVersion = packageInfo.version;
+    
+      // Check if the response contains the expected fields
+      if (response['latest_version'] == null) {
+        logger.w('latest_version field not found in app_config');
+        return;
+      }
+    
       final latestVersion = response['latest_version'];
 
       if (currentVersion != latestVersion) {
         updateAvailable.value = true;
+        // Check if force_update exists before writing it
+        if (response['force_update'] != null) {
         storage.write('force_update', response['force_update']);
+        } else {
+          storage.write('force_update', false);
+        }
       }
     } catch (e) {
-      // Continue without update check
+      // Log more details about the error
       logger.w('Update check failed: $e');
+      // Don't let this error affect the rest of the app initialization
     }
   }
+
 
   Future<void> _checkOnboardingStatus() async {
     final hasCompletedOnboarding =

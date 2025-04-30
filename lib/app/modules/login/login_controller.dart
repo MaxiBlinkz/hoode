@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../data/enums/enums.dart';
 import '../../data/services/authservice.dart';
 import 'package:logger/logger.dart';
@@ -19,11 +20,42 @@ class LoginController extends GetxController {
   bool isAdLoaded = false;
 
   final authService = Get.find<AuthService>();
+  
+  // Supabase redirect URL - replace with your app's URL scheme
+  final String redirectUrl = 'io.supabase.hoode://login-callback/';
 
   @override
   void onInit() {
     super.onInit();
     loadCredentials();
+  }
+
+  // Callback for Supabase Auth sign in success
+  void onSignInComplete(AuthResponse response) {
+    status(Status.success);
+    logger.i('User signed in: ${response.user?.email}');
+    Get.offAllNamed('/home');
+  }
+
+  // Callback for Supabase Auth sign up success
+  void onSignUpComplete(AuthResponse response) {
+    status(Status.success);
+    logger.i('User signed up: ${response.user?.email}');
+    Get.offAllNamed('/home');
+  }
+
+  // Callback for Supabase Auth errors
+  void onAuthError(Object error) {
+    status(Status.error);
+    err.value = error.toString();
+    logger.e('Auth error: ${err.value}');
+    Get.snackbar(
+      'Authentication Error',
+      err.value.toString(),
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Get.theme.colorScheme.error.withOpacity(0.8),
+      colorText: Get.theme.colorScheme.onError,
+    );
   }
 
   Future<void> login() async {
