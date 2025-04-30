@@ -75,7 +75,7 @@ class BookmarksPage extends GetView<BookmarksController> {
                   itemBuilder: (context, index) {
                     final listing = controller.bookmarkedListings[index];
                     return Dismissible(
-                      key: Key(listing.id),
+                      key: Key(listing['id']),
                       direction: DismissDirection.endToStart,
                       background: Container(
                         alignment: Alignment.centerRight,
@@ -85,7 +85,7 @@ class BookmarksPage extends GetView<BookmarksController> {
                                         color: Colors.white),
                       ),
                       onDismissed: (_) => 
-                          controller.removeBookmark(listing.id),
+                          controller.removeBookmark(listing['id']),
                       child: ListingCard(
                         property: listing,
                         imageWidth: double.infinity,

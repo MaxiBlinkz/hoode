@@ -47,7 +47,7 @@ class OnboardingController extends GetxController {
   }
 
   void completeOnboarding() {
-    storage.write('has_seen_onboarding', true);
+    storage.write('onboarding_completed', true);
     Get.offAllNamed('/home');
   }
 

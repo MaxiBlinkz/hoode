@@ -47,7 +47,7 @@ class DashboardPage extends GetView<DashboardController> {
                              style: Theme.of(context).textTheme.displaySmall!.copyWith(fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            "Welcome back, ${controller.user.value?.data['name'] ?? 'Agent'}",
+                            "Welcome back, ${controller.userProfile.value?['full_name'] ?? 'Agent'}",
                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.grey.shade600),
                           ),
                         ],

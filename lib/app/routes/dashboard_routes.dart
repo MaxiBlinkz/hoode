@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import '../core/middleware/auth_middleware.dart';
 
 import '../modules/dashboard/dashboard_binding.dart';
 import '../modules/dashboard/dashboard_page.dart';
@@ -13,8 +12,7 @@ class ProfileRoutes {
     GetPage(
       name: profile,
       page: DashboardPage.new,
-      binding: DashboardBinding(),
-      middlewares: [AuthMiddleware()]
+      binding: DashboardBinding()
     ),
   ];
 }

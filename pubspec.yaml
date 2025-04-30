@@ -30,6 +30,7 @@ environment:
 dependencies:
   chatview: ^2.4.0
   collection: any
+  connectivity_plus: ^6.1.4
   csc_picker_plus:
   dio: ^5.8.0+1
   easy_loading_button:
@@ -40,6 +41,7 @@ dependencies:
   flex_color_scheme:
   flutter:
     sdk: flutter
+  flutter_chat_ui: ^1.6.15
   flutter_iconly:
   flutter_map:
   flutter_rating_bar: ^4.0.1
@@ -66,6 +68,7 @@ dependencies:
   pocketbase:
   sentry_flutter: ^8.9.0
   share_plus: ^10.1.4
+  shimmer: ^3.0.0
   skeletonizer: ^1.4.2
   supabase_flutter: ^2.9.0
   toastification:

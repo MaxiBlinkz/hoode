@@ -1,10 +1,10 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:hoode/app/data/services/api_service.dart';
 import '../../data/services/bookmarkservice.dart';
+import '../../data/services/supabase_service.dart';
 import '../../core/algorithms/models/geo_point.dart';
 import '../../core/algorithms/models/market_trends.dart';
 import '../../core/algorithms/models/seasonal_data.dart';
@@ -13,108 +13,149 @@ import '../../core/algorithms/models/user_preferences.dart';
 import '../../data/enums/enums.dart';
 import '../../../core.dart';
 import 'package:logger/logger.dart';
-import 'package:pocketbase/pocketbase.dart';
-import '../../data/services/db_helper.dart';
 import 'package:geocoding/geocoding.dart';
-import 'dart:math' as Math; // Import the math library
+import 'dart:math' as Math;
 
 class HomeController extends GetxController {
-  final properties = <RecordModel>[].obs;
-  final featuredProperties = <RecordModel>[].obs;
-  var isLoading = true.obs;
-  int currentPage = 1;
-  int totalListing = 20;
-  var status = Status.initial.obs;
+  // Properties
+  final properties = <Map<String, dynamic>>[].obs;
+  final featuredProperties = <Map<String, dynamic>>[].obs;
+  final filteredProperties = <Map<String, dynamic>>[].obs;
+  final recommendedProperties = <Map<String, dynamic>>[].obs;
+  final pricePredictions = <String, double>{}.obs;
+
+  // State variables
+  final isLoading = true.obs;
+  final status = Status.initial.obs;
   final hasMoreData = true.obs;
   final totalItems = 0.obs;
   final isLoadingMore = false.obs;
   final hasError = false.obs;
   final searchQuery = ''.obs;
   final selectedFilter = RxString('');
-  final filteredProperties = <RecordModel>[].obs;
-  late final UserPreferences userPrefs;
-  late final UserInteractionHistory interactions;
-  late final MarketTrends trends;
-  late final SeasonalData seasonal;
-  final recommendedProperties = <RecordModel>[].obs;
-  RxMap<String, double> pricePredictions = <String, double>{}.obs;
-  Logger logger = Logger();
-  final listController = ScrollController();
-  late final PocketBase pb;
+  
+  // Pagination
+  int currentPage = 1;
+  final int perPage = 20;
 
+  // Services
+  final supabaseService = SupabaseService.to;
+  final bookmarkService = Get.find<BookmarkService>();
   final ApiService _apiService = ApiService();
+  final logger = Logger();
+
+  // Controllers
+  final listController = ScrollController();
+
+  // Get Supabase client
+  SupabaseClient get _client => supabaseService.client;
 
   @override
-  void onInit() async{
+  void onInit() {
     super.onInit();
-    String url = await DbHelper.getPocketbaseUrl();
-    pb = PocketBase(url);
+    
+    // Load data
     loadProperties();
     loadRecommendations();
     loadFeaturedProperties();
-    loadMore();
+    
+    // Setup scroll listener for pagination
+    _setupScrollListener();
   }
 
   Future<void> loadFeaturedProperties() async {
     try {
-      final response = await pb.collection('properties').getList(
-            filter: 'featured = true',
-            sort: '-created',
-            perPage: 5,
-          );
-      featuredProperties.value = response.items;
+      final response = await _client
+          .from('properties')
+          .select()
+          .eq('featured', true)
+          .order('created_at', ascending: false)
+          .limit(5);
+
+      featuredProperties.value = response;
     } catch (e) {
       logger.e('Error loading featured properties: $e');
     }
   }
 
-  Stream<List<RecordModel>> getProperties(int page) async* {
+  Stream<List<Map<String, dynamic>>> getProperties(int page) async* {
     status(Status.loading);
     isLoading(true);
     hasError(false);
+    
     try {
-      final currentUser = pb.authStore.record;
-      final userCountry = currentUser?.data['country'];
-      final userState = currentUser?.data['state'];
-      final userCity = currentUser?.data['city'];
-      var filter = '';
-       if (searchQuery.isNotEmpty) {
-        filter =
-            'title ~ "${searchQuery.value}" || location ~ "${searchQuery.value}"';
+      // Get current user
+      final currentUser = _client.auth.currentUser;
+
+      // Build query
+      var query = _client
+          .from('properties')
+          .select()
+          .range((page - 1) * perPage, page * perPage - 1);
+
+      // Add search filter if provided
+      if (searchQuery.isNotEmpty) {
+        final searchTerm = '%${searchQuery.value}%';
+        query = _client
+            .from('properties')
+            .select()
+            .or('title.ilike.$searchTerm,location.ilike.$searchTerm')
+            .range((page - 1) * perPage, page * perPage - 1);
       }
-      final response = await pb.collection('properties').getList(
-            page: page,
-            perPage: totalListing,
-            filter: filter,
-          );
-      totalItems(response.totalItems);
+
+      
+      // Execute query
+      final response = await query;
+
+      // Get total count for pagination
+      final countResponse = await _client
+          .from('properties')
+          .select('id')
+          .count(CountOption.exact);
+
+      totalItems(countResponse.count ?? 0);
       hasMoreData(properties.length < totalItems.value);
-      final List<RecordModel> sortedItems = List.from(response.items);
+      
+      // Sort properties by distance if user location is available
+      final List<Map<String, dynamic>> sortedItems = List.from(response);
 
-       // Get user's geopoint from country, state, and city using geocoding
+      // Get user's location if available
       GeoPoint? userLocation;
-        if(userCountry != null && userState != null && userCity != null){
-          userLocation = await _getGeoPointFromLocation(userCountry, userState, userCity);
+      if (currentUser != null) {
+        final userProfile = await _client
+            .from('users')
+            .select()
+            .eq('id', currentUser.id)
+            .single();
+
+        if (userProfile != null &&
+            userProfile['country'] != null &&
+            userProfile['state'] != null &&
+            userProfile['city'] != null) {
+          userLocation = await _getGeoPointFromLocation(userProfile['country'],
+              userProfile['state'], userProfile['city']);
         }
-        
-       if(userLocation != null){
-          sortedItems.sort((a, b) {
-            final aGeoPoint = _getGeoPointFromProperty(a);
-            final bGeoPoint = _getGeoPointFromProperty(b);
+      }
+      
+      // Sort by distance if user location is available, otherwise by creation date
+      if (userLocation != null) {
+        sortedItems.sort((a, b) {
+          final aGeoPoint = _getGeoPointFromProperty(a);
+          final bGeoPoint = _getGeoPointFromProperty(b);
 
-           if (aGeoPoint != null && bGeoPoint != null) {
-               final aDistance = _calculateDistance(userLocation!, aGeoPoint);
-              final bDistance = _calculateDistance(userLocation!, bGeoPoint);
+          if (aGeoPoint != null && bGeoPoint != null) {
+            final aDistance = _calculateDistance(userLocation!, aGeoPoint);
+            final bDistance = _calculateDistance(userLocation!, bGeoPoint);
 
-              return aDistance.compareTo(bDistance);
-            } else {
-             return 0;
-            }
-          });
-       }else{
-        sortedItems.sort((b, a) => b.get<String>('created').compareTo(a.get<String>('created')));
-       }
-
+            return aDistance.compareTo(bDistance);
+          } else {
+            return 0;
+          }
+        });
+      } else {
+        sortedItems.sort(
+            (b, a) => (a['created_at'] ?? '').compareTo(b['created_at'] ?? ''));
+      }
 
       yield sortedItems;
       status(Status.success);
@@ -124,9 +165,11 @@ class HomeController extends GetxController {
       status(Status.error);
       hasError(true);
       logger.e('Error fetching properties: $e');
+      yield [];
     }
   }
-    // Function to calculate distance using Haversine formula
+
+  // Function to calculate distance using Haversine formula
   double _calculateDistance(GeoPoint p1, GeoPoint p2) {
     const double earthRadius = 6371; // Radius of Earth in kilometers
 
@@ -148,73 +191,81 @@ class HomeController extends GetxController {
     return earthRadius * c;
   }
 
-    double _degreesToRadians(double degrees) {
+  double _degreesToRadians(double degrees) {
     return degrees * Math.pi / 180;
   }
 
-  // Helper function to get GeoPoint from a property record
-  GeoPoint? _getGeoPointFromProperty(RecordModel property) {
-    final latitude = property.data['latitude'];
-    final longitude = property.data['longitude'];
+  // Helper function to get GeoPoint from a property
+  GeoPoint? _getGeoPointFromProperty(Map<String, dynamic> property) {
+    final latitude = property['latitude'];
+    final longitude = property['longitude'];
 
-    if(latitude is double && longitude is double){
-        return GeoPoint(latitude: latitude, longitude: longitude);
-    } else{
+    if (latitude is double && longitude is double) {
+      return GeoPoint(latitude: latitude, longitude: longitude);
+    } else {
       return null;
     }
   }
 
   Future<GeoPoint?> _getGeoPointFromLocation(String country, String state, String city) async {
-    try{
-        List<Location> locations = await locationFromAddress("$city, $state, $country");
-        if (locations.isNotEmpty) {
-            return GeoPoint(latitude: locations.first.latitude, longitude: locations.first.longitude);
-        }
-        return null;
-      }catch(e){
-        logger.e('Error getting geocode: $e');
-         return null;
+    try {
+      List<Location> locations =
+          await locationFromAddress("$city, $state, $country");
+      if (locations.isNotEmpty) {
+        return GeoPoint(
+            latitude: locations.first.latitude,
+            longitude: locations.first.longitude);
       }
+      return null;
+    } catch (e) {
+      logger.e('Error getting geocode: $e');
+      return null;
     }
-    void searchProperties(String query) {
+  }
+
+  void searchProperties(String query) {
     searchQuery.value = query;
     loadProperties();
   }
-
 
   Future<void> loadProperties() async {
     properties.clear();
     filteredProperties.clear();
     currentPage = 1;
-    final bookmarkService = Get.find<BookmarkService>();
+    
+    // Ensure bookmarks are loaded
     await bookmarkService.loadBookmarks();
+    
+    // Load properties
     getProperties(currentPage).listen((data) {
       properties(data);
-       filterProperties(selectedFilter.value);
+      filterProperties(selectedFilter.value);
     });
   }
 
   void refreshAfterBookmarkChange() {
-    loadProperties();
+    // No need to reload all properties, just update the UI
     update();
   }
 
   void retryLoading() {
     loadProperties();
-    update();
   }
 
-  void loadMore() {
+  void _setupScrollListener() {
     listController.addListener(() {
       if (!listController.hasClients) return;
+      
       final maxScroll = listController.position.maxScrollExtent;
       final currentScroll = listController.position.pixels;
       const threshold = 200;
+      
       if ((maxScroll - currentScroll) <= threshold &&
           !isLoadingMore.value &&
           hasMoreData.value) {
         isLoadingMore(true);
         currentPage++;
+        
         getProperties(currentPage).listen(
           (data) {
             if (data.isEmpty) {
@@ -234,93 +285,96 @@ class HomeController extends GetxController {
     });
   }
 
-  // void _initializeRecommendationSystem() {
-  //   userPrefs = UserPreferences(
-  //     targetPrice: 250000.0,
-  //     preferredLocation: GeoPoint(latitude: 0, longitude: 0),
-  //     preferredAmenities: ['parking', 'pool'],
-  //     preferredType: 'apartment',
-  //   );
-  //   interactions = UserInteractionHistory(
-  //     viewCounts: {},
-  //     favorites: {},
-  //     clicks: {},
-  //   );
-  //   trends = MarketTrends();
-  //   seasonal = SeasonalData();
-  // }
-
   Future<void> loadRecommendations() async {
     try {
-      final currentUser = await getCurrentUser();
-      final currentUserId = currentUser?.id ?? '';
-      final userLatitude = currentUser?.data['latitude'] ?? 0.0;
-      final userLongitude = currentUser?.data['longitude'] ?? 0.0;
+      final currentUser = _client.auth.currentUser;
+      if (currentUser == null) return;
+
+      // Get user profile for location data
+      final userProfile = await _client
+          .from('users')
+          .select()
+          .eq('id', currentUser.id)
+          .single();
+
+      if (userProfile == null) return;
+
+      // Get user's latitude and longitude
+      final userLatitude = userProfile['latitude'] ?? 0.0;
+      final userLongitude = userProfile['longitude'] ?? 0.0;
+
+      // Get recommendations from API service
       final recommendations = await _apiService.getRecommendations(
-        userId: currentUserId,
+        userId: currentUser.id,
         latitude: userLatitude,
         longitude: userLongitude,
       );
-      // Handle recommendations
+      
+      // Process recommendations if needed
+      // ...
+      
     } catch (e) {
-      // Handle error
+      logger.e('Error loading recommendations: $e');
     }
   }
 
   Future<void> viewProperty(String propertyId) async {
     try {
-      final currentUser = await getCurrentUser();
-      final currentUserId = currentUser?.id ?? '';
+      final currentUser = _client.auth.currentUser;
+      if (currentUser == null) return;
+
+      // Track property view
       await _apiService.trackPropertyView(
-        currentUserId,
+        currentUser.id,
         propertyId,
       );
-      // Handle success
+      
+      // // Increment view count in properties table
+      // await _client.rpc('increment_view_count', params: {
+      //   'row_id': propertyId,
+      //   'column_name': 'view_count',
+      //   'amount': 1
+      // });
+
+      // Fetch the current property to get the view count
+      final property = await _client
+          .from('properties')
+          .select('view_count')
+          .eq('id', propertyId)
+          .single();
+
+// Increment the view count
+      final currentViewCount = property['view_count'] as int? ?? 0;
+      await _client
+          .from('properties')
+          .update({'view_count': currentViewCount + 1}).eq('id', propertyId);
+
+      // Record user interaction
+      await _client.from('user_interactions').insert({
+        'user_id': currentUser.id,
+        'property_id': propertyId,
+        'interaction_type': 'view',
+        'created_at': DateTime.now().toIso8601String(),
+      });
+      
     } catch (e) {
-      // Handle error
+      logger.e('Error tracking property view: $e');
     }
   }
 
-
   void filterProperties(String category) {
     selectedFilter.value = category;
+    
     if (category.isEmpty) {
       filteredProperties.value = properties.toList();
       return;
     }
+    
     filteredProperties.value = properties.where((property) {
-      return property.data['category']?.toString().toLowerCase() ==
+      return property['category']?.toString().toLowerCase() == 
           category.toLowerCase();
     }).toList();
   }
-
-  Future<RecordModel?> getCurrentUser() async {
-  try {
-    if (!pb.authStore.isValid || pb.authStore.record == null) {
-      final token = GetStorage().read('authToken');
-      final userData = GetStorage().read('userData');
-      
-      if (token != null && userData != null) {
-        pb.authStore.save(token, RecordModel.fromJson(userData));
-        await pb.collection('users').authRefresh();
-        
-        if (!pb.authStore.isValid) {
-          Get.toNamed('/login');
-          return null;
-        }
-      }
-    }
-    return pb.authStore.record;
-  } catch (e) {
-    Get.snackbar(
-      'Connection Error',
-      'Unable to connect to server. Please check your internet connection.',
-      backgroundColor: Colors.red,
-      colorText: Colors.white,
-    );
-    return null;
-  }
-}
 
   @override
   void onClose() {

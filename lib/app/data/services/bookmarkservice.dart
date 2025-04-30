@@ -1,167 +1,118 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import '../../modules/bookmarks/bookmarks_controller.dart';
-import 'authservice.dart';
-import 'package:logger/logger.dart';
-import 'package:pocketbase/pocketbase.dart';
-import 'db_helper.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import './supabase_service.dart';
 
 class BookmarkService extends GetxService {
-  late final PocketBase pb;
   final bookmarks = <String>[].obs;
-  final bookmarkedIds = <String>[].obs;
-  final authService = Get.find<AuthService>();
-  Logger logger = Logger();
-
+  
+  // Get Supabase client
+  SupabaseClient get _client => SupabaseService.to.client;
+  
   @override
-  Future<void> onInit() async {
+  void onInit() {
     super.onInit();
-    String url = await DbHelper.getPocketbaseUrl();
-    pb = PocketBase(url);
+    loadBookmarks();
+
+    // Set up realtime subscription for bookmarks
+    _setupRealtimeSubscription();
+  }
+  
+  void _setupRealtimeSubscription() {
+    final userId = _client.auth.currentUser?.id;
+    if (userId == null) return;
+  
+    final myChannel = _client.channel('my_bookmarks_channel');
+
+    myChannel
+        .onPostgresChanges(
+          event: PostgresChangeEvent.all,
+          schema: 'public',
+          table: 'bookmarks',
+          // Use the correct filter format
+          filter: PostgresChangeFilter(
+            type: PostgresChangeFilterType.eq,
+            column: 'user_id',
+            value: userId,
+          ),
+          callback: (payload) {
+            // Reload bookmarks when changes occur
+            loadBookmarks();
+          },
+        )
+        .subscribe();
   }
 
-  Future<void> toggleBookmark(String propertyId) async {
-  authService.requireAuth(() async {
+
+  
+  Future<void> loadBookmarks() async {
+    final userId = _client.auth.currentUser?.id;
+    if (userId == null) {
+      bookmarks.clear();
+      return;
+    }
+    
     try {
-      final currentUser = await getCurrentUser();
-      if (currentUser == null) return;
-
-      RecordModel bookmarkRecord;
+      final result = await _client
+          .from('bookmarks')
+          .select('property_id')
+          .eq('user_id', userId);
       
-      try {
-        bookmarkRecord = await pb
-            .collection('bookmarks')
-            .getFirstListItem("user = '${currentUser.id}'");
-        // Update existing bookmark
-        List properties = bookmarkRecord.data['properties'] ?? [];
-        if (properties.contains(propertyId)) {
-          properties.remove(propertyId);
-        } else {
-          properties.add(propertyId);
-        }
-
-        await pb.collection('bookmarks').update(bookmarkRecord.id, body: {
-          'user': currentUser.id,
-          'properties': properties,
-        });
-
-         bookmarks.value = List<String>.from(properties);
-
-        // if (properties.contains(propertyId)) {
-        //   bookmarks.add(propertyId);
-        // } else {
-        //   bookmarks.remove(propertyId);
-        // }
-
-        // bookmarkedIds.value = List<String>.from(properties);  // Update bookmarkedIds
+      final propertyIds =
+          result.map((item) => item['property_id'] as String).toList();
+      bookmarks.assignAll(propertyIds);
+    } catch (e) {
+      print('Error loading bookmarks: $e');
+    }
+  }
+  
+  Future<void> toggleBookmark(String propertyId) async {
+    final userId = _client.auth.currentUser?.id;
+    if (userId == null) {
+      Get.toNamed('/login');
+      return;
+    }
+    
+    try {
+      if (bookmarks.contains(propertyId)) {
+        // Remove bookmark
+        await _client
+            .from('bookmarks')
+            .delete()
+            .eq('user_id', userId)
+            .eq('property_id', propertyId);
         
-      } catch (_) {
-        // Create new bookmark record
-        await pb.collection('bookmarks').create(body: {
-          'user': currentUser.id,
-          'properties': [propertyId]
+        bookmarks.remove(propertyId);
+      } else {
+        // Add bookmark
+        await _client.from('bookmarks').insert({
+          'user_id': userId,
+          'property_id': propertyId,
         });
-        // bookmarkedIds.add(propertyId); 
+        
         bookmarks.add(propertyId);
       }
-      Get.find<BookmarksController>().loadBookmarks();
     } catch (e) {
-      logger.e('Bookmark operation failed: $e');
+      print('Error toggling bookmark: $e');
     }
-  });
-}
-
-
-
-
+  }
+  
   Future<bool> isBookmarked(String propertyId) async {
-    try {
-      final currentUser = await getCurrentUser();
-      if (currentUser?.id == null) return false;
-
-      final result = await pb
-          .collection('bookmarks')
-          .getFirstListItem(
-              'user = "${currentUser?.id}" && properties ~ "$propertyId"')
-          .catchError((error) => RecordModel.fromJson({
-                'collectionId': 'bookmarks',
-                'collectionName': 'bookmarks',
-                'created': DateTime.now().toIso8601String(),
-                'updated': DateTime.now().toIso8601String(),
-                'id': '',
-                'properties': []
-              }));
-
-      return result.id.isNotEmpty;
-    } catch (e) {
-      return false;
-    }
+    return bookmarks.contains(propertyId);
   }
-
-  Future<List<RecordModel>> getBookmarkedListings() async {
+  
+  Future<List<Map<String, dynamic>>> getBookmarkedListings() async {
+    if (bookmarks.isEmpty) {
+      return [];
+    }
+    
     try {
-      final currentUser = await getCurrentUser();
-      if (currentUser?.id == null) return [];
-      final bookmarkRecords = await pb
-          .collection('bookmarks')
-          .getFirstListItem('user = "${currentUser?.id}"');
-
-      List propertyIds = bookmarkRecords.data['properties'] ?? [];
-      if (propertyIds.isEmpty) return [];
+      final properties =
+          await _client.from('properties').select('*').eq('id', bookmarks);
       
-      return await pb.collection('properties').getFullList(
-            filter: 'id ~ "${propertyIds.join('" || id ~ "')}"',
-          );
+      return properties;
     } catch (e) {
+      print('Error getting bookmarked listings: $e');
       return [];
     }
   }
-
-  Future<List> loadBookmarks() async {
-    try {
-      final currentUser = await getCurrentUser();
-      if (currentUser == null) return [];
-
-      final bookmarkRecord = await pb
-          .collection('bookmarks')
-          .getFirstListItem('user = "${currentUser.id}"');
-
-      List properties = bookmarkRecord.data['properties'] ?? [];
-      bookmarks.value = properties.cast<String>();
-      return bookmarks;
-    } catch (e) {
-      bookmarks.clear();
-      return [];
-    }
-  }
-
-  Future<RecordModel?> getCurrentUser() async {
-  try {
-    if (!pb.authStore.isValid || pb.authStore.record == null) {
-      final token = GetStorage().read('authToken');
-      final userData = GetStorage().read('userData');
-      
-      if (token != null && userData != null) {
-        pb.authStore.save(token, RecordModel.fromJson(userData));
-        await pb.collection('users').authRefresh();
-        
-        if (!pb.authStore.isValid) {
-          Get.toNamed('/login');
-          return null;
-        }
-      }
-    }
-    return pb.authStore.record;
-  } catch (e) {
-    Get.snackbar(
-      'Connection Error',
-      'Unable to connect to server. Please check your internet connection.',
-      backgroundColor: Colors.red,
-      colorText: Colors.white,
-    );
-    return null;
-  }
-}
-
 }

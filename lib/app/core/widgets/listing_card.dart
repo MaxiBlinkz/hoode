@@ -4,10 +4,9 @@ import 'package:get/get.dart';
 import '../config/constants.dart';
 import '../../data/services/adservice.dart';
 import '../../data/services/bookmarkservice.dart';
-import 'package:pocketbase/pocketbase.dart';
 
 class ListingCard extends StatelessWidget {
-  final RecordModel property;
+  final Map<String, dynamic> property;
   final double? imageWidth;
   final double? imageHeight;
   final double? cardHeight;
@@ -34,22 +33,23 @@ class ListingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? imageUrl = property.data['image'] != null &&
-            property.data['image'] is List &&
-            property.data['image'].isNotEmpty
-        ? "$POCKETBASE_URL/api/files/properties/${property.id}/${property.data['image'][0].toString()}"
+    // Extract property data from the Map
+    final String? imageUrl = property['images'] != null &&
+            property['images'] is List &&
+            property['images'].isNotEmpty
+        ? property['images'][0]
         : null;
-    final String title = property.data['title']?.toString() ?? "No Title";
-    final String location = property.data['location']?.toString() ?? "No Location";
-    final String price = property.data['price']?.toString() ?? "0";
-     final int bedrooms = property.data['bedrooms']  ?? 0;
-    final int bathrooms = property.data['bathrooms']  ?? 0;
-    final String sqft = property.data['sqft']?.toString() ?? "0";
+    final String title = property['title']?.toString() ?? "No Title";
+    final String location = property['location']?.toString() ?? "No Location";
+    final String price = property['price']?.toString() ?? "0";
+    final int bedrooms = property['bedrooms'] ?? 0;
+    final int bathrooms = property['bathrooms'] ?? 0;
+    final String sqft = property['sqft']?.toString() ?? "0";
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       child: GestureDetector(
-        onTap: onTap ?? _defaultOnTap,
+        onTap: onTap ?? () => _defaultOnTap(property),
         child: Container(
           width: imageWidth,
           height: cardHeight ?? 240,
@@ -167,13 +167,13 @@ class ListingCard extends StatelessWidget {
                       child: IconButton(
                         padding: EdgeInsets.zero,
                         icon: Obx(() => Icon(
-                              bookmarkService.bookmarks.contains(property.id)
+                              bookmarkService.bookmarks.contains(property['id'])
                                   ? IconlyBold.heart
                                   : IconlyLight.heart,
                               color: Colors.red,
                               size: 20,
                             )),
-                        onPressed: () => bookmarkService.toggleBookmark(property.id),
+                        onPressed: () => bookmarkService.toggleBookmark(property['id']),
                       ),
                     ),
                   ),
@@ -285,7 +285,7 @@ class ListingCard extends StatelessWidget {
     );
   }
 
-  void _defaultOnTap() {
+  void _defaultOnTap(Map<String, dynamic> property) {
     Get.toNamed('/listing-detail', arguments: property);
   }
 }

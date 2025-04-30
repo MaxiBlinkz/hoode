@@ -1,67 +1,44 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import '../../data/enums/enums.dart';
 import '../../data/services/authservice.dart';
-import 'package:hoode/app/modules/nav_bar/nav_bar_page.dart';
 import 'package:logger/logger.dart';
-import 'package:pocketbase/pocketbase.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:hoode/app/data/services/db_helper.dart';
 
 class LoginController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final Logger logger = Logger(printer: PrettyPrinter());
-  var email = "".obs;
-  var password = "".obs;
-  final isLoggedIn = false.obs;
+  
   var status = Status.initial.obs;
   Rx<Object> err = "".obs;
   var isPasswordVisible = false.obs;
   final rememberMe = false.obs;
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-
   BannerAd? bannerAd;
   bool isAdLoaded = false;
 
-  final storage = GetStorage();
-
-  late final PocketBase pb;
   final authService = Get.find<AuthService>();
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadCredentials();
+  }
 
   Future<void> login() async {
     status(Status.loading);
-    isLoggedIn(false);
     try {
-      final authData = await pb.collection('users').authWithPassword(
-            email.value,
-            password.value,
-          );
-      if (pb.authStore.isValid) {
-        status(Status.success);
-        authService.saveAuthState(authData.token, authData.record);
-
-        if (rememberMe.value) {
-          storage.write('rememberedEmail', email.value);
-          storage.write('rememberedPassword', password.value);
-        } else {
-          storage.remove('rememberedEmail');
-          storage.remove('rememberedPassword');
-        }
-
-        Get.offAll(() => const NavBarPage());
-      } else {
-        status(Status.initial);
-      }
+      await authService.signInWithEmail(
+        emailController.text,
+        passwordController.text,
+        rememberMe: rememberMe.value,
+      );
+      status(Status.success);
     } catch (e) {
       err.value = e.toString();
       status(Status.error);
-      logger.i('${status.value}');
-      logger.e('${err.value}');
+      logger.e('Login error: ${err.value}');
     }
     update();
   }
@@ -69,74 +46,47 @@ class LoginController extends GetxController {
   Future<void> googleSignIn() async {
     status(Status.loading);
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return;
-
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-
-      // Use the correct PocketBase OAuth2 authentication method
-      final authData = await pb.collection('users').authWithOAuth2(
-        'google',
-        (url) async {
-          await launchUrl(url);
-        },
-        createData: {
-          'email': googleUser.email,
-          'emailVisibility': true,
-        },
-      );
-
-      if (pb.authStore.isValid) {
-        status(Status.success);
-        authService.saveAuthState(authData.token, authData.record);
-        Get.offAll(() => const NavBarPage());
-      }
+      await authService.signInWithGoogle();
+      status(Status.success);
     } catch (e) {
-      status(Status.error);
       err.value = e.toString();
+      status(Status.error);
       logger.e('Google Sign In Error: ${err.value}');
     }
     update();
   }
 
   Future<void> appleSignIn() async {
-    isLoggedIn(false);
+    status(Status.loading);
     try {
-      await pb.collection('users').authWithOAuth2('apple', (url) async {
-        await launchUrl(url);
-      });
+      await authService.signInWithApple();
+      status(Status.success);
     } catch (e) {
+      err.value = e.toString();
       status(Status.error);
-      logger.e(e);
-      // await bugnag.bugsnag.notify(e, stack);
-    } finally {
-      isLoggedIn(true);
-      Get.offAll(() => const NavBarPage());
+      logger.e('Apple Sign In Error: ${err.value}');
     }
+    update();
   }
 
   Future<void> facebookSignIn() async {
-    isLoggedIn(false);
+    status(Status.loading);
     try {
-      await pb.collection('users').authWithOAuth2('facebook', (url) async {
-        //await launchUrl(url);
-      });
+      await authService.signInWithFacebook();
+      status(Status.success);
     } catch (e) {
-      print(e);
-    } finally {
-      isLoggedIn(true);
-      Get.offAll(() => const NavBarPage());
+      err.value = e.toString();
+      status(Status.error);
+      logger.e('Facebook Sign In Error: ${err.value}');
     }
+    update();
   }
 
   void loadCredentials() {
-    final savedEmail = storage.read('rememberedEmail');
-    final savedPassword = storage.read('rememberedPassword');
-
-    if (savedEmail != null && savedPassword != null) {
-      emailController.text = savedEmail;
-      passwordController.text = savedPassword;
+    final credentials = authService.getRememberedCredentials();
+    if (credentials != null) {
+      emailController.text = credentials['email']!;
+      passwordController.text = credentials['password']!;
       rememberMe.value = true;
     }
   }
@@ -146,29 +96,9 @@ class LoginController extends GetxController {
     update();
   }
 
-  void initControllers() {
-    emailController.addListener(() => email.value = emailController.text);
-    passwordController
-        .addListener(() => password.value = passwordController.text);
-  }
-
   void toggleRememberMe(bool? value) {
     rememberMe.value = value ?? false;
     update();
-  }
-
-  @override
-  void onInit() async{
-    super.onInit();
-    String url = await DbHelper.getPocketbaseUrl();
-    pb = PocketBase(url);
-    initControllers();
-    loadCredentials();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
   }
 
   @override
