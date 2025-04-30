@@ -1,6 +1,3 @@
-import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import '../data/services/authservice.dart';
 
 import 'home_routes.dart';
 import 'listing_detail_routes.dart';
@@ -30,17 +27,8 @@ import 'analytics_routes.dart';
 class AppPages {
   AppPages._();
 
-  static String get INITIAL {
-  final storage = GetStorage();
-  final hasSeenOnboarding = storage.read('has_seen_onboarding') ?? false;
-  
-  if (!hasSeenOnboarding) {
-    return '/onboarding';
-  }
-  
-  final authService = Get.find<AuthService>();
-  return authService.isAuthenticated.value ? '/nav-bar' : '/login';
-}
+
+  static String get INITIAL => '/splash-screen';
 
   static final routes = [
     ...HomeRoutes.routes,
@@ -60,7 +48,7 @@ class AppPages {
 		...MyListingsRoutes.routes,
 		...EditProfileRoutes.routes,
 		...BookmarksRoutes.routes,
-		...MessagesRoutes.routes,
+		...ConversationsRoutes.routes,
 		...ChatViewRoutes.routes,
 		...BecomeAgentRoutes.routes,
 		...UserPreferenceRoutes.routes,

@@ -136,10 +136,10 @@ class SplashScreenController extends GetxController {
   void navigateToNextScreen() {
     if (updateAvailable.value && storage.read('force_update') == true) {
       Get.offAllNamed('/update-required');
-    } else if (!storage.read('onboarding_completed') ?? false) {
+    } else if (!storage.read('onboarding_completed')) {
       Get.offAllNamed('/onboarding');
     } else if (authService.isAuthenticated.value) {
-      Get.offAllNamed('/home');
+      Get.offAllNamed('/nav-bar');
     } else {
       Get.offAllNamed('/login');
     }

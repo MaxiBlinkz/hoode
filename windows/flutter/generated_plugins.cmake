@@ -5,10 +5,8 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   app_links
   connectivity_plus
-  emoji_picker_flutter
   file_selector_windows
   geolocator_windows
-  sentry_flutter
   share_plus
   url_launcher_windows
 )

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import '../config/constants.dart';
 import '../../data/services/adservice.dart';
 import '../../data/services/bookmarkservice.dart';
 

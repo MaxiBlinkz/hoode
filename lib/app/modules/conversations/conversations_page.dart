@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hoode/app/modules/messages/conversations_controller.dart';
+import 'package:hoode/app/modules/conversations/conversations_controller.dart';
 //import 'conversations_controller.dart';
 
 class ConversationsPage extends GetView<ConversationsController> {

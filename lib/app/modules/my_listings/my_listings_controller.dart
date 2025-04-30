@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:pocketbase/pocketbase.dart';
 
 class MyListingsController extends GetxController {
   final listings = {}.obs;

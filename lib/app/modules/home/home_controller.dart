@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:hoode/app/data/services/api_service.dart';
 import '../../data/services/bookmarkservice.dart';
 import '../../data/services/supabase_service.dart';
 import '../../core/algorithms/models/geo_point.dart';
-import '../../core/algorithms/models/market_trends.dart';
-import '../../core/algorithms/models/seasonal_data.dart';
-import '../../core/algorithms/models/user_interaction_history.dart';
-import '../../core/algorithms/models/user_preferences.dart';
 import '../../data/enums/enums.dart';
 import '../../../core.dart';
 import 'package:logger/logger.dart';

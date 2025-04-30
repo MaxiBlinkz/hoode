@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 
-import '../modules/messages/conversations_binding.dart';
-import '../modules/messages/conversations_page.dart';
+import '../modules/conversations/conversations_binding.dart';
+import '../modules/conversations/conversations_page.dart';
 
-class MessagesRoutes {
-  MessagesRoutes._();
+class ConversationsRoutes {
+  ConversationsRoutes._();
 
   static const conversations = '/conversations';
 

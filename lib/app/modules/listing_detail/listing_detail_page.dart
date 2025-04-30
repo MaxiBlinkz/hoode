@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import '../../core/config/constants.dart';
 import '../../core/widgets/avatar.dart';
 import 'package:logger/logger.dart';
 import 'listing_detail_controller.dart';
 import '../../core/widgets/listing_card.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:share_plus/share_plus.dart';
 
 class ListingDetailPage extends GetView<ListingDetailController> {
   ListingDetailPage({super.key});

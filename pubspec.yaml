@@ -28,7 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  chatview: ^2.4.0
+  cached_network_image: any
   collection: any
   connectivity_plus: ^6.1.4
   csc_picker_plus:
@@ -41,6 +41,7 @@ dependencies:
   flex_color_scheme:
   flutter:
     sdk: flutter
+  flutter_chat_types: any
   flutter_chat_ui: ^1.6.15
   flutter_iconly:
   flutter_map:
@@ -54,7 +55,6 @@ dependencies:
   google_sign_in:
   http:
   iconly:
-  image: ^4.3.0
   image_cropper: ^8.0.2
   image_picker: ^1.1.2
   intl: any
@@ -63,16 +63,17 @@ dependencies:
   logger:
   lottie:
   osm_search_and_pick:
+  package_info_plus: any
   password_strength_checker: ^1.2.4
+  path: any
   path_provider:
   pocketbase:
-  sentry_flutter: ^8.9.0
   share_plus: ^10.1.4
   shimmer: ^3.0.0
   skeletonizer: ^1.4.2
   supabase_flutter: ^2.9.0
   toastification:
-  url_launcher:
+  uuid: any
 dev_dependencies:
   analyzer: any
   build_runner:

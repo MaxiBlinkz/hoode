@@ -6,7 +6,6 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../../data/services/adservice.dart';
 import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/widgets/listing_card.dart';
 import 'home_controller.dart';
 
