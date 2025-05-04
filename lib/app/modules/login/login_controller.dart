@@ -88,18 +88,18 @@ class LoginController extends GetxController {
     update();
   }
 
-  Future<void> appleSignIn() async {
-    status(Status.loading);
-    try {
-      await authService.signInWithApple();
-      status(Status.success);
-    } catch (e) {
-      err.value = e.toString();
-      status(Status.error);
-      logger.e('Apple Sign In Error: ${err.value}');
-    }
-    update();
-  }
+  // Future<void> appleSignIn() async {
+  //   status(Status.loading);
+  //   try {
+  //     await authService.signInWithApple();
+  //     status(Status.success);
+  //   } catch (e) {
+  //     err.value = e.toString();
+  //     status(Status.error);
+  //     logger.e('Apple Sign In Error: ${err.value}');
+  //   }
+  //   update();
+  // }
 
   Future<void> facebookSignIn() async {
     status(Status.loading);

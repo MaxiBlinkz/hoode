@@ -99,6 +99,19 @@ class RegisterController extends GetxController {
     update();
   }
 
+  Future<void> facebookSignIn() async {
+    status(Status.loading);
+    try {
+      await authService.signInWithFacebook();
+      status(Status.success);
+    } catch (e) {
+      err.value = e.toString();
+      status(Status.error);
+      logger.e('Facebook Sign In Error: ${err.value}');
+    }
+    update();
+  }
+
   void togglePasswordVisibility() {
     hidePassword.toggle();
     update();

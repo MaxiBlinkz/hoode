@@ -136,18 +136,18 @@ class AuthService extends GetxService {
     }
   }
   
-  Future<void> signInWithApple() async {
-    try {
-      await _client.auth.signInWithOAuth(
-        OAuthProvider.apple,
-        redirectTo: 'io.supabase.hoode://login-callback/',
-      );
-      // The redirect will be handled by Supabase's deep link handler
-    } catch (e) {
-      logger.e('Apple sign in error: $e');
-      rethrow;
-    }
-  }
+  // Future<void> signInWithApple() async {
+  //   try {
+  //     await _client.auth.signInWithOAuth(
+  //       OAuthProvider.apple,
+  //       redirectTo: 'io.supabase.hoode://login-callback/',
+  //     );
+  //     // The redirect will be handled by Supabase's deep link handler
+  //   } catch (e) {
+  //     logger.e('Apple sign in error: $e');
+  //     rethrow;
+  //   }
+  // }
   
   Future<void> signInWithFacebook() async {
     try {

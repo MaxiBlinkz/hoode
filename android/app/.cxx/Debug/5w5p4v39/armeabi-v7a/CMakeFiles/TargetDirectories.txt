@@ -1,0 +1,2 @@
+C:/Users/maxwe/OneDrive/Documents/GitHub/hoode/android/app/.cxx/Debug/5w5p4v39/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/maxwe/OneDrive/Documents/GitHub/hoode/android/app/.cxx/Debug/5w5p4v39/armeabi-v7a/CMakeFiles/rebuild_cache.dir

@@ -60,6 +60,7 @@ dependencies:
   intl: any
   json_annotation:
   latlong2:
+  local_auth: ^2.3.0
   logger:
   lottie:
   osm_search_and_pick:
@@ -71,7 +72,6 @@ dependencies:
   share_plus: ^10.1.4
   shimmer: ^3.0.0
   skeletonizer: ^1.4.2
-  supabase_auth_ui: ^0.5.5
   supabase_flutter: ^2.9.0
   toastification:
   uuid: any

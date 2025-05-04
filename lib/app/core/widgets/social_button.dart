@@ -5,35 +5,33 @@ class SocialButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const SocialButton({
-    super.key,
+    Key? key,
     required this.icon,
     required this.onPressed,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
+      borderRadius: BorderRadius.circular(12),
       child: Container(
-        width: 50,
-        height: 50,
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          shape: BoxShape.circle,
           color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
           ],
         ),
-        child: Center(
-          child: Image.asset(
-            icon,
-            width: 30,
-            height: 30,
-          ),
+        child: Image.asset(
+          icon,
+          height: 24,
+          width: 24,
         ),
       ),
     );
